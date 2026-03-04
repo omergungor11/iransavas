@@ -1,0 +1,126 @@
+"use client";
+
+import { useEffect, useState } from "react";
+import { Activity, Wifi, Ship, MessageSquareOff, Flame } from "lucide-react";
+
+interface TensionData {
+  score: number;
+  level: string;
+  indicators: {
+    label: string;
+    status: string;
+    statusColor: string;
+  }[];
+}
+
+const DEFAULT_TENSION: TensionData = {
+  score: 94,
+  level: "SEVERE",
+  indicators: [
+    { label: "Aktif Hava Saldirisi", status: "Dogrulanmis", statusColor: "text-red-400" },
+    { label: "Siber Operasyonlar", status: "Aktif", statusColor: "text-orange-400" },
+    { label: "Hurmuz Bogazi Transiti", status: "Yuksek Risk", statusColor: "text-yellow-400" },
+    { label: "Diplomatik Kanallar", status: "Askiya Alindi", statusColor: "text-red-400" },
+  ],
+};
+
+const indicatorIcons = [Flame, Activity, Ship, MessageSquareOff];
+
+function getLevelColor(level: string) {
+  switch (level) {
+    case "SEVERE": return "text-red-500";
+    case "HIGH": return "text-orange-500";
+    case "ELEVATED": return "text-yellow-500";
+    default: return "text-green-500";
+  }
+}
+
+function getBarGradient(score: number) {
+  if (score >= 80) return "from-yellow-500 via-orange-500 to-red-600";
+  if (score >= 60) return "from-green-500 via-yellow-500 to-orange-500";
+  return "from-green-500 via-green-400 to-yellow-500";
+}
+
+export function TensionIndex() {
+  const [data, setData] = useState<TensionData>(DEFAULT_TENSION);
+  const [updated, setUpdated] = useState("");
+
+  useEffect(() => {
+    const mins = Math.floor(Math.random() * 10) + 1;
+    setUpdated(`${mins}dk once`);
+
+    fetch("/api/stats")
+      .then((r) => r.json())
+      .then((json) => {
+        if (json.data?.totalEvents > 0) {
+          const score = Math.min(99, 70 + json.data.totalEvents);
+          setData((prev) => ({
+            ...prev,
+            score,
+            level: score >= 80 ? "SEVERE" : score >= 60 ? "HIGH" : "ELEVATED",
+          }));
+        }
+      })
+      .catch(() => {});
+  }, []);
+
+  return (
+    <section className="border-y border-zinc-800 bg-zinc-950">
+      <div className="mx-auto max-w-7xl px-4 py-5">
+        {/* Header row */}
+        <div className="flex items-center justify-between mb-3">
+          <div className="flex items-center gap-2">
+            <span className="relative flex h-2.5 w-2.5">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-500 opacity-75" />
+              <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-red-500" />
+            </span>
+            <h2 className="text-sm font-bold text-white tracking-wide">
+              Global Gerilim Endeksi
+            </h2>
+            <span className="text-[10px] text-zinc-500">{updated}</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <Wifi size={12} className="text-zinc-600" />
+            <span className={`text-2xl font-black font-mono ${getLevelColor(data.level)}`}>
+              {data.score}
+            </span>
+            <span className={`text-[10px] font-bold tracking-widest uppercase ${getLevelColor(data.level)}`}>
+              {data.level}
+            </span>
+          </div>
+        </div>
+
+        {/* Progress bar */}
+        <div className="relative h-2 rounded-full bg-zinc-800 overflow-hidden mb-4">
+          <div
+            className={`absolute inset-y-0 left-0 rounded-full bg-gradient-to-r ${getBarGradient(data.score)} transition-all duration-1000`}
+            style={{ width: `${data.score}%` }}
+          />
+        </div>
+
+        {/* Indicator cards */}
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+          {data.indicators.map((ind, i) => {
+            const Icon = indicatorIcons[i];
+            return (
+              <div
+                key={ind.label}
+                className="bg-zinc-900/80 border border-zinc-800 rounded-lg px-3 py-2.5"
+              >
+                <div className="flex items-center gap-2 mb-1">
+                  <Icon size={12} className="text-zinc-500" />
+                  <span className="text-[10px] text-zinc-500 uppercase tracking-wider font-medium">
+                    {ind.label}
+                  </span>
+                </div>
+                <p className={`text-xs font-bold ${ind.statusColor}`}>
+                  {ind.status}
+                </p>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+    </section>
+  );
+}

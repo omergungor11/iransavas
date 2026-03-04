@@ -6,13 +6,14 @@ import { usePathname } from "next/navigation";
 import { Menu, X, Target, Radio } from "lucide-react";
 
 const navLinks = [
-  { label: "Ana Sayfa", href: "/" },
+  { label: "Durum", href: "/#situation" },
+  { label: "Piyasalar", href: "/#markets" },
+  { label: "Askeri", href: "/#military" },
+  { label: "OSINT", href: "/#osint" },
   { label: "Haberler", href: "/haberler" },
   { label: "Harita", href: "/harita" },
-  { label: "Zaman Cizelgesi", href: "/zaman-cizelgesi" },
-  { label: "Analiz", href: "/analiz" },
-  { label: "Raporlar", href: "/raporlar" },
   { label: "Canli Yayin", href: "/canli-yayin" },
+  { label: "Analiz", href: "/analiz" },
 ] as const;
 
 export function Header() {
