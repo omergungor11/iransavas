@@ -1,0 +1,93 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model NewsArticle {
+  id          String   @id @default(cuid())
+  title       String
+  slug        String   @unique
+  content     String
+  summary     String?
+  aiSummary   String?
+  source      String
+  sourceUrl   String?
+  imageUrl    String?
+  category    String   @default("GENEL")
+  publishedAt DateTime @default(now())
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([publishedAt])
+  @@index([category])
+  @@map("news_articles")
+}
+
+model WarEvent {
+  id          String   @id @default(cuid())
+  title       String
+  description String
+  date        DateTime
+  latitude    Float
+  longitude   Float
+  eventType   String
+  severity    String   @default("ORTA")
+  casualties  Int?
+  source      String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  timelineEntries TimelineEntry[]
+
+  @@index([date])
+  @@index([eventType])
+  @@map("war_events")
+}
+
+model CasualtyReport {
+  id                 String   @id @default(cuid())
+  date               DateTime
+  civilianCasualties Int      @default(0)
+  militaryCasualties Int      @default(0)
+  injured            Int      @default(0)
+  displaced          Int      @default(0)
+  region             String
+  source             String?
+  createdAt          DateTime @default(now())
+
+  @@index([date])
+  @@map("casualty_reports")
+}
+
+model TimelineEntry {
+  id             String    @id @default(cuid())
+  title          String
+  description    String
+  date           DateTime
+  category       String
+  importance     String    @default("MEDIUM")
+  relatedEvent   WarEvent? @relation(fields: [relatedEventId], references: [id])
+  relatedEventId String?
+  createdAt      DateTime  @default(now())
+
+  @@index([date])
+  @@map("timeline_entries")
+}
+
+model Report {
+  id          String   @id @default(cuid())
+  title       String
+  type        String
+  content     String
+  summary     String
+  period      String
+  publishedAt DateTime @default(now())
+  createdAt   DateTime @default(now())
+
+  @@index([publishedAt])
+  @@map("reports")
+}
