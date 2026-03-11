@@ -22,7 +22,7 @@ export async function GET() {
 
     const sums = casualtyAgg._sum;
     let totalCasualties = (sums.civilianCasualties || 0) + (sums.militaryCasualties || 0);
-    let totalDisplaced = sums.displaced || 0;
+    const totalDisplaced = sums.displaced || 0;
 
     // Fallback: if CasualtyReport is empty, sum WarEvent.casualties
     if (casualtyCount === 0 && totalEvents > 0) {

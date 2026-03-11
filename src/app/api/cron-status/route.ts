@@ -28,7 +28,7 @@ export async function POST(request: NextRequest) {
 
     if (action === "start") {
       const { startCron } = await import("@/lib/fetchers/cron-scheduler");
-      const interval = body.interval || "*/15 * * * *";
+      const interval = body.interval || "*/30 * * * *";
       startCron(interval);
       return NextResponse.json({ data: { message: "Cron baslatildi", interval } });
     }

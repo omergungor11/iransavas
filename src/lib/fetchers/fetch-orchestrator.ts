@@ -6,6 +6,7 @@ import { fetchFromScraping } from "./scraper";
 import { fetchFromBamqam } from "./bamqam-fetcher";
 import { fetchNasaFirms } from "./nasa-firms-fetcher";
 import { runDataCompiler } from "@/lib/data-compiler";
+import { batchSummarize } from "@/lib/ai-summarizer";
 
 export interface FetchResult {
   source: string;
@@ -102,66 +103,48 @@ export async function runFetchAll(): Promise<FetchSummary> {
   let totalMapEvents = 0;
 
   try {
-    // ============ RSS FEEDS ============
+    // ============ NEWS SOURCES (RSS + NewsAPI + Scrape) — parallel fetch ============
     const rssSources = getSourcesByType("rss");
-    for (const source of rssSources) {
-      const errors: string[] = [];
-      try {
-        const articles = await fetchFromRss(source);
-        const { saved, duplicates } = await saveArticles(articles);
-        results.push({
-          source: source.name,
-          type: "rss",
-          fetched: articles.length,
-          saved,
-          duplicates,
-          errors,
-        });
-      } catch (error) {
-        errors.push(error instanceof Error ? error.message : "Unknown error");
-        results.push({ source: source.name, type: "rss", fetched: 0, saved: 0, duplicates: 0, errors });
-      }
-    }
-
-    // ============ NEWSAPI ============
     const newsApiSources = getSourcesByType("newsapi");
-    for (const source of newsApiSources) {
-      const errors: string[] = [];
-      try {
-        const articles = await fetchFromNewsApi(source);
-        const { saved, duplicates } = await saveArticles(articles);
-        results.push({
-          source: source.name,
-          type: "newsapi",
-          fetched: articles.length,
-          saved,
-          duplicates,
-          errors,
-        });
-      } catch (error) {
-        errors.push(error instanceof Error ? error.message : "Unknown error");
-        results.push({ source: source.name, type: "newsapi", fetched: 0, saved: 0, duplicates: 0, errors });
-      }
-    }
-
-    // ============ WEB SCRAPING ============
     const scrapeSources = getSourcesByType("scrape");
-    for (const source of scrapeSources) {
-      const errors: string[] = [];
-      try {
-        const articles = await fetchFromScraping(source);
-        const { saved, duplicates } = await saveArticles(articles);
-        results.push({
-          source: source.name,
-          type: "scrape",
-          fetched: articles.length,
-          saved,
-          duplicates,
-          errors,
-        });
-      } catch (error) {
-        errors.push(error instanceof Error ? error.message : "Unknown error");
-        results.push({ source: source.name, type: "scrape", fetched: 0, saved: 0, duplicates: 0, errors });
+
+    console.log(`[FetchAll] Starting: ${rssSources.length} RSS, ${newsApiSources.length} NewsAPI, ${scrapeSources.length} scrape sources`);
+
+    // Fetch all news sources in parallel
+    const fetchPromises = [
+      ...rssSources.map(async (source) => {
+        try {
+          const articles = await fetchFromRss(source);
+          const { saved, duplicates } = await saveArticles(articles);
+          return { source: source.name, type: "rss", fetched: articles.length, saved, duplicates, errors: [] as string[] };
+        } catch (error) {
+          return { source: source.name, type: "rss", fetched: 0, saved: 0, duplicates: 0, errors: [error instanceof Error ? error.message : "Unknown error"] };
+        }
+      }),
+      ...newsApiSources.map(async (source) => {
+        try {
+          const articles = await fetchFromNewsApi(source);
+          const { saved, duplicates } = await saveArticles(articles);
+          return { source: source.name, type: "newsapi", fetched: articles.length, saved, duplicates, errors: [] as string[] };
+        } catch (error) {
+          return { source: source.name, type: "newsapi", fetched: 0, saved: 0, duplicates: 0, errors: [error instanceof Error ? error.message : "Unknown error"] };
+        }
+      }),
+      ...scrapeSources.map(async (source) => {
+        try {
+          const articles = await fetchFromScraping(source);
+          const { saved, duplicates } = await saveArticles(articles);
+          return { source: source.name, type: "scrape", fetched: articles.length, saved, duplicates, errors: [] as string[] };
+        } catch (error) {
+          return { source: source.name, type: "scrape", fetched: 0, saved: 0, duplicates: 0, errors: [error instanceof Error ? error.message : "Unknown error"] };
+        }
+      }),
+    ];
+
+    const newsResults = await Promise.allSettled(fetchPromises);
+    for (const result of newsResults) {
+      if (result.status === "fulfilled") {
+        results.push(result.value);
       }
     }
 
@@ -271,6 +254,14 @@ export async function runFetchAll(): Promise<FetchSummary> {
         duplicates: 0,
         errors: [error instanceof Error ? error.message : "Unknown error"],
       });
+    }
+
+    // ============ AI SUMMARIZATION ============
+    try {
+      const aiResult = await batchSummarize(20);
+      console.log(`[FetchAll] AI summaries: ${aiResult.summarized} AI, ${aiResult.fallback} fallback`);
+    } catch (error) {
+      console.error("[FetchAll] AI summarize error:", error instanceof Error ? error.message : error);
     }
 
     // ============ DATA COMPILER ============

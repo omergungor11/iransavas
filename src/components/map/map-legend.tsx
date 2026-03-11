@@ -1,22 +1,33 @@
-export function MapLegend() {
-  const severities = [
-    { label: "Dusuk", color: "#3b82f6" },
-    { label: "Orta", color: "#eab308" },
-    { label: "Yuksek", color: "#f97316" },
-    { label: "Kritik", color: "#ef4444" },
-  ];
+import { cn } from "@/lib/utils";
 
-  const eventTypes = [
-    { label: "Catisma", icon: "⚔" },
-    { label: "Hava Saldirisi", icon: "✈" },
-    { label: "Deniz Op.", icon: "⚓" },
-    { label: "Diplomasi", icon: "🤝" },
-    { label: "Insani Kriz", icon: "🏥" },
-  ];
+const severities = [
+  { label: "Dusuk", color: "#3b82f6" },
+  { label: "Orta", color: "#eab308" },
+  { label: "Yuksek", color: "#f97316" },
+  { label: "Kritik", color: "#ef4444" },
+];
+
+const eventTypes = [
+  { label: "Catisma", icon: "⚔" },
+  { label: "Hava Saldirisi", icon: "✈" },
+  { label: "Deniz Op.", icon: "⚓" },
+  { label: "Diplomasi", icon: "🤝" },
+  { label: "Insani Kriz", icon: "🏥" },
+];
+
+interface MapLegendProps {
+  /** Render inline (inside sidebar) instead of absolute overlay */
+  inline?: boolean;
+}
+
+export function MapLegend({ inline = false }: MapLegendProps) {
+  const wrapper = inline
+    ? "flex flex-col gap-3"
+    : "absolute bottom-8 right-4 z-[1000] flex flex-col gap-3";
 
   return (
-    <div className="absolute bottom-8 right-4 z-[1000] flex flex-col gap-3">
-      <div className="rounded-lg border border-white/10 bg-gray-900/90 p-3 backdrop-blur-sm">
+    <div className={wrapper}>
+      <div className={cn("rounded-lg border border-white/10 p-3 backdrop-blur-sm", inline ? "bg-white/5" : "bg-gray-900/90")}>
         <p className="mb-2 text-xs font-semibold uppercase tracking-wider text-gray-400">Siddet</p>
         <ul className="space-y-1">
           {severities.map((s) => (
@@ -27,7 +38,7 @@ export function MapLegend() {
           ))}
         </ul>
       </div>
-      <div className="rounded-lg border border-white/10 bg-gray-900/90 p-3 backdrop-blur-sm">
+      <div className={cn("rounded-lg border border-white/10 p-3 backdrop-blur-sm", inline ? "bg-white/5" : "bg-gray-900/90")}>
         <p className="mb-2 text-xs font-semibold uppercase tracking-wider text-gray-400">Tur</p>
         <ul className="space-y-1">
           {eventTypes.map((e) => (

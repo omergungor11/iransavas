@@ -23,13 +23,17 @@ export interface FetchedArticle {
 }
 
 const IRAN_KEYWORDS = [
-  "iran", "İran", "tehran", "tahran", "persian gulf", "basra körfezi",
-  "hormuz", "hürmüz", "isfahan", "isfahan", "khamenei", "hamaney",
-  "irgc", "devrim muhafızları", "revolutionary guard", "bushehr", "buşehr",
-  "natanz", "tabriz", "tebriz", "ahvaz", "ahvaz", "strait of hormuz",
-  "iranian", "middle east conflict", "iran war", "iran strike",
-  "iran military", "iran nuclear", "iran sanction",
-  "savaş", "çatışma", "saldırı", "bombardıman",
+  // English
+  "iran", "iranian", "tehran", "persian gulf", "hormuz", "strait of hormuz",
+  "isfahan", "khamenei", "irgc", "revolutionary guard", "bushehr",
+  "natanz", "tabriz", "ahvaz", "iran war", "iran strike",
+  "iran military", "iran nuclear", "iran sanction", "iran conflict",
+  "iran bomb", "iran attack", "iran missile", "iran drone",
+  "middle east conflict", "hegseth iran", "centcom iran",
+  // Turkish
+  "İran", "tahran", "basra körfezi", "hürmüz", "hamaney",
+  "devrim muhafızları", "buşehr", "tebriz",
+  "savaş", "çatışma", "saldırı", "bombardıman", "füze", "hava saldırısı",
 ];
 
 function isIranRelated(title: string, content: string): boolean {
@@ -53,6 +57,7 @@ export async function fetchFromRss(source: NewsSource): Promise<FetchedArticle[]
   try {
     console.log(`[RSS] Fetching: ${source.name} (${source.url})`);
     const feed = await parser.parseURL(source.url);
+    console.log(`[RSS] ${source.name}: ${feed.items?.length ?? 0} total items in feed`);
 
     for (const item of feed.items || []) {
       if (!item.title) continue;

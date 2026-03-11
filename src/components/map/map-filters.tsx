@@ -6,6 +6,8 @@ export interface MapFiltersState {
   eventType: string;
   severity: string;
   dateRange: string;
+  customFrom?: string;
+  customTo?: string;
 }
 
 interface MapFiltersProps {

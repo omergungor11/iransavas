@@ -1,7 +1,7 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { Search } from "lucide-react";
+import { useEffect, useState, useCallback, useRef } from "react";
+import { Search, AlertTriangle, Newspaper, RefreshCw } from "lucide-react";
 import { NewsCard } from "@/components/news/news-card";
 import { CategoryFilter } from "@/components/news/category-filter";
 import { Button } from "@/components/ui/button";
@@ -18,33 +18,66 @@ interface Article {
   imageUrl: string | null;
 }
 
+const PAGE_SIZE = 12;
+
 export default function HaberlerPage() {
   const [articles, setArticles] = useState<Article[]>([]);
   const [category, setCategory] = useState("TUMU");
   const [page, setPage] = useState(1);
   const [total, setTotal] = useState(0);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   const [search, setSearch] = useState("");
+  const [debouncedSearch, setDebouncedSearch] = useState("");
+
+  // Debounce search input (300ms)
+  const debounceRef = useRef<NodeJS.Timeout | null>(null);
+  const handleSearchChange = useCallback((value: string) => {
+    setSearch(value);
+    if (debounceRef.current) clearTimeout(debounceRef.current);
+    debounceRef.current = setTimeout(() => {
+      setDebouncedSearch(value);
+      setPage(1);
+    }, 300);
+  }, []);
 
   useEffect(() => {
+    return () => {
+      if (debounceRef.current) clearTimeout(debounceRef.current);
+    };
+  }, []);
+
+  useEffect(() => {
+    const controller = new AbortController();
+
     const fetchNews = async () => {
       setLoading(true);
+      setError(null);
       try {
-        const params = new URLSearchParams({ page: page.toString(), pageSize: "12" });
+        const params = new URLSearchParams({ page: page.toString(), pageSize: PAGE_SIZE.toString() });
         if (category !== "TUMU") params.set("category", category);
-        if (search) params.set("search", search);
-        const res = await fetch(`/api/news?${params}`);
+        if (debouncedSearch) params.set("search", debouncedSearch);
+        const res = await fetch(`/api/news?${params}`, { signal: controller.signal });
+
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+
         const json = await res.json();
         setArticles(json.data || []);
         setTotal(json.meta?.total || 0);
       } catch (err) {
+        if (err instanceof DOMException && err.name === "AbortError") return;
+        setError("Haberler yuklenirken bir hata olustu. Lutfen tekrar deneyin.");
         console.error(err);
       } finally {
         setLoading(false);
       }
     };
+
     fetchNews();
-  }, [category, page, search]);
+    return () => controller.abort();
+  }, [category, page, debouncedSearch]);
+
+  const totalPages = Math.ceil(total / PAGE_SIZE);
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-8">
@@ -53,41 +86,90 @@ export default function HaberlerPage() {
         <p className="text-muted-foreground">Iran savasi ile ilgili son gelismeler ve haberler</p>
       </div>
 
-      <div className="mb-6 flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+      <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <CategoryFilter selected={category} onChange={(c) => { setCategory(c); setPage(1); }} />
-        <div className="relative">
+        <div className="relative w-full sm:w-auto">
           <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
           <input
             type="text"
             placeholder="Haberlerde ara..."
             value={search}
-            onChange={(e) => { setSearch(e.target.value); setPage(1); }}
-            className="rounded-lg border bg-background pl-10 pr-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-red-500"
+            onChange={(e) => handleSearchChange(e.target.value)}
+            className="w-full sm:w-64 rounded-lg border bg-background pl-10 pr-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-red-500"
           />
         </div>
       </div>
 
-      {loading ? (
-        <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+      {/* Error State */}
+      {error && (
+        <div className="flex flex-col items-center justify-center py-20 text-center">
+          <AlertTriangle className="mb-4 h-12 w-12 text-red-500/60" />
+          <p className="mb-4 text-muted-foreground">{error}</p>
+          <Button variant="outline" onClick={() => { setError(null); setPage(page); }}>
+            <RefreshCw className="mr-2 h-4 w-4" /> Tekrar Dene
+          </Button>
+        </div>
+      )}
+
+      {/* Loading Skeleton */}
+      {loading && !error && (
+        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {Array.from({ length: 6 }).map((_, i) => (
-            <div key={i} className="h-64 animate-pulse rounded-lg bg-muted" />
+            <div key={i} className="overflow-hidden rounded-lg border bg-card">
+              <div className="h-32 animate-pulse bg-muted" />
+              <div className="p-4 space-y-3">
+                <div className="h-4 w-3/4 animate-pulse rounded bg-muted" />
+                <div className="h-3 w-full animate-pulse rounded bg-muted" />
+                <div className="h-3 w-2/3 animate-pulse rounded bg-muted" />
+                <div className="flex justify-between">
+                  <div className="h-3 w-16 animate-pulse rounded bg-muted" />
+                  <div className="h-3 w-20 animate-pulse rounded bg-muted" />
+                </div>
+              </div>
+            </div>
           ))}
         </div>
-      ) : (
+      )}
+
+      {/* Content */}
+      {!loading && !error && (
         <>
-          <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
-            {articles.map((article) => (
-              <NewsCard key={article.id} {...article} publishedAt={article.publishedAt} />
-            ))}
-          </div>
-          {articles.length === 0 && (
-            <p className="py-20 text-center text-muted-foreground">Haber bulunamadi.</p>
+          {articles.length > 0 ? (
+            <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+              {articles.map((article) => (
+                <NewsCard key={article.id} {...article} publishedAt={article.publishedAt} />
+              ))}
+            </div>
+          ) : (
+            /* Empty State */
+            <div className="flex flex-col items-center justify-center py-20 text-center">
+              <Newspaper className="mb-4 h-12 w-12 text-muted-foreground/40" />
+              <h3 className="mb-2 text-lg font-semibold">Haber Bulunamadi</h3>
+              <p className="mb-4 max-w-md text-sm text-muted-foreground">
+                {debouncedSearch
+                  ? `"${debouncedSearch}" icin sonuc bulunamadi. Farkli anahtar kelimeler deneyin.`
+                  : "Bu kategoride henuz haber bulunmuyor."}
+              </p>
+              {(debouncedSearch || category !== "TUMU") && (
+                <Button variant="outline" onClick={() => { setSearch(""); setDebouncedSearch(""); setCategory("TUMU"); setPage(1); }}>
+                  Filtreleri Temizle
+                </Button>
+              )}
+            </div>
           )}
-          {total > 12 && (
-            <div className="mt-8 flex justify-center gap-2">
-              <Button variant="outline" disabled={page <= 1} onClick={() => setPage(page - 1)}>Onceki</Button>
-              <span className="flex items-center px-4 text-sm text-muted-foreground">Sayfa {page} / {Math.ceil(total / 12)}</span>
-              <Button variant="outline" disabled={page * 12 >= total} onClick={() => setPage(page + 1)}>Sonraki</Button>
+
+          {/* Pagination */}
+          {totalPages > 1 && (
+            <div className="mt-8 flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
+              <Button variant="outline" size="sm" disabled={page <= 1} onClick={() => setPage(page - 1)}>
+                Onceki
+              </Button>
+              <span className="text-sm text-muted-foreground">
+                Sayfa {page} / {totalPages} ({total} haber)
+              </span>
+              <Button variant="outline" size="sm" disabled={page >= totalPages} onClick={() => setPage(page + 1)}>
+                Sonraki
+              </Button>
             </div>
           )}
         </>

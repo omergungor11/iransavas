@@ -1,4 +1,5 @@
 import { PrismaClient } from '@prisma/client'
+import { extraNewsArticles, extraWarEvents, extraCasualtyReports, extraTimelineEntries, extraReports } from './seed-extra'
 
 const prisma = new PrismaClient()
 
@@ -947,6 +948,54 @@ ICC soruşturması siyasi atmosferi değiştirebilir. Ahvaz petrol yangını kü
     })
   }
   console.log(`${reports.length} rapor eklendi.`)
+
+  // ---------------------------------------------------------------------------
+  // EXTRA DATA
+  // ---------------------------------------------------------------------------
+  for (const article of extraNewsArticles) {
+    await prisma.newsArticle.upsert({
+      where: { id: article.id },
+      update: {},
+      create: article,
+    })
+  }
+  console.log(`${extraNewsArticles.length} ek haber makalesi eklendi.`)
+
+  for (const event of extraWarEvents) {
+    await prisma.warEvent.upsert({
+      where: { id: event.id },
+      update: {},
+      create: event,
+    })
+  }
+  console.log(`${extraWarEvents.length} ek savaş olayı eklendi.`)
+
+  for (const report of extraCasualtyReports) {
+    await prisma.casualtyReport.upsert({
+      where: { id: report.id },
+      update: {},
+      create: report,
+    })
+  }
+  console.log(`${extraCasualtyReports.length} ek kayıp raporu eklendi.`)
+
+  for (const entry of extraTimelineEntries) {
+    await prisma.timelineEntry.upsert({
+      where: { id: entry.id },
+      update: {},
+      create: entry,
+    })
+  }
+  console.log(`${extraTimelineEntries.length} ek zaman çizelgesi girişi eklendi.`)
+
+  for (const report of extraReports) {
+    await prisma.report.upsert({
+      where: { id: report.id },
+      update: {},
+      create: report,
+    })
+  }
+  console.log(`${extraReports.length} ek rapor eklendi.`)
 
   console.log('Seed tamamlandı.')
 }

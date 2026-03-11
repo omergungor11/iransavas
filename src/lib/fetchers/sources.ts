@@ -25,7 +25,7 @@ export const NEWS_SOURCES: NewsSource[] = [
     id: "reuters-world",
     name: "Reuters",
     type: "rss",
-    url: "https://feeds.reuters.com/Reuters/worldNews",
+    url: "https://cdn.feedcontrol.net/8/1115-TvWAhu4G064WT.xml",
     language: "en",
     category: "GENEL",
     enabled: true,
@@ -61,7 +61,7 @@ export const NEWS_SOURCES: NewsSource[] = [
     id: "trt-haber",
     name: "TRT Haber",
     type: "rss",
-    url: "https://www.trthaber.com/xml_mobile.php?ession=78",
+    url: "https://www.trthaber.com/dunya_articles.rss",
     language: "tr",
     category: "GENEL",
     enabled: true,
@@ -117,22 +117,15 @@ export const NEWS_SOURCES: NewsSource[] = [
     newsApiQuery: "Middle East Iran diplomacy OR Iran sanctions OR Iran nuclear",
   },
 
-  // ============ WEB SCRAPING ============
+  // ============ RSS (ex-scrape, converted) ============
   {
     id: "defense-news",
     name: "Defense News",
-    type: "scrape",
-    url: "https://www.defensenews.com/global/mideast-africa/",
+    type: "rss",
+    url: "https://www.defensenews.com/arc/outboundfeeds/rss/category/global/mideast-africa/?outputType=xml",
     language: "en",
     category: "ASKERI",
     enabled: true,
-    selectors: {
-      articleList: "article.PromoMediumA, article.PromoSmallA",
-      title: "h2 a, h3 a",
-      link: "h2 a, h3 a",
-      summary: ".PromoMediumA-description, .PromoSmallA-description",
-      date: "time",
-    },
   },
   {
     id: "crisis-group",
@@ -141,7 +134,7 @@ export const NEWS_SOURCES: NewsSource[] = [
     url: "https://www.crisisgroup.org/middle-east-north-africa/gulf-and-arabian-peninsula/iran",
     language: "en",
     category: "DIPLOMASI",
-    enabled: true,
+    enabled: false, // 403 blocked, disabled until alternative found
     selectors: {
       articleList: ".field--name-field-icg-eck-ct-card",
       title: "h3 a, .title a",
