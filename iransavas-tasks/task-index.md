@@ -13,9 +13,10 @@
 | 6 | Polish & Launch Readiness | 4 | 4 | 0 | 0 | 0 |
 | 7 | Final Launch Prep | 3 | 3 | 0 | 0 | 0 |
 | 8 | Deployment & Canliya Alma | 3 | 3 | 0 | 0 | 0 |
-| **Total** | | **36** | **36** | **0** | **0** | **0** |
+| 9 | Gelismis Ozellikler | 4 | 4 | 0 | 0 | 0 |
+| **Total** | | **40** | **40** | **0** | **0** | **0** |
 
-**Progress**: 36/36 (100%)
+**Progress**: 40/40 (100%)
 
 ---
 
@@ -115,3 +116,14 @@
 | TASK-034 | Vercel deployment kurulumu | devops | S | DONE | - |
 | TASK-035 | Cron job kurulumu (haber fetch) | backend | S | DONE | TASK-034 |
 | TASK-036 | Analytics entegrasyonu | frontend | S | DONE | TASK-034 |
+
+---
+
+## Phase 9: Gelismis Ozellikler
+
+| ID | Task | Agent | Complexity | Status | Dependencies |
+|----|------|-------|-----------|--------|-------------|
+| TASK-037 | PWA destegi (offline + install) | frontend | S | DONE | - |
+| TASK-038 | Dark/Light tema gecisi | frontend | S | DONE | - |
+| TASK-039 | Gelismis haber arama | frontend | M | DONE | - |
+| TASK-040 | Bildirim sistemi (son dakika banner) | frontend | M | DONE | - |

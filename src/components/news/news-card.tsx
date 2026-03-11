@@ -2,7 +2,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
-import { formatDate, truncate } from "@/lib/utils";
+import { formatDate, truncate, highlightText } from "@/lib/utils";
 
 const CATEGORY_COLORS: Record<string, string> = {
   ASKERI: "from-red-900 to-red-700",
@@ -31,9 +31,26 @@ interface NewsCardProps {
   publishedAt: string;
   aiSummary: string | null;
   imageUrl?: string | null;
+  searchQuery?: string;
 }
 
-export function NewsCard({ id, title, summary, source, category, publishedAt, aiSummary, imageUrl }: NewsCardProps) {
+function HighlightedText({ text, query }: { text: string; query?: string }) {
+  if (!query) return <>{text}</>;
+  const { parts } = highlightText(text, query);
+  return (
+    <>
+      {parts.map((part, i) =>
+        part.highlight ? (
+          <mark key={i} className="bg-yellow-500/30 text-inherit rounded-sm px-0.5">{part.text}</mark>
+        ) : (
+          <span key={i}>{part.text}</span>
+        )
+      )}
+    </>
+  );
+}
+
+export function NewsCard({ id, title, summary, source, category, publishedAt, aiSummary, imageUrl, searchQuery }: NewsCardProps) {
   const gradient = CATEGORY_COLORS[category] || CATEGORY_COLORS.GENEL;
 
   return (
@@ -61,11 +78,11 @@ export function NewsCard({ id, title, summary, source, category, publishedAt, ai
         </div>
         <CardContent className="p-4">
           <h3 className="mb-2 text-sm font-semibold leading-tight line-clamp-2 group-hover:text-red-400 transition-colors">
-            {title}
+            <HighlightedText text={title} query={searchQuery} />
           </h3>
           {summary && (
             <p className="mb-3 text-xs text-muted-foreground line-clamp-3">
-              {truncate(summary, 150)}
+              <HighlightedText text={truncate(summary, 150)} query={searchQuery} />
             </p>
           )}
           <div className="flex items-center justify-between text-xs text-muted-foreground">

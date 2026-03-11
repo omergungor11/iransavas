@@ -4,6 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Menu, X, Target, Radio } from "lucide-react";
+import { ThemeToggle } from "./theme-toggle";
 
 const navLinks = [
   { label: "Durum", href: "/#situation" },
@@ -97,6 +98,7 @@ export function Header() {
 
           {/* Right side: LIVE badge + mobile toggle */}
           <div className="flex items-center gap-3">
+            <ThemeToggle />
             <div
               className="hidden sm:flex items-center gap-1.5 px-2.5 py-1 rounded border border-red-800/60 bg-red-900/30"
               aria-label="Canli yayin aktif"

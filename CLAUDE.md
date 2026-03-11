@@ -19,7 +19,7 @@ iransavas.com - Iran savasi hakkinda kapsamli haber, analiz ve raporlama platfor
 
 ## Mevcut Durum
 
-**Progress**: 7/18 task (%39) — Phase 0 tamam, Phase 1 (DB+Seed) basliyor.
+**Progress**: 40/40 task (%100) — Tum phase'ler tamamlandi.
 
 > Her yeni session'da `iransavas-tasks/task-index.md` oku veya `/cold-start` calistir.
 
