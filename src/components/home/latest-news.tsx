@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, AlertTriangle } from "lucide-react";
 import { NewsCard } from "@/components/news/news-card";
 
 interface Article {
@@ -10,13 +10,15 @@ interface Article {
   source: string;
   category: string;
   publishedAt: string;
+  imageUrl?: string | null;
 }
 
 interface LatestNewsProps {
   articles: Article[];
+  error?: boolean;
 }
 
-export function LatestNews({ articles }: LatestNewsProps) {
+export function LatestNews({ articles, error }: LatestNewsProps) {
   return (
     <section className="mx-auto max-w-7xl px-4 py-12">
       <div className="mb-6 flex items-center justify-between">
@@ -25,11 +27,23 @@ export function LatestNews({ articles }: LatestNewsProps) {
           Tum Haberleri Gor <ArrowRight className="h-4 w-4" />
         </Link>
       </div>
-      <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
-        {articles.map((article) => (
-          <NewsCard key={article.id} {...article} publishedAt={article.publishedAt} />
-        ))}
-      </div>
+      {error ? (
+        <div className="flex items-center gap-3 rounded-lg border border-zinc-800 bg-zinc-900/50 p-6">
+          <AlertTriangle className="h-5 w-5 text-red-500 shrink-0" />
+          <div>
+            <p className="text-sm font-medium text-white">Haberler yuklenemedi</p>
+            <p className="text-xs text-zinc-500 mt-0.5">Sayfayi yenileyerek tekrar deneyin.</p>
+          </div>
+        </div>
+      ) : articles.length === 0 ? (
+        <div className="text-center py-8 text-zinc-500 text-sm">Henuz haber yok.</div>
+      ) : (
+        <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+          {articles.map((article) => (
+            <NewsCard key={article.id} {...article} publishedAt={article.publishedAt} />
+          ))}
+        </div>
+      )}
     </section>
   );
 }

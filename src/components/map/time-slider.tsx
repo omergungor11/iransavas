@@ -118,6 +118,7 @@ export function TimeSlider({ minDate, maxDate, fromDate, toDate, onChange }: Tim
             step={0.5}
             value={fromVal}
             onChange={(e) => handleFromChange(Number(e.target.value))}
+            aria-label="Baslangic tarihi"
             className="absolute inset-0 w-full appearance-none bg-transparent cursor-pointer [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-4 [&::-webkit-slider-thumb]:h-4 [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-red-500 [&::-webkit-slider-thumb]:border-2 [&::-webkit-slider-thumb]:border-white [&::-webkit-slider-thumb]:cursor-pointer"
           />
           {/* To thumb */}
@@ -128,6 +129,7 @@ export function TimeSlider({ minDate, maxDate, fromDate, toDate, onChange }: Tim
             step={0.5}
             value={toVal}
             onChange={(e) => handleToChange(Number(e.target.value))}
+            aria-label="Bitis tarihi"
             className="absolute inset-0 w-full appearance-none bg-transparent cursor-pointer [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-4 [&::-webkit-slider-thumb]:h-4 [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-red-500 [&::-webkit-slider-thumb]:border-2 [&::-webkit-slider-thumb]:border-white [&::-webkit-slider-thumb]:cursor-pointer"
           />
         </div>
@@ -139,16 +141,18 @@ export function TimeSlider({ minDate, maxDate, fromDate, toDate, onChange }: Tim
             size="sm"
             className="h-8 w-8 p-0"
             onClick={() => setPlaying(!playing)}
+            aria-label={playing ? "Duraklat" : "Oynat"}
           >
-            {playing ? <Pause className="h-3.5 w-3.5" /> : <Play className="h-3.5 w-3.5" />}
+            {playing ? <Pause className="h-3.5 w-3.5" aria-hidden="true" /> : <Play className="h-3.5 w-3.5" aria-hidden="true" />}
           </Button>
           <Button
             variant="outline"
             size="sm"
             className="h-8 w-8 p-0"
             onClick={handleReset}
+            aria-label="Sifirla"
           >
-            <RotateCcw className="h-3.5 w-3.5" />
+            <RotateCcw className="h-3.5 w-3.5" aria-hidden="true" />
           </Button>
         </div>
       </div>

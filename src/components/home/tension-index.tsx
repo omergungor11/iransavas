@@ -14,8 +14,8 @@ interface TensionData {
 }
 
 const DEFAULT_TENSION: TensionData = {
-  score: 94,
-  level: "SEVERE",
+  score: 50,
+  level: "ELEVATED",
   indicators: [
     { label: "Aktif Hava Saldirisi", status: "Dogrulanmis", statusColor: "text-red-400" },
     { label: "Siber Operasyonlar", status: "Aktif", statusColor: "text-orange-400" },
@@ -50,18 +50,21 @@ export function TensionIndex() {
     setUpdated(`${mins}dk once`);
 
     fetch("/api/stats")
-      .then((r) => r.json())
+      .then((r) => {
+        if (!r.ok) throw new Error(`HTTP ${r.status}`);
+        return r.json();
+      })
       .then((json) => {
-        if (json.data?.totalEvents > 0) {
-          const score = Math.min(99, 70 + json.data.totalEvents);
+        const d = json.data;
+        if (d?.tensionScore != null) {
           setData((prev) => ({
             ...prev,
-            score,
-            level: score >= 80 ? "SEVERE" : score >= 60 ? "HIGH" : "ELEVATED",
+            score: d.tensionScore,
+            level: d.tensionLevel || "ELEVATED",
           }));
         }
       })
-      .catch(() => {});
+      .catch((err) => console.error("[TensionIndex] fetch error:", err));
   }, []);
 
   return (

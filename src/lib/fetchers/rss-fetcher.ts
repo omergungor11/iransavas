@@ -1,11 +1,24 @@
 import RssParser from "rss-parser";
 import type { NewsSource } from "./sources";
 
-const parser = new RssParser({
+// Custom fields to parse media:content and media:thumbnail
+type CustomItem = {
+  "media:content"?: { $: { url: string } };
+  "media:thumbnail"?: { $: { url: string } };
+  enclosure?: { url: string };
+};
+
+const parser: RssParser<Record<string, unknown>, CustomItem> = new RssParser({
   timeout: 15000,
   headers: {
     "User-Agent": "IranSavas-NewsBot/1.0",
     Accept: "application/rss+xml, application/xml, text/xml",
+  },
+  customFields: {
+    item: [
+      ["media:content", { keepArray: false }],
+      ["media:thumbnail", { keepArray: false }],
+    ],
   },
 });
 
@@ -51,6 +64,25 @@ function slugify(text: string): string {
     .replace(/^-|-$/g, "");
 }
 
+function extractImage(item: CustomItem & { content?: string }): string | null {
+  // 1. enclosure (standard RSS image)
+  if (item.enclosure?.url) return item.enclosure.url;
+  // 2. media:content (BBC, Reuters, etc.)
+  const mediaContent = item["media:content"];
+  if (mediaContent?.$?.url) return mediaContent.$.url;
+  // 3. media:thumbnail
+  const mediaThumbnail = item["media:thumbnail"];
+  if (mediaThumbnail?.$?.url) return mediaThumbnail.$.url;
+  // 4. Extract from HTML content
+  if (item.content) return extractImageFromContent(item.content);
+  return null;
+}
+
+function extractImageFromContent(html: string): string | null {
+  const match = html.match(/<img[^>]+src="([^"]+)"/);
+  return match?.[1] || null;
+}
+
 export async function fetchFromRss(source: NewsSource): Promise<FetchedArticle[]> {
   const articles: FetchedArticle[] = [];
 
@@ -70,9 +102,7 @@ export async function fetchFromRss(source: NewsSource): Promise<FetchedArticle[]
       if (!isIranRelated(title, content)) continue;
 
       const publishedAt = item.pubDate ? new Date(item.pubDate) : new Date();
-      const imageUrl = item.enclosure?.url ||
-        extractImageFromContent(item.content || "") ||
-        null;
+      const imageUrl = extractImage(item as CustomItem & { content?: string });
 
       articles.push({
         title,
@@ -94,11 +124,6 @@ export async function fetchFromRss(source: NewsSource): Promise<FetchedArticle[]
   }
 
   return articles;
-}
-
-function extractImageFromContent(html: string): string | null {
-  const match = html.match(/<img[^>]+src="([^"]+)"/);
-  return match?.[1] || null;
 }
 
 export { slugify };

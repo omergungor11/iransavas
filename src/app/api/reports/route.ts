@@ -1,11 +1,15 @@
 export const dynamic = "force-dynamic";
 import { NextRequest, NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
+import { reportsQuerySchema, parseQuery } from "@/lib/api-validation";
 
 export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url);
-    const type = searchParams.get("type");
+    const parsed = parseQuery(searchParams, reportsQuerySchema);
+    if (!parsed.success) return parsed.response;
+
+    const { type } = parsed.data;
 
     const where: Record<string, unknown> = {};
     if (type) where.type = type;

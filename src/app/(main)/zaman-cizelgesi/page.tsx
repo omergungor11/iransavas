@@ -1,7 +1,7 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { Clock } from "lucide-react";
+import { useEffect, useState, useCallback } from "react";
+import { Clock, AlertTriangle, RefreshCw } from "lucide-react";
 import { VerticalTimeline } from "@/components/timeline/vertical-timeline";
 
 interface TimelineEntry {
@@ -25,24 +25,29 @@ export default function ZamanCizelgesiPage() {
   const [entries, setEntries] = useState<TimelineEntry[]>([]);
   const [importance, setImportance] = useState("ALL");
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(false);
+
+  const fetchTimeline = useCallback(async () => {
+    setLoading(true);
+    setError(false);
+    try {
+      const params = new URLSearchParams();
+      if (importance !== "ALL") params.set("importance", importance);
+      const res = await fetch(`/api/timeline?${params}`);
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      const json = await res.json();
+      setEntries(json.data || []);
+    } catch (err) {
+      console.error("[ZamanCizelgesi]", err);
+      setError(true);
+    } finally {
+      setLoading(false);
+    }
+  }, [importance]);
 
   useEffect(() => {
-    const fetchTimeline = async () => {
-      setLoading(true);
-      try {
-        const params = new URLSearchParams();
-        if (importance !== "ALL") params.set("importance", importance);
-        const res = await fetch(`/api/timeline?${params}`);
-        const json = await res.json();
-        setEntries(json.data || []);
-      } catch (err) {
-        console.error(err);
-      } finally {
-        setLoading(false);
-      }
-    };
     fetchTimeline();
-  }, [importance]);
+  }, [fetchTimeline]);
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-8">
@@ -75,6 +80,34 @@ export default function ZamanCizelgesiPage() {
           {Array.from({ length: 5 }).map((_, i) => (
             <div key={i} className="h-32 animate-pulse rounded-lg bg-muted" />
           ))}
+        </div>
+      ) : error ? (
+        <div className="flex flex-col items-center gap-3 py-16">
+          <AlertTriangle className="h-8 w-8 text-red-500" />
+          <p className="text-sm font-medium text-white">Zaman cizelgesi yuklenemedi</p>
+          <p className="text-xs text-zinc-500">Bir hata olustu. Lutfen tekrar deneyin.</p>
+          <button
+            onClick={fetchTimeline}
+            className="mt-2 flex items-center gap-1.5 px-4 py-2 rounded text-sm font-medium border border-zinc-700 hover:bg-zinc-800 transition-colors text-zinc-400"
+          >
+            <RefreshCw size={14} />
+            Tekrar Dene
+          </button>
+        </div>
+      ) : entries.length === 0 ? (
+        <div className="flex flex-col items-center gap-2 py-16">
+          <Clock className="h-8 w-8 text-zinc-600" />
+          <p className="text-sm text-zinc-500">
+            {importance === "ALL" ? "Henuz zaman cizelgesi kaydi yok." : "Bu filtre icin sonuc bulunamadi."}
+          </p>
+          {importance !== "ALL" && (
+            <button
+              onClick={() => setImportance("ALL")}
+              className="mt-1 text-xs text-red-400 hover:text-red-300"
+            >
+              Filtreleri temizle
+            </button>
+          )}
         </div>
       ) : (
         <VerticalTimeline entries={entries} />

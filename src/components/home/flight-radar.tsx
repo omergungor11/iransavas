@@ -28,9 +28,11 @@ export function FlightRadar() {
           <div className="flex items-center gap-2">
             <button
               onClick={() => setExpanded(!expanded)}
+              aria-expanded={expanded}
+              aria-label={expanded ? "Hava sahasi panelini kucult" : "Hava sahasi panelini tam ekran yap"}
               className="flex items-center gap-1.5 px-3 py-1.5 rounded text-xs font-medium border border-zinc-700 hover:bg-zinc-800 transition-colors text-zinc-400"
             >
-              {expanded ? <Minimize2 size={14} /> : <Maximize2 size={14} />}
+              {expanded ? <Minimize2 size={14} aria-hidden="true" /> : <Maximize2 size={14} aria-hidden="true" />}
               {expanded ? "Kucult" : "Tam Ekran"}
             </button>
             <a

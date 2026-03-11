@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Plane, ExternalLink, Maximize2, Minimize2, Radar, AlertTriangle } from "lucide-react";
+import { Plane, ExternalLink, Radar, AlertTriangle, ChevronUp, ChevronDown } from "lucide-react";
 
 interface PriorityTrack {
   callsign: string;
@@ -32,7 +32,7 @@ const stats = [
 ];
 
 export function FlightTracker() {
-  const [expanded, setExpanded] = useState(false);
+  const [expanded, setExpanded] = useState(true);
 
   return (
     <section id="military" className="border-y border-zinc-800 bg-zinc-950">
@@ -53,110 +53,89 @@ export function FlightTracker() {
               <p className="text-xs text-zinc-400">ADS-B Exchange + Flightradar24 canli hava trafigi</p>
             </div>
           </div>
-          <div className="flex items-center gap-2">
-            <button
-              onClick={() => setExpanded(!expanded)}
-              className="flex items-center gap-1.5 px-3 py-1.5 rounded text-xs font-medium border border-zinc-700 hover:bg-zinc-800 transition-colors text-zinc-400"
-            >
-              {expanded ? <Minimize2 size={14} /> : <Maximize2 size={14} />}
-              {expanded ? "Kucult" : "Tam Ekran"}
-            </button>
-            <a
-              href="https://globe.adsbexchange.com/?lat=32.0&lon=47.0&zoom=5"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center gap-1.5 px-3 py-1.5 rounded text-xs font-medium border border-zinc-700 hover:bg-zinc-800 transition-colors text-zinc-400"
-            >
-              <ExternalLink size={14} />
-              ADS-B Exchange
-            </a>
-          </div>
+          <button
+            onClick={() => setExpanded(!expanded)}
+            aria-expanded={expanded}
+            aria-label={expanded ? "Ucus takip panelini kapat" : "Ucus takip panelini ac"}
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded text-xs font-medium border border-zinc-700 hover:bg-zinc-800 transition-colors text-zinc-400"
+          >
+            {expanded ? "Kapat" : "Ac"}
+            {expanded ? <ChevronUp size={14} aria-hidden="true" /> : <ChevronDown size={14} aria-hidden="true" />}
+          </button>
         </div>
 
-        {/* Stats bar */}
-        <div className="grid grid-cols-4 md:grid-cols-7 gap-2 mb-4">
-          {stats.map((s) => (
-            <div key={s.label} className="bg-zinc-900/80 border border-zinc-800 rounded-lg px-2 py-2 text-center">
-              <p className={`text-xl font-black font-mono ${s.color}`}>{s.value}</p>
-              <p className="text-[9px] text-zinc-500 uppercase tracking-wider">{s.label}</p>
-            </div>
-          ))}
-        </div>
-
-        {/* FR24 Embed */}
-        <div className={`relative rounded-lg overflow-hidden border border-zinc-800 bg-zinc-900 transition-all ${expanded ? "h-[80vh]" : "h-[400px]"}`}>
-          <iframe
-            src="https://www.flightradar24.com/simple_index.php?lat=32.0&lon=47.0&z=5&airports=1&amsl=1"
-            className="w-full h-full border-0"
-            allowFullScreen
-            title="Flightradar24 Canli Ucus Haritasi"
-          />
-          <div className="absolute top-3 left-3 flex items-center gap-1.5 bg-black/70 backdrop-blur-sm px-2.5 py-1 rounded-full">
-            <span className="h-2 w-2 rounded-full bg-green-500 animate-pulse" />
-            <span className="text-[10px] text-green-400 font-medium">Canli</span>
-          </div>
-        </div>
-
-        {/* Priority Tracks */}
-        <div className="mt-4">
-          <h3 className="text-sm font-bold text-white mb-3 flex items-center gap-2">
-            <AlertTriangle size={14} className="text-yellow-500" />
-            ONCELIKLI IZLEME
-          </h3>
-          <div className="space-y-2">
-            {priorityTracks.map((track) => (
-              <div
-                key={track.callsign}
-                className="bg-zinc-900/80 border border-zinc-800 rounded-lg px-4 py-3 flex items-center justify-between"
-              >
-                <div>
-                  <p className="text-sm font-bold text-red-400 font-mono">{track.callsign}</p>
-                  <p className="text-[11px] text-zinc-500">
-                    Hiz {track.speed} · Irtifa {track.alt} · {track.location} · Squawk {track.squawk}
-                  </p>
-                  <span className={`inline-block mt-1 px-1.5 py-0.5 rounded text-[9px] font-bold ${track.tagColor}`}>
-                    {track.tag}
-                  </span>
+        {expanded && (
+          <>
+            {/* Stats bar */}
+            <div className="grid grid-cols-4 md:grid-cols-7 gap-2 mb-4">
+              {stats.map((s) => (
+                <div key={s.label} className="bg-zinc-900/80 border border-zinc-800 rounded-lg px-2 py-2 text-center">
+                  <p className={`text-xl font-black font-mono ${s.color}`}>{s.value}</p>
+                  <p className="text-[9px] text-zinc-500 uppercase tracking-wider">{s.label}</p>
                 </div>
-                <span className="text-xs text-zinc-500">({track.confidence} guven)</span>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        {/* Additional links */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mt-4">
-          <a
-            href="https://globe.adsbexchange.com/?lat=32.0&lon=47.0&zoom=5"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="group rounded-lg border border-zinc-800 bg-zinc-900 p-3 hover:border-sky-600/40 transition-all flex items-center gap-3"
-          >
-            <Radar size={18} className="text-sky-500 shrink-0" />
-            <div className="flex-1">
-              <p className="text-xs font-bold text-white">ADS-B Exchange — Filtresiz Radar</p>
-              <p className="text-[10px] text-zinc-500">Askeri ucuslar dahil sansursuz ADS-B verisi</p>
+              ))}
             </div>
-            <ExternalLink size={12} className="text-zinc-600 group-hover:text-sky-500 shrink-0" />
-          </a>
-          <a
-            href="https://notams.aim.faa.gov/notamSearch/nsapp.html"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="group rounded-lg border border-zinc-800 bg-zinc-900 p-3 hover:border-orange-600/40 transition-all flex items-center gap-3"
-          >
-            <Plane size={18} className="text-orange-500 shrink-0" />
-            <div className="flex-1">
-              <p className="text-xs font-bold text-white">NOTAM Uyarilari — Hava Sahasi Kapanislari</p>
-              <p className="text-[10px] text-zinc-500">FAA NOTAM: ucusa yasak bolgeler ve acil uyarilar</p>
-            </div>
-            <ExternalLink size={12} className="text-zinc-600 group-hover:text-orange-500 shrink-0" />
-          </a>
-        </div>
 
-        <p className="text-[10px] text-zinc-600 mt-3">
-          Ucus verileri ADS-B Exchange ve Flightradar24 tarafindan saglanmaktadir. Askeri ucuslar transponder kapatabilir.
-        </p>
+            {/* External links instead of blocked iframe */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mb-4">
+              <a
+                href="https://globe.adsbexchange.com/?lat=32.0&lon=47.0&zoom=5"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group rounded-lg border border-zinc-800 bg-zinc-900 p-4 hover:border-sky-600/40 transition-all flex items-center gap-3"
+              >
+                <Radar size={24} className="text-sky-500 shrink-0" />
+                <div className="flex-1">
+                  <p className="text-sm font-bold text-white">ADS-B Exchange — Filtresiz Radar</p>
+                  <p className="text-xs text-zinc-500">Askeri ucuslar dahil sansursuz ADS-B verisi</p>
+                </div>
+                <ExternalLink size={14} className="text-zinc-600 group-hover:text-sky-500 shrink-0" />
+              </a>
+              <a
+                href="https://www.flightradar24.com/32.0,47.0/5"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group rounded-lg border border-zinc-800 bg-zinc-900 p-4 hover:border-yellow-600/40 transition-all flex items-center gap-3"
+              >
+                <Plane size={24} className="text-yellow-500 shrink-0" />
+                <div className="flex-1">
+                  <p className="text-sm font-bold text-white">Flightradar24 — Canli Ucus Haritasi</p>
+                  <p className="text-xs text-zinc-500">Iran bolgesi hava trafigi izleme</p>
+                </div>
+                <ExternalLink size={14} className="text-zinc-600 group-hover:text-yellow-500 shrink-0" />
+              </a>
+            </div>
+
+            {/* Priority Tracks */}
+            <h3 className="text-sm font-bold text-white mb-3 flex items-center gap-2">
+              <AlertTriangle size={14} className="text-yellow-500" />
+              ONCELIKLI IZLEME
+            </h3>
+            <div className="space-y-2">
+              {priorityTracks.map((track) => (
+                <div
+                  key={track.callsign}
+                  className="bg-zinc-900/80 border border-zinc-800 rounded-lg px-4 py-3 flex items-center justify-between"
+                >
+                  <div>
+                    <p className="text-sm font-bold text-red-400 font-mono">{track.callsign}</p>
+                    <p className="text-[11px] text-zinc-500">
+                      Hiz {track.speed} · Irtifa {track.alt} · {track.location} · Squawk {track.squawk}
+                    </p>
+                    <span className={`inline-block mt-1 px-1.5 py-0.5 rounded text-[9px] font-bold ${track.tagColor}`}>
+                      {track.tag}
+                    </span>
+                  </div>
+                  <span className="text-xs text-zinc-500">({track.confidence} guven)</span>
+                </div>
+              ))}
+            </div>
+
+            <p className="text-[10px] text-zinc-600 mt-3">
+              Ucus verileri ADS-B Exchange ve Flightradar24 tarafindan saglanmaktadir. Askeri ucuslar transponder kapatabilir.
+            </p>
+          </>
+        )}
       </div>
     </section>
   );

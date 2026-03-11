@@ -285,19 +285,10 @@ async function generateWeeklyReport(): Promise<number> {
 // ─── Main Runner ─────────────────────────────────────────────────────
 
 export async function runDataCompiler(): Promise<CompileSummary> {
-  console.log("[DataCompiler] Starting...");
-
   const timelineFromNews = await compileTimelineFromNews();
-  console.log(`[DataCompiler] Timeline from news: ${timelineFromNews}`);
-
   const timelineFromWarEvents = await compileTimelineFromWarEvents();
-  console.log(`[DataCompiler] Timeline from war events: ${timelineFromWarEvents}`);
-
   const casualtyReports = await extractCasualtiesFromNews();
-  console.log(`[DataCompiler] Casualty reports: ${casualtyReports}`);
-
   const weeklyReports = await generateWeeklyReport();
-  console.log(`[DataCompiler] Weekly reports: ${weeklyReports}`);
 
   const summary: CompileSummary = {
     timelineFromNews,
@@ -308,6 +299,6 @@ export async function runDataCompiler(): Promise<CompileSummary> {
   };
 
   lastCompileSummary = summary;
-  console.log("[DataCompiler] Done.", summary);
+  console.log(`[DataCompiler] Done: news=${timelineFromNews} war=${timelineFromWarEvents} casualty=${casualtyReports} weekly=${weeklyReports}`);
   return summary;
 }

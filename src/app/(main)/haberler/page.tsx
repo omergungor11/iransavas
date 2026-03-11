@@ -89,8 +89,10 @@ export default function HaberlerPage() {
       <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <CategoryFilter selected={category} onChange={(c) => { setCategory(c); setPage(1); }} />
         <div className="relative w-full sm:w-auto">
-          <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+          <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" aria-hidden="true" />
+          <label htmlFor="news-search" className="sr-only">Haberlerde ara</label>
           <input
+            id="news-search"
             type="text"
             placeholder="Haberlerde ara..."
             value={search}

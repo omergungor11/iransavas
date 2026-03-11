@@ -1,14 +1,15 @@
 export const dynamic = "force-dynamic";
 import { NextRequest, NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
+import { eventsQuerySchema, parseQuery } from "@/lib/api-validation";
 
 export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url);
-    const eventType = searchParams.get("eventType");
-    const severity = searchParams.get("severity");
-    const from = searchParams.get("from");
-    const to = searchParams.get("to");
+    const parsed = parseQuery(searchParams, eventsQuerySchema);
+    if (!parsed.success) return parsed.response;
+
+    const { eventType, severity, from, to } = parsed.data;
 
     const where: Record<string, unknown> = {};
     if (eventType) where.eventType = eventType;

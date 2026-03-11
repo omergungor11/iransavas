@@ -1,7 +1,8 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Radio, ExternalLink, RefreshCw, Tv, Play, Camera, X } from "lucide-react";
+import Image from "next/image";
+import { Radio, ExternalLink, RefreshCw, Tv, Play, Camera, X, AlertTriangle } from "lucide-react";
 
 interface LiveStream {
   id: string;
@@ -19,18 +20,22 @@ interface LiveStream {
 export default function CanliYayinPage() {
   const [streams, setStreams] = useState<LiveStream[]>([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(false);
   const [activeStream, setActiveStream] = useState<LiveStream | null>(null);
 
   const fetchStreams = async () => {
     setLoading(true);
+    setError(false);
     try {
       const res = await fetch("/api/livestreams");
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
       const json = await res.json();
       if (json.data) {
         setStreams(json.data);
       }
     } catch (err) {
-      console.error("Failed to fetch streams:", err);
+      console.error("[CanliYayin] fetch error:", err);
+      setError(true);
     } finally {
       setLoading(false);
     }
@@ -76,9 +81,10 @@ export default function CanliYayinPage() {
             <button
               onClick={fetchStreams}
               disabled={loading}
+              aria-label="Webcam listesini yenile"
               className="flex items-center gap-1.5 px-3 py-1.5 rounded text-xs font-medium border border-zinc-700 hover:bg-zinc-800 transition-colors disabled:opacity-50 text-zinc-300"
             >
-              <RefreshCw size={12} className={loading ? "animate-spin" : ""} />
+              <RefreshCw size={12} className={loading ? "animate-spin" : ""} aria-hidden="true" />
               Yenile
             </button>
           </div>
@@ -107,9 +113,10 @@ export default function CanliYayinPage() {
                 </a>
                 <button
                   onClick={() => setActiveStream(null)}
+                  aria-label="Yayin goruntuleyiciyi kapat"
                   className="flex items-center justify-center w-8 h-8 rounded hover:bg-zinc-800 transition-colors text-zinc-400 hover:text-white"
                 >
-                  <X size={18} />
+                  <X size={18} aria-hidden="true" />
                 </button>
               </div>
             </div>
@@ -157,9 +164,27 @@ export default function CanliYayinPage() {
 
       {/* Webcam Grid */}
       <div className="mx-auto max-w-screen-2xl px-4 py-6">
-        {loading && streams.length === 0 ? (
+        {error ? (
+          <div className="flex flex-col items-center gap-3 py-16">
+            <AlertTriangle className="h-8 w-8 text-red-500" />
+            <p className="text-sm font-medium text-white">Webcamlar yuklenemedi</p>
+            <p className="text-xs text-zinc-500">Bir hata olustu. Lutfen tekrar deneyin.</p>
+            <button
+              onClick={fetchStreams}
+              className="mt-2 flex items-center gap-1.5 px-4 py-2 rounded text-sm font-medium border border-zinc-700 hover:bg-zinc-800 transition-colors text-zinc-400"
+            >
+              <RefreshCw size={14} />
+              Tekrar Dene
+            </button>
+          </div>
+        ) : loading && streams.length === 0 ? (
           <div className="flex items-center justify-center py-24">
             <div className="h-8 w-8 animate-spin rounded-full border-2 border-red-500 border-t-transparent" />
+          </div>
+        ) : streams.length === 0 ? (
+          <div className="flex flex-col items-center gap-2 py-16">
+            <Camera className="h-8 w-8 text-zinc-600" />
+            <p className="text-sm text-zinc-500">Aktif webcam bulunamadi.</p>
           </div>
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-4">
@@ -174,11 +199,12 @@ export default function CanliYayinPage() {
                   className="relative block w-full aspect-video bg-zinc-800 overflow-hidden cursor-pointer"
                 >
                   {stream.thumbnail ? (
-                    <img
+                    <Image
                       src={stream.thumbnail}
                       alt={stream.title}
-                      className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
-                      loading="lazy"
+                      fill
+                      className="object-cover transition-transform duration-300 group-hover:scale-105"
+                      sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
                     />
                   ) : (
                     <div className="w-full h-full flex items-center justify-center">
@@ -213,7 +239,7 @@ export default function CanliYayinPage() {
                       onClick={() => setActiveStream(stream)}
                       className="text-xs font-medium text-zinc-400 hover:text-white transition-colors"
                     >
-                      Open viewer
+                      Izle
                     </button>
                     <span className="text-zinc-700">·</span>
                     <a
@@ -222,7 +248,7 @@ export default function CanliYayinPage() {
                       rel="noopener noreferrer"
                       className="text-xs font-medium text-zinc-400 hover:text-white transition-colors"
                     >
-                      Source page
+                      Kaynak
                     </a>
                     <span className="ml-auto">
                       <span

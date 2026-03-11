@@ -55,8 +55,7 @@ function getRadius(casualties: number | null): number {
 /**
  * Create cluster icon colored by the highest severity in the cluster
  */
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-function createClusterIcon(cluster: any) {
+function createClusterIcon(cluster: { getAllChildMarkers: () => L.Marker[]; getChildCount: () => number }) {
   const markers = cluster.getAllChildMarkers();
   let maxSeverity = 0;
   let maxColor = SEVERITY_COLORS.ORTA;

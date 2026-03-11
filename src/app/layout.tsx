@@ -4,21 +4,37 @@ import "./globals.css";
 
 const inter = Inter({ subsets: ["latin"] });
 
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://iransavas.com";
+
 export const metadata: Metadata = {
+  metadataBase: new URL(SITE_URL),
   title: {
     default: "Iran Savas - Haber & Analiz Platformu",
     template: "%s | Iran Savas",
   },
   description:
-    "Iran savasi hakkinda kapsamli haber, analiz ve raporlama platformu",
+    "Iran savasi hakkinda kapsamli haber, analiz ve raporlama platformu. Canli harita, zaman cizelgesi, AI destekli haber ozetleri.",
   keywords: [
-    "iran",
-    "savas",
-    "haber",
-    "analiz",
-    "harita",
-    "zaman cizelgesi",
+    "iran", "savas", "haber", "analiz", "harita", "zaman cizelgesi",
+    "orta dogu", "catisma", "istihbarat", "iran war",
   ],
+  openGraph: {
+    type: "website",
+    locale: "tr_TR",
+    siteName: "Iran Savas",
+    images: [{ url: "/og-default.png", width: 1200, height: 630 }],
+  },
+  twitter: {
+    card: "summary_large_image",
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
+  icons: {
+    icon: "/favicon.ico",
+    apple: "/apple-touch-icon.png",
+  },
 };
 
 export default function RootLayout({
@@ -28,7 +44,15 @@ export default function RootLayout({
 }) {
   return (
     <html lang="tr" className="dark">
-      <body className={inter.className}>{children}</body>
+      <body className={inter.className}>
+        <a
+          href="#main-content"
+          className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-50 focus:px-4 focus:py-2 focus:rounded-lg focus:bg-red-600 focus:text-white focus:text-sm focus:font-bold"
+        >
+          Ana icerige atla
+        </a>
+        <main id="main-content">{children}</main>
+      </body>
     </html>
   );
 }

@@ -1,14 +1,15 @@
 export const dynamic = "force-dynamic";
 import { NextRequest, NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
+import { newsQuerySchema, parseQuery } from "@/lib/api-validation";
 
 export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url);
-    const category = searchParams.get("category");
-    const page = parseInt(searchParams.get("page") || "1");
-    const pageSize = parseInt(searchParams.get("pageSize") || "12");
-    const search = searchParams.get("search");
+    const parsed = parseQuery(searchParams, newsQuerySchema);
+    if (!parsed.success) return parsed.response;
+
+    const { category, page, pageSize, search } = parsed.data;
 
     const where: Record<string, unknown> = {};
     if (category && category !== "TUMU") {

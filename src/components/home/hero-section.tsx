@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Image from "next/image";
 import { Radio, AlertTriangle, Share2 } from "lucide-react";
 
 interface BreakingNews {
@@ -20,19 +21,20 @@ export function HeroSection() {
           setBreaking({ title: article.title, source: article.source });
         }
       })
-      .catch(() => {});
+      .catch((err) => console.error("[HeroSection] fetch error:", err));
   }, []);
 
   return (
     <section className="relative overflow-hidden">
       {/* Background image + overlay */}
       <div className="absolute inset-0">
-        <div
-          className="absolute inset-0 bg-cover bg-center"
-          style={{
-            backgroundImage:
-              "url('https://images.unsplash.com/photo-1580752300992-559f8e0734e0?w=1920&q=80')",
-          }}
+        <Image
+          src="https://images.unsplash.com/photo-1580752300992-559f8e0734e0?w=1920&q=80"
+          alt="Iran savasi arka plan"
+          fill
+          className="object-cover"
+          priority
+          sizes="100vw"
         />
         <div className="absolute inset-0 bg-gradient-to-r from-black/90 via-black/70 to-black/50" />
         <div className="absolute inset-0 bg-gradient-to-t from-zinc-950 via-transparent to-transparent" />
@@ -109,6 +111,7 @@ export function HeroSection() {
                   });
                 }
               }}
+              aria-label="Sayfayi paylas"
               className="flex items-center gap-1.5 px-3 py-1.5 rounded text-xs font-medium border border-zinc-700 hover:bg-zinc-800 transition-colors text-zinc-400"
             >
               <Share2 size={12} />

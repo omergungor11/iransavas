@@ -30,7 +30,7 @@ export default function AnalizPage() {
         const json = await res.json();
         setData(json.data);
       } catch (err) {
-        console.error(err);
+        console.error("[Analiz]", err);
       } finally {
         setLoading(false);
       }

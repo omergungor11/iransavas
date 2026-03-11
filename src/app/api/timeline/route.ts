@@ -1,13 +1,15 @@
 export const dynamic = "force-dynamic";
 import { NextRequest, NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
+import { timelineQuerySchema, parseQuery } from "@/lib/api-validation";
 
 export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url);
-    const importance = searchParams.get("importance");
-    const category = searchParams.get("category");
-    const limit = parseInt(searchParams.get("limit") || "100");
+    const parsed = parseQuery(searchParams, timelineQuerySchema);
+    if (!parsed.success) return parsed.response;
+
+    const { importance, category, limit } = parsed.data;
 
     const where: Record<string, unknown> = {};
     if (importance) where.importance = importance;
@@ -16,7 +18,7 @@ export async function GET(request: NextRequest) {
     const entries = await prisma.timelineEntry.findMany({
       where,
       orderBy: { date: "desc" },
-      take: Math.min(limit, 200),
+      take: limit,
     });
 
     return NextResponse.json({ data: entries, meta: { total: entries.length } });

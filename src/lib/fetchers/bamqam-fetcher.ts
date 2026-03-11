@@ -42,7 +42,7 @@ export async function fetchFromBamqam(): Promise<BamqamEvent[]> {
 
         if (res.ok) {
           const data = await res.json();
-          console.log(`[Bamqam] Found data at ${path}:`, typeof data);
+          // data found at path
 
           if (Array.isArray(data)) {
             for (const item of data) {
@@ -89,7 +89,7 @@ export async function fetchFromBamqam(): Promise<BamqamEvent[]> {
               const nextData = JSON.parse(nextDataScript);
               const pageProps = nextData?.props?.pageProps;
               if (pageProps) {
-                console.log("[Bamqam] Found __NEXT_DATA__, keys:", Object.keys(pageProps));
+                // found __NEXT_DATA__ with pageProps
                 // Extract any event-like data from pageProps
                 extractEventsFromObject(pageProps, events);
               }

@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import { formatDate, truncate } from "@/lib/utils";
@@ -29,16 +30,27 @@ interface NewsCardProps {
   category: string;
   publishedAt: string;
   aiSummary: string | null;
+  imageUrl?: string | null;
 }
 
-export function NewsCard({ id, title, summary, source, category, publishedAt, aiSummary }: NewsCardProps) {
+export function NewsCard({ id, title, summary, source, category, publishedAt, aiSummary, imageUrl }: NewsCardProps) {
   const gradient = CATEGORY_COLORS[category] || CATEGORY_COLORS.GENEL;
 
   return (
     <Link href={`/haberler/${id}`}>
       <Card className="group overflow-hidden transition-all hover:border-red-500/30 hover:shadow-lg hover:shadow-red-500/5">
-        <div className={`h-32 bg-gradient-to-br ${gradient} flex items-end p-4`}>
-          <div className="flex gap-2">
+        <div className={`relative h-32 bg-gradient-to-br ${gradient} flex items-end p-4`}>
+          {imageUrl && (
+            <Image
+              src={imageUrl}
+              alt={title}
+              fill
+              className="object-cover"
+              sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+            />
+          )}
+          {imageUrl && <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent" />}
+          <div className="relative flex gap-2">
             <Badge variant="secondary" className="bg-black/40 text-white text-xs">
               {CATEGORY_LABELS[category] || category}
             </Badge>

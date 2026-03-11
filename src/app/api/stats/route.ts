@@ -6,8 +6,9 @@ export async function GET() {
   try {
     const now = new Date();
     const oneDayAgo = new Date(now.getTime() - 24 * 60 * 60 * 1000);
+    const sevenDaysAgo = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
 
-    const [totalEvents, totalNews, casualtyAgg, events, recentEvents, casualties, recentNewsCount, casualtyCount] = await Promise.all([
+    const [totalEvents, totalNews, casualtyAgg, events, recentEvents, casualties, recentNewsCount, casualtyCount, last7DaysEvents] = await Promise.all([
       prisma.warEvent.count(),
       prisma.newsArticle.count(),
       prisma.casualtyReport.aggregate({
@@ -18,6 +19,10 @@ export async function GET() {
       prisma.casualtyReport.findMany({ orderBy: { date: "asc" } }),
       prisma.newsArticle.count({ where: { publishedAt: { gte: oneDayAgo } } }),
       prisma.casualtyReport.count(),
+      prisma.warEvent.findMany({
+        where: { date: { gte: sevenDaysAgo } },
+        select: { severity: true, casualties: true },
+      }),
     ]);
 
     const sums = casualtyAgg._sum;
@@ -50,6 +55,30 @@ export async function GET() {
       military: c.militaryCasualties,
     }));
 
+    // --- Tension Score Algorithm ---
+    // Weighted severity: KRITIK=10, YUKSEK=6, ORTA=3, DUSUK=1
+    const SEVERITY_WEIGHTS: Record<string, number> = {
+      KRITIK: 10, YUKSEK: 6, ORTA: 3, DUSUK: 1,
+    };
+    let weightedSum = 0;
+    let totalCasualties7d = 0;
+    for (const ev of last7DaysEvents) {
+      weightedSum += SEVERITY_WEIGHTS[ev.severity] ?? 2;
+      totalCasualties7d += ev.casualties ?? 0;
+    }
+    // Base: event intensity (0-60 range, saturates at ~20 weighted events)
+    const intensityScore = Math.min(60, (weightedSum / 20) * 60);
+    // Casualty factor (0-25 range, saturates at ~500 casualties)
+    const casualtyScore = Math.min(25, (totalCasualties7d / 500) * 25);
+    // News volume factor (0-15 range, saturates at ~50 recent news)
+    const newsScore = Math.min(15, (recentNewsCount / 50) * 15);
+    // Final score: 0-100
+    const tensionScore = Math.round(Math.min(100, intensityScore + casualtyScore + newsScore));
+    const tensionLevel =
+      tensionScore >= 80 ? "SEVERE" :
+      tensionScore >= 60 ? "HIGH" :
+      tensionScore >= 35 ? "ELEVATED" : "LOW";
+
     return NextResponse.json({
       data: {
         totalEvents,
@@ -61,6 +90,8 @@ export async function GET() {
         casualtyTrend,
         eventsByType,
         eventsBySeverity,
+        tensionScore,
+        tensionLevel,
       },
     });
   } catch (error) {

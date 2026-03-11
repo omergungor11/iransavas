@@ -1,15 +1,32 @@
 export const dynamic = "force-dynamic";
+import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Link from "next/link";
+import Image from "next/image";
 import { ArrowLeft } from "lucide-react";
 import prisma from "@/lib/prisma";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-// import { Button } from "@/components/ui/button";
 import { formatDate } from "@/lib/utils";
+import { createMetadata } from "@/lib/seo";
 
 interface Props {
   params: { id: string };
+}
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const article = await prisma.newsArticle.findUnique({
+    where: { id: params.id },
+    select: { title: true, summary: true, aiSummary: true, imageUrl: true },
+  });
+  if (!article) return createMetadata({ title: "Haber Bulunamadi" });
+
+  return createMetadata({
+    title: article.title,
+    description: article.aiSummary || article.summary || article.title,
+    image: article.imageUrl || undefined,
+    path: `/haberler/${params.id}`,
+  });
 }
 
 export default async function HaberDetayPage({ params }: Props) {
@@ -36,6 +53,19 @@ export default async function HaberDetayPage({ params }: Props) {
         </div>
 
         <h1 className="text-3xl font-bold mb-4">{article.title}</h1>
+
+        {article.imageUrl && (
+          <div className="relative w-full h-64 md:h-80 rounded-lg overflow-hidden mb-6">
+            <Image
+              src={article.imageUrl}
+              alt={article.title}
+              fill
+              className="object-cover"
+              sizes="(max-width: 896px) 100vw, 896px"
+              priority
+            />
+          </div>
+        )}
 
         {article.aiSummary && (
           <Card className="mb-6 border-red-500/20 bg-red-500/5">
