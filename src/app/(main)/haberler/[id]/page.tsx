@@ -95,11 +95,24 @@ export default async function HaberDetayPage({ params }: Props) {
           <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
             {related.map((r) => (
               <Link key={r.id} href={`/haberler/${r.id}`}>
-                <Card className="transition-all hover:border-red-500/30">
-                  <CardContent className="p-4">
-                    <h3 className="text-sm font-semibold mb-1">{r.title}</h3>
-                    <p className="text-xs text-muted-foreground">{r.source} - {formatDate(r.publishedAt)}</p>
-                  </CardContent>
+                <Card className="group overflow-hidden transition-all hover:border-red-500/30">
+                  <div className="flex">
+                    {r.imageUrl && (
+                      <div className="relative w-24 h-20 shrink-0">
+                        <Image
+                          src={r.imageUrl}
+                          alt={r.title}
+                          fill
+                          className="object-cover"
+                          sizes="96px"
+                        />
+                      </div>
+                    )}
+                    <CardContent className="p-3 flex-1">
+                      <h3 className="text-sm font-semibold mb-1 line-clamp-2 group-hover:text-red-400 transition-colors">{r.title}</h3>
+                      <p className="text-xs text-muted-foreground">{r.source} - {formatDate(r.publishedAt)}</p>
+                    </CardContent>
+                  </div>
                 </Card>
               </Link>
             ))}

@@ -76,7 +76,32 @@ export function FlightTracker() {
               ))}
             </div>
 
-            {/* External links instead of blocked iframe */}
+            {/* ADS-B Exchange Globe Embed */}
+            <div className="relative rounded-lg overflow-hidden border border-border bg-black mb-4 h-[500px]">
+              <iframe
+                src="https://globe.adsbexchange.com/?lat=32.0&lon=47.0&zoom=5"
+                className="w-full h-full border-0"
+                allowFullScreen
+                title="ADS-B Exchange — Canli Ucus Radari"
+                loading="lazy"
+              />
+              {/* Live indicator */}
+              <div className="absolute top-3 left-3 flex items-center gap-1.5 bg-black/70 backdrop-blur-sm px-2.5 py-1 rounded-full pointer-events-none">
+                <span className="h-2 w-2 rounded-full bg-green-500 animate-pulse" />
+                <span className="text-[10px] text-green-400 font-medium">ADS-B Canli</span>
+              </div>
+              <a
+                href="https://globe.adsbexchange.com/?lat=32.0&lon=47.0&zoom=5"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="absolute top-3 right-3 flex items-center gap-1.5 bg-black/70 backdrop-blur-sm px-2.5 py-1 rounded-full text-[10px] text-white hover:text-yellow-400 transition-colors"
+              >
+                <ExternalLink size={10} />
+                ADS-B&apos;de Ac
+              </a>
+            </div>
+
+            {/* External links */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mb-4">
               <a
                 href="https://globe.adsbexchange.com/?lat=32.0&lon=47.0&zoom=5"
@@ -89,20 +114,20 @@ export function FlightTracker() {
                   <p className="text-sm font-bold text-foreground">ADS-B Exchange — Filtresiz Radar</p>
                   <p className="text-xs text-muted-foreground">Askeri ucuslar dahil sansursuz ADS-B verisi</p>
                 </div>
-                <ExternalLink size={14} className="text-zinc-600 group-hover:text-sky-500 shrink-0" />
+                <ExternalLink size={14} className="text-muted-foreground group-hover:text-sky-500 shrink-0" />
               </a>
               <a
-                href="https://www.flightradar24.com/32.0,47.0/5"
+                href="https://notams.aim.faa.gov/notamSearch/nsapp.html"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group rounded-lg border border-border bg-card p-4 hover:border-yellow-600/40 transition-all flex items-center gap-3"
+                className="group rounded-lg border border-border bg-card p-4 hover:border-orange-600/40 transition-all flex items-center gap-3"
               >
-                <Plane size={24} className="text-yellow-500 shrink-0" />
+                <Plane size={24} className="text-orange-500 shrink-0" />
                 <div className="flex-1">
-                  <p className="text-sm font-bold text-foreground">Flightradar24 — Canli Ucus Haritasi</p>
-                  <p className="text-xs text-muted-foreground">Iran bolgesi hava trafigi izleme</p>
+                  <p className="text-sm font-bold text-foreground">NOTAM Uyarilari</p>
+                  <p className="text-xs text-muted-foreground">Hava sahasi kapanislari ve ucusa yasak bolgeler</p>
                 </div>
-                <ExternalLink size={14} className="text-zinc-600 group-hover:text-yellow-500 shrink-0" />
+                <ExternalLink size={14} className="text-muted-foreground group-hover:text-orange-500 shrink-0" />
               </a>
             </div>
 

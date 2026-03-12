@@ -38,22 +38,30 @@ export function MarineTracker() {
 
         {expanded && (
           <>
-            {/* External link instead of blocked iframe */}
-            <a
-              href="https://www.marinetraffic.com/en/ais/home/centerx:53.5/centery:26.5/zoom:5"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="group block rounded-lg border border-border bg-card p-4 hover:border-blue-600/40 transition-all mb-4"
-            >
-              <div className="flex items-center gap-3">
-                <Anchor size={24} className="text-blue-500 shrink-0" />
-                <div className="flex-1">
-                  <p className="text-sm font-bold text-foreground">MarineTraffic — Canli AIS Gemi Haritasi</p>
-                  <p className="text-xs text-muted-foreground">Basra Korfezi ve Hurmuz Bogazi bolgesi canli gemi takibi</p>
-                </div>
-                <ExternalLink size={14} className="text-zinc-600 group-hover:text-blue-500 shrink-0" />
+            {/* MarineTraffic Embed Map */}
+            <div className="relative rounded-lg overflow-hidden border border-border bg-card mb-4 h-[400px]">
+              <iframe
+                src="https://www.marinetraffic.com/en/ais/embed/zoom:6/centery:26.5/centerx:53.5/maptype:4/shownames:false/mmsi:0/shipid:0/fleet:/fleet_id:/vtypes:/showmenu:/remember:false"
+                className="w-full h-full border-0"
+                allowFullScreen
+                title="MarineTraffic Canli Gemi Haritasi — Basra Korfezi"
+                loading="lazy"
+              />
+              {/* Live indicator */}
+              <div className="absolute top-3 left-3 flex items-center gap-1.5 bg-black/70 backdrop-blur-sm px-2.5 py-1 rounded-full">
+                <span className="h-2 w-2 rounded-full bg-blue-500 animate-pulse" />
+                <span className="text-[10px] text-blue-400 font-medium">AIS Canli</span>
               </div>
-            </a>
+              <a
+                href="https://www.marinetraffic.com/en/ais/home/centerx:53.5/centery:26.5/zoom:6"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="absolute top-3 right-3 flex items-center gap-1.5 bg-black/70 backdrop-blur-sm px-2.5 py-1 rounded-full text-[10px] text-white hover:text-blue-400 transition-colors"
+              >
+                <ExternalLink size={10} />
+                MarineTraffic&apos;te Ac
+              </a>
+            </div>
 
             {/* Stats bar */}
             <div className="grid grid-cols-2 md:grid-cols-4 gap-3">

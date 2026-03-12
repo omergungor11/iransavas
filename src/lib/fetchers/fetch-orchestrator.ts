@@ -5,6 +5,7 @@ import { fetchFromNewsApi } from "./newsapi-fetcher";
 import { fetchFromScraping } from "./scraper";
 import { fetchFromBamqam } from "./bamqam-fetcher";
 import { fetchNasaFirms } from "./nasa-firms-fetcher";
+import { backfillOgImages } from "./og-image-fetcher";
 import { runDataCompiler } from "@/lib/data-compiler";
 import { batchSummarize } from "@/lib/ai-summarizer";
 
@@ -265,6 +266,14 @@ export async function runFetchAll(): Promise<FetchSummary> {
         duplicates: 0,
         errors: [error instanceof Error ? error.message : "Unknown error"],
       });
+    }
+
+    // ============ OG IMAGE BACKFILL ============
+    try {
+      const ogUpdated = await backfillOgImages(30);
+      console.log(`[FetchAll] OG image backfill: ${ogUpdated} articles updated`);
+    } catch (error) {
+      console.error("[FetchAll] OG image backfill error:", error instanceof Error ? error.message : error);
     }
 
     // ============ AI SUMMARIZATION ============

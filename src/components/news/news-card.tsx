@@ -1,5 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
+import { Swords, Landmark, TrendingUp, HeartHandshake, Scale, Newspaper } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import { formatDate, truncate, highlightText } from "@/lib/utils";
@@ -11,6 +12,15 @@ const CATEGORY_COLORS: Record<string, string> = {
   INSANI_YARDIM: "from-orange-900 to-orange-700",
   DIPLOMASI: "from-purple-900 to-purple-700",
   GENEL: "from-gray-800 to-gray-600",
+};
+
+const CATEGORY_ICONS: Record<string, typeof Newspaper> = {
+  ASKERI: Swords,
+  SIYASI: Landmark,
+  EKONOMI: TrendingUp,
+  INSANI_YARDIM: HeartHandshake,
+  DIPLOMASI: Scale,
+  GENEL: Newspaper,
 };
 
 const CATEGORY_LABELS: Record<string, string> = {
@@ -52,21 +62,28 @@ function HighlightedText({ text, query }: { text: string; query?: string }) {
 
 export function NewsCard({ id, title, summary, source, category, publishedAt, aiSummary, imageUrl, searchQuery }: NewsCardProps) {
   const gradient = CATEGORY_COLORS[category] || CATEGORY_COLORS.GENEL;
+  const CategoryIcon = CATEGORY_ICONS[category] || Newspaper;
 
   return (
     <Link href={`/haberler/${id}`}>
       <Card className="group overflow-hidden transition-all hover:border-red-500/30 hover:shadow-lg hover:shadow-red-500/5">
-        <div className={`relative h-32 bg-gradient-to-br ${gradient} flex items-end p-4`}>
-          {imageUrl && (
-            <Image
-              src={imageUrl}
-              alt={title}
-              fill
-              className="object-cover"
-              sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-            />
+        <div className={`relative h-40 bg-gradient-to-br ${gradient} flex items-end p-4`}>
+          {imageUrl ? (
+            <>
+              <Image
+                src={imageUrl}
+                alt={title}
+                fill
+                className="object-cover transition-transform duration-300 group-hover:scale-105"
+                sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
+            </>
+          ) : (
+            <div className="absolute inset-0 flex items-center justify-center">
+              <CategoryIcon size={48} className="text-white/15" />
+            </div>
           )}
-          {imageUrl && <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent" />}
           <div className="relative flex gap-2">
             <Badge variant="secondary" className="bg-black/40 text-white text-xs">
               {CATEGORY_LABELS[category] || category}

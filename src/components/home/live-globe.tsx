@@ -38,22 +38,30 @@ export function LiveGlobe() {
 
         {expanded && (
           <>
-            {/* External link instead of blocked iframe */}
-            <a
-              href="https://glint.trade"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="group block rounded-lg border border-border bg-card p-4 hover:border-purple-600/40 transition-all mb-4"
-            >
-              <div className="flex items-center gap-3">
-                <Globe size={24} className="text-purple-500 shrink-0" />
-                <div className="flex-1">
-                  <p className="text-sm font-bold text-foreground">Glint Trade — Canli Askeri Kure</p>
-                  <p className="text-xs text-muted-foreground">3D kure uzerinde askeri hareketler, deniz varliklari ve catisma bolgesi aktivitesi</p>
-                </div>
-                <ExternalLink size={14} className="text-zinc-600 group-hover:text-purple-500 shrink-0" />
+            {/* Glint.trade iframe */}
+            <div className="relative rounded-lg overflow-hidden border border-border bg-black mb-4 h-[600px]">
+              <iframe
+                src="https://glint.trade"
+                className="w-full h-full border-0"
+                allowFullScreen
+                title="Glint Trade — Canli Askeri Kure"
+                loading="lazy"
+              />
+              {/* Live indicator */}
+              <div className="absolute top-3 left-3 flex items-center gap-1.5 bg-black/70 backdrop-blur-sm px-2.5 py-1 rounded-full pointer-events-none">
+                <span className="h-2 w-2 rounded-full bg-purple-500 animate-pulse" />
+                <span className="text-[10px] text-purple-400 font-medium">Canli Kure</span>
               </div>
-            </a>
+              <a
+                href="https://glint.trade"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="absolute top-3 right-3 flex items-center gap-1.5 bg-black/70 backdrop-blur-sm px-2.5 py-1 rounded-full text-[10px] text-white hover:text-purple-400 transition-colors"
+              >
+                <ExternalLink size={10} />
+                Glint Trade&apos;de Ac
+              </a>
+            </div>
 
             {/* Mini stats */}
             <div className="grid grid-cols-3 md:grid-cols-6 gap-3">
@@ -74,7 +82,7 @@ export function LiveGlobe() {
             </div>
 
             <p className="text-[10px] text-zinc-600 mt-3">
-              3D kure verisi Glint Trade tarafindan saglanmaktadir. Tahmin piyasasi istihbarati icin glint.trade&apos;i ziyaret edin.
+              Veri kaynagi: Glint Trade. Askeri hareketler, deniz varliklari ve catisma bolgesi aktivitesi gosterilmektedir.
             </p>
           </>
         )}

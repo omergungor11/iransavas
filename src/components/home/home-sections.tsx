@@ -7,7 +7,9 @@ import { StrategicMap } from "@/components/home/strategic-map";
 import { OfficialStatements } from "@/components/home/official-statements";
 import { LiveGlobe } from "@/components/home/live-globe";
 import { FlightTracker } from "@/components/home/flight-tracker";
+import { FlightRadar } from "@/components/home/flight-radar";
 import { MarineTracker } from "@/components/home/marine-tracker";
+import { MiniMapPreview } from "@/components/home/mini-map-preview";
 import { MarketSnapshot } from "@/components/home/market-snapshot";
 import { XTopicVolume } from "@/components/home/x-topic-volume";
 import { WarExplainer } from "@/components/home/war-explainer";
@@ -49,8 +51,16 @@ export function BottomSections() {
         <FlightTracker />
       </ErrorBoundary>
 
+      <ErrorBoundary fallbackTitle="Hava Sahasi yuklenemedi">
+        <FlightRadar />
+      </ErrorBoundary>
+
       <ErrorBoundary fallbackTitle="Deniz Takip yuklenemedi">
         <MarineTracker />
+      </ErrorBoundary>
+
+      <ErrorBoundary fallbackTitle="Harita Onizleme yuklenemedi">
+        <MiniMapPreview />
       </ErrorBoundary>
 
       <ErrorBoundary fallbackTitle="Piyasa Gorunumu yuklenemedi">
