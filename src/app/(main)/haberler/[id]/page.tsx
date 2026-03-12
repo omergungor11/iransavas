@@ -83,7 +83,7 @@ export default async function HaberDetayPage({ params }: Props) {
         )}
 
         <div className="prose prose-invert max-w-none">
-          {article.content.split("\n").map((p, i) => (
+          {(article.content || "").split("\n").map((p, i) => (
             <p key={i} className="mb-4 text-sm leading-relaxed text-foreground/90">{p}</p>
           ))}
         </div>

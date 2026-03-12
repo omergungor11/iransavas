@@ -17,6 +17,23 @@ interface LiveStream {
   lastChecked: string;
 }
 
+const ALLOWED_EMBED_DOMAINS = [
+  "youtube.com", "www.youtube.com", "youtube-nocookie.com",
+  "player.twitch.tv", "twitch.tv",
+  "windy.com", "embed.windy.com",
+  "signalcockpit.com", "www.signalcockpit.com",
+  "liveuamap.com",
+];
+
+function isAllowedEmbedUrl(url: string): boolean {
+  try {
+    const hostname = new URL(url).hostname;
+    return ALLOWED_EMBED_DOMAINS.some((d) => hostname === d || hostname.endsWith(`.${d}`));
+  } catch {
+    return false;
+  }
+}
+
 export default function CanliYayinPage() {
   const [streams, setStreams] = useState<LiveStream[]>([]);
   const [loading, setLoading] = useState(true);
@@ -47,6 +64,20 @@ export default function CanliYayinPage() {
     return () => clearInterval(interval);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  // Escape key + body scroll lock for viewer overlay
+  useEffect(() => {
+    if (!activeStream) return;
+    document.body.style.overflow = "hidden";
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setActiveStream(null);
+    };
+    document.addEventListener("keydown", handleKeyDown);
+    return () => {
+      document.body.style.overflow = "";
+      document.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [activeStream]);
 
   const platformBadge: Record<string, { bg: string; label: string }> = {
     youtube: { bg: "bg-red-600", label: "YouTube" },
@@ -93,7 +124,13 @@ export default function CanliYayinPage() {
 
       {/* Viewer overlay */}
       {activeStream && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4">
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4"
+          role="dialog"
+          aria-modal="true"
+          aria-label={activeStream.title}
+          onClick={(e) => { if (e.target === e.currentTarget) setActiveStream(null); }}
+        >
           <div className="w-full max-w-5xl bg-zinc-900 rounded-xl border border-zinc-700 overflow-hidden shadow-2xl">
             {/* Viewer header */}
             <div className="flex items-center justify-between px-4 py-3 border-b border-zinc-800">
@@ -121,15 +158,17 @@ export default function CanliYayinPage() {
               </div>
             </div>
             {/* Viewer body */}
-            {activeStream.embedUrl ? (
+            {activeStream.embedUrl && isAllowedEmbedUrl(activeStream.embedUrl) ? (
               <div className="relative aspect-video bg-black">
                 <iframe
                   key={activeStream.id}
                   src={activeStream.embedUrl}
                   className="absolute inset-0 w-full h-full"
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
                   allowFullScreen
                   title={activeStream.title}
+                  sandbox="allow-scripts allow-same-origin allow-popups"
+                  referrerPolicy="no-referrer"
                 />
               </div>
             ) : (

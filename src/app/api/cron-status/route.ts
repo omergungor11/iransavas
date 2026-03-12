@@ -1,5 +1,6 @@
 export const dynamic = "force-dynamic";
 import { NextRequest, NextResponse } from "next/server";
+import { requireAdmin, validateCronInterval } from "@/lib/auth";
 
 export async function GET() {
   try {
@@ -13,7 +14,7 @@ export async function GET() {
         lastFetch: getLastFetchSummary(),
       },
     });
-  } catch (error) {
+  } catch {
     return NextResponse.json(
       { error: { statusCode: 500, code: "INTERNAL_ERROR", message: "Durum alinamadi" } },
       { status: 500 }
@@ -23,12 +24,30 @@ export async function GET() {
 
 export async function POST(request: NextRequest) {
   try {
-    const body = await request.json();
+    const authError = requireAdmin(request);
+    if (authError) return authError;
+
+    let body: Record<string, unknown>;
+    try {
+      body = await request.json();
+    } catch {
+      return NextResponse.json(
+        { error: { statusCode: 400, code: "BAD_REQUEST", message: "Gecersiz JSON body" } },
+        { status: 400 }
+      );
+    }
+
     const action = body.action as string;
 
     if (action === "start") {
+      const interval = (body.interval as string) || "*/30 * * * *";
+      if (!validateCronInterval(interval)) {
+        return NextResponse.json(
+          { error: { statusCode: 400, code: "BAD_REQUEST", message: "Gecersiz cron interval. Izin verilenler: */15, */30, saatlik, 2 saatlik, 6 saatlik, gunluk" } },
+          { status: 400 }
+        );
+      }
       const { startCron } = await import("@/lib/fetchers/cron-scheduler");
-      const interval = body.interval || "*/30 * * * *";
       startCron(interval);
       return NextResponse.json({ data: { message: "Cron baslatildi", interval } });
     }
@@ -43,7 +62,7 @@ export async function POST(request: NextRequest) {
       { error: { statusCode: 400, code: "BAD_REQUEST", message: "Gecersiz action. 'start' veya 'stop' kullanin." } },
       { status: 400 }
     );
-  } catch (error) {
+  } catch {
     return NextResponse.json(
       { error: { statusCode: 500, code: "INTERNAL_ERROR", message: "Islem basarisiz" } },
       { status: 500 }

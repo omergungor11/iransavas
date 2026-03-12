@@ -1,28 +1,41 @@
 import { NextRequest, NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
 import { summarizeArticle, batchSummarize } from "@/lib/ai-summarizer";
+import { requireAdmin } from "@/lib/auth";
 
 /**
  * POST /api/ai-summary
  * Body: { articleId: string } — single article
  * Body: { batch: true, limit?: number } — batch mode
+ * Requires ADMIN_KEY authentication.
  */
 export async function POST(request: NextRequest) {
   try {
-    const body = await request.json();
+    const authError = requireAdmin(request);
+    if (authError) return authError;
+
+    let body: Record<string, unknown>;
+    try {
+      body = await request.json();
+    } catch {
+      return NextResponse.json(
+        { error: { statusCode: 400, code: "BAD_REQUEST", message: "Gecersiz JSON body" } },
+        { status: 400 },
+      );
+    }
 
     // Batch mode
     if (body.batch) {
-      const limit = Math.min(body.limit ?? 20, 50);
+      const limit = Math.min(typeof body.limit === "number" ? body.limit : 20, 50);
       const result = await batchSummarize(limit);
       return NextResponse.json({ data: result });
     }
 
     // Single article mode
     const { articleId } = body;
-    if (!articleId) {
+    if (!articleId || typeof articleId !== "string") {
       return NextResponse.json(
-        { error: { statusCode: 400, code: "BAD_REQUEST", message: "articleId gerekli" } },
+        { error: { statusCode: 400, code: "BAD_REQUEST", message: "articleId (string) gerekli" } },
         { status: 400 },
       );
     }
@@ -38,7 +51,6 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Return cached summary if exists
     if (article.aiSummary) {
       return NextResponse.json({ data: { summary: article.aiSummary, cached: true } });
     }

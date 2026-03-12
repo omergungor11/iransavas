@@ -15,13 +15,16 @@ export async function GET(request: NextRequest) {
     if (importance) where.importance = importance;
     if (category) where.category = category;
 
-    const entries = await prisma.timelineEntry.findMany({
-      where,
-      orderBy: { date: "desc" },
-      take: limit,
-    });
+    const [entries, total] = await Promise.all([
+      prisma.timelineEntry.findMany({
+        where,
+        orderBy: { date: "desc" },
+        take: limit,
+      }),
+      prisma.timelineEntry.count({ where }),
+    ]);
 
-    return NextResponse.json({ data: entries, meta: { total: entries.length } });
+    return NextResponse.json({ data: entries, meta: { total, returned: entries.length } });
   } catch (error) {
     console.error("[API /timeline]", error);
     return NextResponse.json(

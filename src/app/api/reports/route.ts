@@ -17,9 +17,10 @@ export async function GET(request: NextRequest) {
     const reports = await prisma.report.findMany({
       where,
       orderBy: { publishedAt: "desc" },
+      take: 100,
     });
 
-    return NextResponse.json({ data: reports });
+    return NextResponse.json({ data: reports, meta: { total: reports.length } });
   } catch (error) {
     console.error("[API /reports]", error);
     return NextResponse.json(

@@ -14,14 +14,17 @@ export function HeroSection() {
 
   useEffect(() => {
     fetch("/api/news?pageSize=1")
-      .then((r) => r.json())
+      .then((r) => {
+        if (!r.ok) throw new Error(`HTTP ${r.status}`);
+        return r.json();
+      })
       .then((json) => {
         const article = json.data?.[0];
         if (article) {
           setBreaking({ title: article.title, source: article.source });
         }
       })
-      .catch((err) => console.error("[HeroSection] fetch error:", err));
+      .catch(() => { /* non-critical */ });
   }, []);
 
   return (
@@ -108,7 +111,7 @@ export function HeroSection() {
                   navigator.share({
                     title: "Iran Savas - Canli Takip",
                     url: window.location.href,
-                  });
+                  }).catch(() => { /* user cancelled */ });
                 }
               }}
               aria-label="Sayfayi paylas"

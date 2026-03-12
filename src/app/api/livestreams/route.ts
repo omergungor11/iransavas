@@ -9,7 +9,7 @@ export async function GET() {
     return NextResponse.json({ data: streams });
   } catch (error) {
     return NextResponse.json(
-      { error: { message: error instanceof Error ? error.message : "Unknown error" } },
+      { error: { statusCode: 500, code: "INTERNAL_ERROR", message: "Canli yayin verileri alinamadi" } },
       { status: 500 }
     );
   }

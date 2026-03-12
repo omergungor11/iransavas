@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState, useRef, useCallback } from "react";
 import Link from "next/link";
 import { AlertTriangle, X } from "lucide-react";
 
@@ -17,6 +17,7 @@ export function BreakingNewsBanner() {
   const [article, setArticle] = useState<BreakingArticle | null>(null);
   const [visible, setVisible] = useState(false);
   const [animating, setAnimating] = useState(false);
+  const articleIdRef = useRef<string | null>(null);
 
   const fetchBreaking = useCallback(async () => {
     try {
@@ -26,26 +27,24 @@ export function BreakingNewsBanner() {
       const latest = json.data?.[0];
       if (!latest) return;
 
-      // Check if published within the last 2 hours
       const publishedAt = new Date(latest.publishedAt);
       const twoHoursAgo = new Date(Date.now() - 2 * 60 * 60 * 1000);
       if (publishedAt < twoHoursAgo) return;
 
-      // Check if already dismissed
       const dismissed = sessionStorage.getItem(DISMISSED_KEY);
       if (dismissed === latest.id) return;
 
-      // Show new article with animation
-      if (!article || article.id !== latest.id) {
+      if (articleIdRef.current !== latest.id) {
+        articleIdRef.current = latest.id;
         setArticle(latest);
         setAnimating(true);
         setVisible(true);
         setTimeout(() => setAnimating(false), 500);
       }
     } catch {
-      // Silently fail — this is a non-critical feature
+      // Silently fail — non-critical feature
     }
-  }, [article]);
+  }, []);
 
   useEffect(() => {
     fetchBreaking();

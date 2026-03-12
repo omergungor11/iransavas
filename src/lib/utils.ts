@@ -6,11 +6,13 @@ export function cn(...inputs: ClassValue[]) {
 }
 
 export function formatDate(date: Date | string): string {
+  const d = new Date(date);
+  if (isNaN(d.getTime())) return "";
   return new Intl.DateTimeFormat("tr-TR", {
     year: "numeric",
     month: "long",
     day: "numeric",
-  }).format(new Date(date));
+  }).format(d);
 }
 
 export function formatNumber(num: number): string {
@@ -26,10 +28,12 @@ export function highlightText(text: string, query: string): { parts: { text: str
   if (!query.trim()) return { parts: [{ text, highlight: false }] };
   const escaped = query.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
   const regex = new RegExp(`(${escaped})`, "gi");
-  const parts = text.split(regex).filter(Boolean).map((part) => ({
-    text: part,
-    highlight: regex.test(part) && (regex.lastIndex = 0, true),
-  }));
-  // Reset lastIndex side effect fix
-  return { parts: parts.map((p) => ({ text: p.text, highlight: p.text.toLowerCase() === query.toLowerCase() })) };
+  const segments = text.split(regex).filter(Boolean);
+  const lowerQuery = query.toLowerCase();
+  return {
+    parts: segments.map((segment) => ({
+      text: segment,
+      highlight: segment.toLowerCase() === lowerQuery,
+    })),
+  };
 }

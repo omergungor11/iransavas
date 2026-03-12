@@ -33,6 +33,7 @@ export async function fetchNasaFirms(days: number = 2): Promise<FirmsHotspot[]> 
 
     const res = await fetch(url, {
       headers: { "User-Agent": "IranSavas-Monitor/1.0" },
+      signal: AbortSignal.timeout(15_000),
     });
 
     if (!res.ok) {

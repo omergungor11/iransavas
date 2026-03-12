@@ -38,6 +38,7 @@ export async function fetchFromBamqam(): Promise<BamqamEvent[]> {
             "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
             Accept: "application/json",
           },
+          signal: AbortSignal.timeout(10_000),
         });
 
         if (res.ok) {
@@ -76,6 +77,7 @@ export async function fetchFromBamqam(): Promise<BamqamEvent[]> {
             "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
             Accept: "text/html",
           },
+          signal: AbortSignal.timeout(15_000),
         });
 
         if (res.ok) {
@@ -176,26 +178,24 @@ function parseBamqamItem(item: Record<string, unknown>): BamqamEvent | null {
   };
 }
 
-function extractEventsFromObject(obj: Record<string, unknown>, events: BamqamEvent[]): void {
-  if (!obj || typeof obj !== "object") return;
+function extractEventsFromObject(obj: Record<string, unknown>, events: BamqamEvent[], depth = 0): void {
+  if (!obj || typeof obj !== "object" || depth > 5) return;
 
-  // Check if this object looks like an event
   if (("lat" in obj || "latitude" in obj) && ("lng" in obj || "longitude" in obj)) {
     const event = parseBamqamItem(obj);
     if (event) events.push(event);
     return;
   }
 
-  // Recursively search (max depth 5)
   for (const value of Object.values(obj)) {
     if (Array.isArray(value)) {
       for (const item of value.slice(0, 200)) {
         if (item && typeof item === "object") {
-          extractEventsFromObject(item as Record<string, unknown>, events);
+          extractEventsFromObject(item as Record<string, unknown>, events, depth + 1);
         }
       }
     } else if (value && typeof value === "object") {
-      extractEventsFromObject(value as Record<string, unknown>, events);
+      extractEventsFromObject(value as Record<string, unknown>, events, depth + 1);
     }
   }
 }

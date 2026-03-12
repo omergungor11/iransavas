@@ -3,18 +3,11 @@ export const maxDuration = 300; // 5 min max for Vercel Pro
 
 import { NextRequest, NextResponse } from "next/server";
 import { runFetchAll, getIsFetching } from "@/lib/fetchers/fetch-orchestrator";
+import { requireCronSecret } from "@/lib/auth";
 
 export async function GET(request: NextRequest) {
-  // Verify Vercel cron secret
-  const authHeader = request.headers.get("authorization");
-  const cronSecret = process.env.CRON_SECRET;
-
-  if (cronSecret && authHeader !== `Bearer ${cronSecret}`) {
-    return NextResponse.json(
-      { error: "Unauthorized" },
-      { status: 401 }
-    );
-  }
+  const authError = requireCronSecret(request);
+  if (authError) return authError;
 
   if (getIsFetching()) {
     return NextResponse.json(

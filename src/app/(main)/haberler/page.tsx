@@ -78,6 +78,7 @@ function HaberlerContent() {
   const [total, setTotal] = useState(0);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [retryKey, setRetryKey] = useState(0);
   const [search, setSearch] = useState(searchParams.get("search") || "");
   const [debouncedSearch, setDebouncedSearch] = useState(searchParams.get("search") || "");
   const [searchHistory, setSearchHistory] = useState<string[]>([]);
@@ -159,7 +160,7 @@ function HaberlerContent() {
 
     fetchNews();
     return () => controller.abort();
-  }, [category, page, debouncedSearch]);
+  }, [category, page, debouncedSearch, retryKey]);
 
   const totalPages = Math.ceil(total / PAGE_SIZE);
 
@@ -207,11 +208,13 @@ function HaberlerContent() {
                 Son Aramalar
               </div>
               {searchHistory.map((item) => (
-                <button
+                <div
                   key={item}
-                  type="button"
+                  role="option"
+                  tabIndex={0}
                   onClick={() => selectFromHistory(item)}
-                  className="flex items-center gap-2 w-full px-3 py-2 text-sm text-left hover:bg-muted/50 transition-colors"
+                  onKeyDown={(e) => { if (e.key === "Enter") selectFromHistory(item); }}
+                  className="flex items-center gap-2 w-full px-3 py-2 text-sm text-left hover:bg-muted/50 transition-colors cursor-pointer"
                 >
                   <Clock size={14} className="text-muted-foreground shrink-0" aria-hidden="true" />
                   <span className="flex-1 truncate">{item}</span>
@@ -223,7 +226,7 @@ function HaberlerContent() {
                   >
                     <X size={12} aria-hidden="true" />
                   </button>
-                </button>
+                </div>
               ))}
             </div>
           )}
@@ -235,7 +238,7 @@ function HaberlerContent() {
         <div className="flex flex-col items-center justify-center py-20 text-center">
           <AlertTriangle className="mb-4 h-12 w-12 text-red-500/60" />
           <p className="mb-4 text-muted-foreground">{error}</p>
-          <Button variant="outline" onClick={() => { setError(null); setPage(page); }}>
+          <Button variant="outline" onClick={() => { setError(null); setRetryKey((k) => k + 1); }}>
             <RefreshCw className="mr-2 h-4 w-4" /> Tekrar Dene
           </Button>
         </div>

@@ -28,16 +28,23 @@ export interface FetchSummary {
   results: FetchResult[];
 }
 
-// Track cron status in-memory
+// Track cron status in-memory with crash-safe timestamp lock
 let lastFetchSummary: FetchSummary | null = null;
-let isFetching = false;
+let fetchStartedAt: number | null = null;
+const FETCH_LOCK_TIMEOUT_MS = 10 * 60 * 1000; // 10 min auto-expire
 
 export function getLastFetchSummary(): FetchSummary | null {
   return lastFetchSummary;
 }
 
 export function getIsFetching(): boolean {
-  return isFetching;
+  if (!fetchStartedAt) return false;
+  // Auto-expire lock if stuck for more than 10 minutes
+  if (Date.now() - fetchStartedAt > FETCH_LOCK_TIMEOUT_MS) {
+    fetchStartedAt = null;
+    return false;
+  }
+  return true;
 }
 
 /**
@@ -93,11 +100,11 @@ async function saveArticles(articles: FetchedArticle[]): Promise<{ saved: number
  * Main orchestrator — fetches from all sources
  */
 export async function runFetchAll(): Promise<FetchSummary> {
-  if (isFetching) {
+  if (getIsFetching()) {
     throw new Error("Fetch already in progress");
   }
 
-  isFetching = true;
+  fetchStartedAt = Date.now();
   const startedAt = new Date();
   const results: FetchResult[] = [];
   let totalMapEvents = 0;
@@ -151,11 +158,11 @@ export async function runFetchAll(): Promise<FetchSummary> {
     // ============ BAMQAM MAP DATA ============
     try {
       const mapEvents = await fetchFromBamqam();
-      totalMapEvents = mapEvents.length;
+      let bamqamSaved = 0;
+      let bamqamDuplicates = 0;
 
       for (const event of mapEvents) {
         try {
-          // Deduplicate by title + coordinates (approximate)
           const existing = await prisma.warEvent.findFirst({
             where: {
               title: event.title,
@@ -165,7 +172,9 @@ export async function runFetchAll(): Promise<FetchSummary> {
             select: { id: true },
           });
 
-          if (!existing) {
+          if (existing) {
+            bamqamDuplicates++;
+          } else {
             await prisma.warEvent.create({
               data: {
                 title: event.title,
@@ -178,18 +187,20 @@ export async function runFetchAll(): Promise<FetchSummary> {
                 source: event.source,
               },
             });
+            bamqamSaved++;
           }
         } catch (error) {
           console.error("[Bamqam Save]", error instanceof Error ? error.message : error);
         }
       }
 
+      totalMapEvents = bamqamSaved;
       results.push({
         source: "bamqam.com",
         type: "map-scrape",
         fetched: mapEvents.length,
-        saved: mapEvents.length,
-        duplicates: 0,
+        saved: bamqamSaved,
+        duplicates: bamqamDuplicates,
         errors: [],
       });
     } catch (error) {
@@ -273,7 +284,7 @@ export async function runFetchAll(): Promise<FetchSummary> {
     }
 
   } finally {
-    isFetching = false;
+    fetchStartedAt = null;
   }
 
   const completedAt = new Date();

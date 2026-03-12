@@ -20,14 +20,22 @@ export async function GET(request: NextRequest) {
       if (to) (where.date as Record<string, unknown>).lte = new Date(to);
     }
 
+    const page = Math.max(1, parseInt(searchParams.get("page") || "1", 10) || 1);
+    const pageSize = Math.min(200, Math.max(1, parseInt(searchParams.get("pageSize") || "100", 10) || 100));
+
     const [events, total] = await Promise.all([
-      prisma.warEvent.findMany({ where, orderBy: { date: "desc" } }),
+      prisma.warEvent.findMany({
+        where,
+        orderBy: { date: "desc" },
+        skip: (page - 1) * pageSize,
+        take: pageSize,
+      }),
       prisma.warEvent.count({ where }),
     ]);
 
     return NextResponse.json({
       data: events,
-      meta: { total, page: 1, pageSize: total },
+      meta: { total, page, pageSize },
     });
   } catch (error) {
     console.error("[API /events]", error);

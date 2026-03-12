@@ -39,6 +39,7 @@ export async function fetchFromNewsApi(source: NewsSource): Promise<FetchedArtic
 
     const res = await fetch(`${source.url}?${params}`, {
       headers: { "User-Agent": "IranSavas-NewsBot/1.0" },
+      signal: AbortSignal.timeout(15_000),
     });
 
     if (!res.ok) {
@@ -65,7 +66,7 @@ export async function fetchFromNewsApi(source: NewsSource): Promise<FetchedArtic
         sourceName: item.source.name || source.name,
         sourceUrl: item.url,
         category: source.category,
-        publishedAt: new Date(item.publishedAt),
+        publishedAt: isNaN(new Date(item.publishedAt).getTime()) ? new Date() : new Date(item.publishedAt),
         imageUrl: item.urlToImage || null,
         language: source.language,
       });

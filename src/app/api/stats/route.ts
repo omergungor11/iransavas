@@ -14,14 +14,15 @@ export async function GET() {
       prisma.casualtyReport.aggregate({
         _sum: { civilianCasualties: true, militaryCasualties: true, injured: true, displaced: true },
       }),
-      prisma.warEvent.findMany({ select: { eventType: true, severity: true } }),
+      prisma.warEvent.findMany({ select: { eventType: true, severity: true }, take: 5000 }),
       prisma.warEvent.findMany({ orderBy: { date: "desc" }, take: 10 }),
-      prisma.casualtyReport.findMany({ orderBy: { date: "asc" } }),
+      prisma.casualtyReport.findMany({ orderBy: { date: "asc" }, take: 500 }),
       prisma.newsArticle.count({ where: { publishedAt: { gte: oneDayAgo } } }),
       prisma.casualtyReport.count(),
       prisma.warEvent.findMany({
         where: { date: { gte: sevenDaysAgo } },
         select: { severity: true, casualties: true },
+        take: 1000,
       }),
     ]);
 

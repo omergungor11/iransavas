@@ -1,17 +1,12 @@
 export const dynamic = "force-dynamic";
 import { NextRequest, NextResponse } from "next/server";
 import { runFetchAll, getIsFetching } from "@/lib/fetchers/fetch-orchestrator";
+import { requireAdmin } from "@/lib/auth";
 
 export async function POST(request: NextRequest) {
   try {
-    // Simple auth check via header
-    const authHeader = request.headers.get("x-admin-key");
-    if (process.env.ADMIN_KEY && authHeader !== process.env.ADMIN_KEY) {
-      return NextResponse.json(
-        { error: { statusCode: 401, code: "UNAUTHORIZED", message: "Gecersiz admin key" } },
-        { status: 401 }
-      );
-    }
+    const authError = requireAdmin(request);
+    if (authError) return authError;
 
     if (getIsFetching()) {
       return NextResponse.json(
