@@ -9,9 +9,9 @@ const IMPORTANCE_COLORS: Record<string, string> = {
 };
 
 const IMPORTANCE_LABELS: Record<string, string> = {
-  LOW: "Dusuk",
+  LOW: "Düşük",
   MEDIUM: "Orta",
-  HIGH: "Yuksek",
+  HIGH: "Yüksek",
   CRITICAL: "Kritik",
 };
 

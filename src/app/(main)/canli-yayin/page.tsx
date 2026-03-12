@@ -83,7 +83,7 @@ export default function CanliYayinPage() {
     youtube: { bg: "bg-red-600", label: "YouTube" },
     twitch: { bg: "bg-purple-600", label: "Twitch" },
     windy: { bg: "bg-sky-600", label: "Webcam" },
-    other: { bg: "bg-zinc-600", label: "Diger" },
+    other: { bg: "bg-zinc-600", label: "Diğer" },
   };
 
   return (
@@ -98,7 +98,7 @@ export default function CanliYayinPage() {
             <div>
               <h1 className="text-lg font-bold text-foreground">Webcams</h1>
               <p className="text-xs text-muted-foreground">
-                Canli kamera goruntusu — Iran, Israel & Orta Dogu
+                Canlı kamera görüntüsü — İran, İsrail & Orta Doğu
               </p>
             </div>
           </div>
@@ -146,11 +146,11 @@ export default function CanliYayinPage() {
                   className="flex items-center gap-1.5 px-3 py-1.5 rounded text-xs font-medium border border-border hover:bg-muted transition-colors text-foreground/80"
                 >
                   <ExternalLink size={12} />
-                  Kaynakta Ac
+                  Kaynakta Aç
                 </a>
                 <button
                   onClick={() => setActiveStream(null)}
-                  aria-label="Yayin goruntuleyiciyi kapat"
+                  aria-label="Yayın görüntüleyiciyi kapat"
                   className="flex items-center justify-center w-8 h-8 rounded hover:bg-muted transition-colors text-muted-foreground hover:text-foreground"
                 >
                   <X size={18} aria-hidden="true" />
@@ -174,7 +174,7 @@ export default function CanliYayinPage() {
             ) : (
               <div className="flex flex-col items-center justify-center py-16 bg-black">
                 <Tv size={48} className="text-muted-foreground mb-3" />
-                <p className="text-muted-foreground mb-4">Bu yayin dogrudan goruntulenemiyor</p>
+                <p className="text-muted-foreground mb-4">Bu yayın doğrudan görüntülenemiyor</p>
                 <a
                   href={activeStream.url}
                   target="_blank"
@@ -182,7 +182,7 @@ export default function CanliYayinPage() {
                   className="inline-flex items-center gap-1.5 px-4 py-2 rounded bg-red-600 hover:bg-red-700 text-white text-sm font-medium transition-colors"
                 >
                   <ExternalLink size={14} />
-                  Kaynakta Izle
+                  Kaynakta İzle
                 </a>
               </div>
             )}
@@ -206,8 +206,8 @@ export default function CanliYayinPage() {
         {error ? (
           <div className="flex flex-col items-center gap-3 py-16">
             <AlertTriangle className="h-8 w-8 text-red-500" />
-            <p className="text-sm font-medium text-foreground">Webcamlar yuklenemedi</p>
-            <p className="text-xs text-muted-foreground">Bir hata olustu. Lutfen tekrar deneyin.</p>
+            <p className="text-sm font-medium text-foreground">Webcamlar yüklenemedi</p>
+            <p className="text-xs text-muted-foreground">Bir hata oluştu. Lütfen tekrar deneyin.</p>
             <button
               onClick={fetchStreams}
               className="mt-2 flex items-center gap-1.5 px-4 py-2 rounded text-sm font-medium border border-border hover:bg-muted transition-colors text-muted-foreground"
@@ -223,7 +223,7 @@ export default function CanliYayinPage() {
         ) : streams.length === 0 ? (
           <div className="flex flex-col items-center gap-2 py-16">
             <Camera className="h-8 w-8 text-muted-foreground" />
-            <p className="text-sm text-muted-foreground">Aktif webcam bulunamadi.</p>
+            <p className="text-sm text-muted-foreground">Aktif webcam bulunamadı.</p>
           </div>
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-4">
@@ -259,7 +259,7 @@ export default function CanliYayinPage() {
                   {/* LIVE badge */}
                   <div className="absolute top-2 left-2 flex items-center gap-1 px-1.5 py-0.5 rounded bg-red-600 text-white">
                     <span className="h-1.5 w-1.5 rounded-full bg-white animate-pulse" />
-                    <span className="text-[10px] font-bold uppercase">Canli</span>
+                    <span className="text-[10px] font-bold uppercase">Canlı</span>
                   </div>
                 </button>
 
@@ -278,7 +278,7 @@ export default function CanliYayinPage() {
                       onClick={() => setActiveStream(stream)}
                       className="text-xs font-medium text-muted-foreground hover:text-foreground transition-colors"
                     >
-                      Izle
+                      İzle
                     </button>
                     <span className="text-border">·</span>
                     <a

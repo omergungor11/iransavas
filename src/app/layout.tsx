@@ -11,14 +11,14 @@ const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://iransavas.com";
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
-    default: "Iran Savas - Haber & Analiz Platformu",
-    template: "%s | Iran Savas",
+    default: "İran Savaş - Haber & Analiz Platformu",
+    template: "%s | İran Savaş",
   },
   description:
-    "Iran savasi hakkinda kapsamli haber, analiz ve raporlama platformu. Canli harita, zaman cizelgesi, AI destekli haber ozetleri.",
+    "İran savaşı hakkında kapsamlı haber, analiz ve raporlama platformu. Canlı harita, zaman çizelgesi, AI destekli haber özetleri.",
   keywords: [
-    "iran", "savas", "haber", "analiz", "harita", "zaman cizelgesi",
-    "orta dogu", "catisma", "istihbarat", "iran war",
+    "iran", "savaş", "haber", "analiz", "harita", "zaman çizelgesi",
+    "orta doğu", "çatışma", "istihbarat", "iran war",
   ],
   openGraph: {
     type: "website",

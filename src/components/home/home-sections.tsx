@@ -7,9 +7,8 @@ import { StrategicMap } from "@/components/home/strategic-map";
 import { OfficialStatements } from "@/components/home/official-statements";
 import { LiveGlobe } from "@/components/home/live-globe";
 import { FlightTracker } from "@/components/home/flight-tracker";
-import { FlightRadar } from "@/components/home/flight-radar";
 import { MarineTracker } from "@/components/home/marine-tracker";
-import { MiniMapPreview } from "@/components/home/mini-map-preview";
+import { LiveStreamsSection } from "@/components/home/live-streams-section";
 import { MarketSnapshot } from "@/components/home/market-snapshot";
 import { XTopicVolume } from "@/components/home/x-topic-volume";
 import { WarExplainer } from "@/components/home/war-explainer";
@@ -17,18 +16,12 @@ import { WarExplainer } from "@/components/home/war-explainer";
 export function InteractiveSections() {
   return (
     <>
-      <ErrorBoundary fallbackTitle="Hero bolumu yuklenemedi">
+      <ErrorBoundary fallbackTitle="Hero bölümü yüklenemedi">
         <HeroSection />
       </ErrorBoundary>
 
-      <ErrorBoundary fallbackTitle="Gerilim Endeksi yuklenemedi">
+      <ErrorBoundary fallbackTitle="Gerilim Endeksi yüklenemedi">
         <TensionIndex />
-      </ErrorBoundary>
-
-      <ErrorBoundary fallbackTitle="Stratejik Harita yuklenemedi">
-        <section id="situation">
-          <StrategicMap />
-        </section>
       </ErrorBoundary>
     </>
   );
@@ -37,41 +30,47 @@ export function InteractiveSections() {
 export function BottomSections() {
   return (
     <>
-      <ErrorBoundary fallbackTitle="Resmi Aciklamalar yuklenemedi">
-        <OfficialStatements />
+      <ErrorBoundary fallbackTitle="Stratejik Harita yüklenemedi">
+        <section id="situation">
+          <StrategicMap />
+        </section>
       </ErrorBoundary>
 
-      <ErrorBoundary fallbackTitle="Canli Globe yuklenemedi">
+      <ErrorBoundary fallbackTitle="Canlı Yayınlar yüklenemedi">
+        <LiveStreamsSection />
+      </ErrorBoundary>
+
+      <ErrorBoundary fallbackTitle="Uçuş Takip yüklenemedi">
+        <section id="military">
+          <FlightTracker />
+        </section>
+      </ErrorBoundary>
+
+      <ErrorBoundary fallbackTitle="Deniz Takip yüklenemedi">
+        <MarineTracker />
+      </ErrorBoundary>
+
+      <ErrorBoundary fallbackTitle="Canlı Globe yüklenemedi">
         <section id="osint">
           <LiveGlobe />
         </section>
       </ErrorBoundary>
 
-      <ErrorBoundary fallbackTitle="Ucus Takip yuklenemedi">
-        <FlightTracker />
+      <ErrorBoundary fallbackTitle="Piyasa Görünümü yüklenemedi">
+        <section id="markets">
+          <MarketSnapshot />
+        </section>
       </ErrorBoundary>
 
-      <ErrorBoundary fallbackTitle="Hava Sahasi yuklenemedi">
-        <FlightRadar />
+      <ErrorBoundary fallbackTitle="Resmî Açıklamalar yüklenemedi">
+        <OfficialStatements />
       </ErrorBoundary>
 
-      <ErrorBoundary fallbackTitle="Deniz Takip yuklenemedi">
-        <MarineTracker />
-      </ErrorBoundary>
-
-      <ErrorBoundary fallbackTitle="Harita Onizleme yuklenemedi">
-        <MiniMapPreview />
-      </ErrorBoundary>
-
-      <ErrorBoundary fallbackTitle="Piyasa Gorunumu yuklenemedi">
-        <MarketSnapshot />
-      </ErrorBoundary>
-
-      <ErrorBoundary fallbackTitle="X Konu Hacmi yuklenemedi">
+      <ErrorBoundary fallbackTitle="X Konu Hacmi yüklenemedi">
         <XTopicVolume />
       </ErrorBoundary>
 
-      <ErrorBoundary fallbackTitle="Savas Aciklayici yuklenemedi">
+      <ErrorBoundary fallbackTitle="Savaş Açıklayıcı yüklenemedi">
         <WarExplainer />
       </ErrorBoundary>
     </>

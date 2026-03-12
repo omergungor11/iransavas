@@ -32,8 +32,8 @@ export function HeroSection() {
       {/* Background image + overlay */}
       <div className="absolute inset-0">
         <Image
-          src="https://images.unsplash.com/photo-1580752300992-559f8e0734e0?w=1920&q=80"
-          alt="Iran savasi arka plan"
+          src="/images/hero-bg.jpg"
+          alt="Askerî operasyon - özel kuvvetler"
           fill
           className="object-cover"
           priority
@@ -58,7 +58,7 @@ export function HeroSection() {
             <div className="mb-6 flex items-start gap-3">
               <span className="shrink-0 flex items-center gap-1.5 px-2 py-1 rounded bg-red-600 text-white text-[10px] font-black tracking-widest uppercase">
                 <AlertTriangle size={10} />
-                SON DAKIKA
+                SON DAKİKA
               </span>
               <div>
                 <p className="text-sm font-semibold text-white leading-snug">
@@ -73,14 +73,14 @@ export function HeroSection() {
 
           {/* Main heading */}
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-black text-white leading-[1.1] tracking-tight">
-            Iran Savasi:{" "}
-            <span className="text-red-500">Canli Istihbarat</span>{" "}
+            İran Savaşı:{" "}
+            <span className="text-red-500">Canlı İstihbarat</span>{" "}
             Panosu
           </h1>
 
           <p className="mt-4 text-base md:text-lg text-foreground/80 max-w-2xl leading-relaxed">
-            Askeri operasyonlar, piyasa etkileri, OSINT istihbarati ve resmi aciklamalar —
-            gercek zamanli catisma izleme platformu.
+            Askerî operasyonlar, piyasa etkileri, OSINT istihbaratı ve resmî açıklamalar —
+            gerçek zamanlı çatışma izleme platformu.
           </p>
 
           {/* Source badges */}
@@ -102,23 +102,23 @@ export function HeroSection() {
             <div className="flex items-center gap-2 px-3 py-1.5 rounded-full border border-red-800/60 bg-red-900/30">
               <Radio size={12} className="text-red-400 animate-pulse" />
               <span className="text-[11px] font-bold tracking-widest text-red-400 uppercase">
-                7/24 Canli
+                7/24 Canlı
               </span>
             </div>
             <button
               onClick={() => {
                 if (navigator.share) {
                   navigator.share({
-                    title: "Iran Savas - Canli Takip",
+                    title: "İran Savaş - Canlı Takip",
                     url: window.location.href,
                   }).catch(() => { /* user cancelled */ });
                 }
               }}
-              aria-label="Sayfayi paylas"
+              aria-label="Sayfayı paylaş"
               className="flex items-center gap-1.5 px-3 py-1.5 rounded text-xs font-medium border border-border hover:bg-muted transition-colors text-muted-foreground"
             >
               <Share2 size={12} />
-              Paylas
+              Paylaş
             </button>
           </div>
         </div>

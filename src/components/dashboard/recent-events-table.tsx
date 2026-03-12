@@ -12,8 +12,8 @@ interface RecentEvent {
 }
 
 const TYPE_LABELS: Record<string, string> = {
-  CATISMA: "Catisma", HAVA_SALDIRISI: "Hava Saldirisi", DENIZ_OPERASYONU: "Deniz Op.",
-  DIPLOMASI: "Diplomasi", INSANI_KRIZ: "Insani Kriz", DIGER: "Diger",
+  CATISMA: "Çatışma", HAVA_SALDIRISI: "Hava Saldırısı", DENIZ_OPERASYONU: "Deniz Op.",
+  DIPLOMASI: "Diplomasi", INSANI_KRIZ: "İnsanî Kriz", DIGER: "Diğer",
 };
 
 interface RecentEventsTableProps {

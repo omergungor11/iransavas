@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 
-const SITE_NAME = "Iran Savas";
+const SITE_NAME = "İran Savaş";
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://iransavas.com";
 const DEFAULT_DESCRIPTION =
-  "Iran savasi hakkinda kapsamli haber, analiz ve raporlama platformu. Canli harita, zaman cizelgesi, AI destekli haber ozetleri.";
+  "İran savaşı hakkında kapsamlı haber, analiz ve raporlama platformu. Canlı harita, zaman çizelgesi, AI destekli haber özetleri.";
 const DEFAULT_OG_IMAGE = `${SITE_URL}/og-default.png`;
 
 export function createMetadata(overrides: {

@@ -18,25 +18,25 @@ interface GlobeEvent {
 const STATIC_POINTS: GlobeEvent[] = [
   // Iran
   { lat: 35.6892, lng: 51.389, label: "Tahran", color: "#ef4444", size: 1.2 },
-  { lat: 32.6546, lng: 51.6680, label: "Isfahan (Nukleer)", color: "#f97316", size: 1.0 },
-  { lat: 33.7294, lng: 51.4146, label: "Natanz (Nukleer)", color: "#f97316", size: 0.9 },
-  { lat: 28.9234, lng: 50.8203, label: "Bushehr (Nukleer)", color: "#f97316", size: 0.9 },
+  { lat: 32.6546, lng: 51.6680, label: "İsfahan (Nükleer)", color: "#f97316", size: 1.0 },
+  { lat: 33.7294, lng: 51.4146, label: "Natanz (Nükleer)", color: "#f97316", size: 0.9 },
+  { lat: 28.9234, lng: 50.8203, label: "Büşehr (Nükleer)", color: "#f97316", size: 0.9 },
   { lat: 38.0962, lng: 46.2738, label: "Tebriz", color: "#ef4444", size: 0.7 },
   { lat: 27.1832, lng: 56.2666, label: "Bandar Abbas", color: "#3b82f6", size: 0.8 },
   // Strait of Hormuz
-  { lat: 26.5, lng: 56.5, label: "Hurmuz Bogazi", color: "#06b6d4", size: 1.1 },
+  { lat: 26.5, lng: 56.5, label: "Hürmüz Boğazı", color: "#06b6d4", size: 1.1 },
   // Israel
   { lat: 32.0853, lng: 34.7818, label: "Tel Aviv", color: "#22c55e", size: 0.9 },
-  { lat: 31.7683, lng: 35.2137, label: "Kudus", color: "#22c55e", size: 0.8 },
+  { lat: 31.7683, lng: 35.2137, label: "Kudüs", color: "#22c55e", size: 0.8 },
   { lat: 31.2590, lng: 34.7913, label: "Negev (Dimona)", color: "#f97316", size: 0.8 },
   // Iraq
   { lat: 33.3152, lng: 44.3661, label: "Bagdat", color: "#eab308", size: 0.8 },
   // Syria
-  { lat: 33.5138, lng: 36.2765, label: "Sam", color: "#eab308", size: 0.7 },
+  { lat: 33.5138, lng: 36.2765, label: "Şam", color: "#eab308", size: 0.7 },
   // Lebanon
   { lat: 33.8938, lng: 35.5018, label: "Beyrut", color: "#eab308", size: 0.7 },
   // Yemen
-  { lat: 15.3694, lng: 44.1910, label: "Sana", color: "#ef4444", size: 0.7 },
+  { lat: 15.3694, lng: 44.1910, label: "San'a", color: "#ef4444", size: 0.7 },
   // US Bases
   { lat: 25.9304, lng: 50.6378, label: "Bahreyn (5. Filo)", color: "#3b82f6", size: 0.8 },
   { lat: 25.1185, lng: 51.3110, label: "Al Udeid (CENTCOM)", color: "#3b82f6", size: 0.9 },

@@ -2,7 +2,7 @@ import { createMetadata } from "@/lib/seo";
 
 export const metadata = createMetadata({
   title: "Haberler",
-  description: "Iran savasi ile ilgili son dakika haberleri, analizler ve gelismeler.",
+  description: "İran savaşı ile ilgili son dakika haberleri, analizler ve gelişmeler.",
   path: "/haberler",
 });
 

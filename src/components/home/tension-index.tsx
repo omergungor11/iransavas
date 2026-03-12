@@ -17,10 +17,10 @@ const DEFAULT_TENSION: TensionData = {
   score: 50,
   level: "ELEVATED",
   indicators: [
-    { label: "Aktif Hava Saldirisi", status: "Dogrulanmis", statusColor: "text-red-400" },
+    { label: "Aktif Hava Saldırısı", status: "Doğrulanmış", statusColor: "text-red-400" },
     { label: "Siber Operasyonlar", status: "Aktif", statusColor: "text-orange-400" },
-    { label: "Hurmuz Bogazi Transiti", status: "Yuksek Risk", statusColor: "text-yellow-400" },
-    { label: "Diplomatik Kanallar", status: "Askiya Alindi", statusColor: "text-red-400" },
+    { label: "Hürmüz Boğazı Transiti", status: "Yüksek Risk", statusColor: "text-yellow-400" },
+    { label: "Diplomatik Kanallar", status: "Askıya Alındı", statusColor: "text-red-400" },
   ],
 };
 

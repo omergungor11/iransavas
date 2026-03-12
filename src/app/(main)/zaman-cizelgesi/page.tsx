@@ -14,11 +14,11 @@ interface TimelineEntry {
 }
 
 const IMPORTANCES = [
-  { value: "ALL", label: "Tumu" },
+  { value: "ALL", label: "Tümü" },
   { value: "CRITICAL", label: "Kritik" },
-  { value: "HIGH", label: "Yuksek" },
+  { value: "HIGH", label: "Yüksek" },
   { value: "MEDIUM", label: "Orta" },
-  { value: "LOW", label: "Dusuk" },
+  { value: "LOW", label: "Düşük" },
 ];
 
 export default function ZamanCizelgesiPage() {
@@ -56,7 +56,7 @@ export default function ZamanCizelgesiPage() {
           <Clock className="h-5 w-5 text-red-500" />
         </div>
         <div>
-          <h1 className="text-3xl font-bold">Savas Zaman Cizelgesi</h1>
+          <h1 className="text-3xl font-bold">Savaş Zaman Çizelgesi</h1>
           <p className="text-muted-foreground">Kronolojik olay takibi</p>
         </div>
       </div>
@@ -84,8 +84,8 @@ export default function ZamanCizelgesiPage() {
       ) : error ? (
         <div className="flex flex-col items-center gap-3 py-16">
           <AlertTriangle className="h-8 w-8 text-red-500" />
-          <p className="text-sm font-medium text-foreground">Zaman cizelgesi yuklenemedi</p>
-          <p className="text-xs text-muted-foreground">Bir hata olustu. Lutfen tekrar deneyin.</p>
+          <p className="text-sm font-medium text-foreground">Zaman çizelgesi yüklenemedi</p>
+          <p className="text-xs text-muted-foreground">Bir hata oluştu. Lütfen tekrar deneyin.</p>
           <button
             onClick={fetchTimeline}
             className="mt-2 flex items-center gap-1.5 px-4 py-2 rounded text-sm font-medium border border-border hover:bg-muted transition-colors text-muted-foreground"
@@ -98,7 +98,7 @@ export default function ZamanCizelgesiPage() {
         <div className="flex flex-col items-center gap-2 py-16">
           <Clock className="h-8 w-8 text-muted-foreground" />
           <p className="text-sm text-muted-foreground">
-            {importance === "ALL" ? "Henuz zaman cizelgesi kaydi yok." : "Bu filtre icin sonuc bulunamadi."}
+            {importance === "ALL" ? "Henüz zaman çizelgesi kaydı yok." : "Bu filtre için sonuç bulunamadı."}
           </p>
           {importance !== "ALL" && (
             <button

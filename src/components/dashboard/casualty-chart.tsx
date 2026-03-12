@@ -22,7 +22,7 @@ export function CasualtyChart({ data }: CasualtyChartProps) {
             <Tooltip contentStyle={{ backgroundColor: "#1a1a2e", border: "1px solid #333", borderRadius: "8px" }} />
             <Legend />
             <Area type="monotone" dataKey="civilian" name="Sivil" stroke="#ef4444" fill="#ef4444" fillOpacity={0.3} />
-            <Area type="monotone" dataKey="military" name="Askeri" stroke="#f97316" fill="#f97316" fillOpacity={0.3} />
+            <Area type="monotone" dataKey="military" name="Askerî" stroke="#f97316" fill="#f97316" fillOpacity={0.3} />
           </AreaChart>
         </ResponsiveContainer>
       </CardContent>

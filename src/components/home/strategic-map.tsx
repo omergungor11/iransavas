@@ -1,7 +1,21 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Map, ExternalLink, MapPin } from "lucide-react";
+import dynamic from "next/dynamic";
+import { Map, ExternalLink } from "lucide-react";
+import Link from "next/link";
+
+const WarMap = dynamic(
+  () => import("@/components/map/war-map").then((mod) => mod.WarMap),
+  {
+    ssr: false,
+    loading: () => (
+      <div className="flex h-full items-center justify-center bg-card">
+        <div className="h-8 w-8 animate-spin rounded-full border-2 border-red-500 border-t-transparent" />
+      </div>
+    ),
+  }
+);
 
 interface EventSummary {
   eventType: string;
@@ -38,14 +52,14 @@ export function StrategicMap() {
   };
 
   const TYPE_LABELS: Record<string, string> = {
-    CATISMA: "Catisma",
-    HAVA_SALDIRISI: "Hava Saldirisi",
+    CATISMA: "Çatışma",
+    HAVA_SALDIRISI: "Hava Saldırısı",
     DENIZ_OPERASYONU: "Deniz Op.",
     DIPLOMASI: "Diplomasi",
-    INSANI_KRIZ: "Insani Kriz",
+    INSANI_KRIZ: "İnsanî Kriz",
     PATLAMA: "Patlama",
-    SIBER_SALDIRI: "Siber Saldiri",
-    DIGER: "Diger",
+    SIBER_SALDIRI: "Siber Saldırı",
+    DIGER: "Diğer",
   };
 
   return (
@@ -60,20 +74,20 @@ export function StrategicMap() {
             <div>
               <div className="flex items-center gap-2">
                 <h2 className="text-sm font-bold text-foreground tracking-wide uppercase font-mono">
-                  Canli Stratejik Istihbarat Haritasi
+                  Canlı Stratejik İstihbarat Haritası
                 </h2>
                 <span className="text-[10px] text-muted-foreground">{stats.total} olay</span>
               </div>
-              <p className="text-xs text-muted-foreground">Askeri varliklar, catisma bolgeleri ve stratejik altyapi</p>
+              <p className="text-xs text-muted-foreground">Askerî varlıklar, çatışma bölgeleri ve stratejik altyapı</p>
             </div>
           </div>
-          <a
+          <Link
             href="/harita"
             className="flex items-center gap-1.5 px-3 py-1.5 rounded text-xs font-medium border border-border hover:bg-muted transition-colors text-muted-foreground"
           >
             <ExternalLink size={14} />
             Tam Harita
-          </a>
+          </Link>
         </div>
 
         {/* Category legend bar */}
@@ -89,43 +103,10 @@ export function StrategicMap() {
           ))}
         </div>
 
-        {/* Map preview — CARTO dark tiles static image + click to go */}
-        <a href="/harita" className="block">
-          <div className="relative rounded-lg overflow-hidden border border-border bg-card h-[500px] group cursor-pointer">
-            {/* Static tile background */}
-            <div
-              className="absolute inset-0 bg-cover bg-center opacity-80 group-hover:opacity-100 transition-opacity"
-              style={{
-                backgroundImage: "url('https://basemaps.cartocdn.com/dark_all/5/20/13.png')",
-                backgroundSize: "cover",
-              }}
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-zinc-950 via-zinc-950/30 to-transparent" />
-
-            {/* Overlay stats */}
-            <div className="absolute top-3 left-3 space-y-1.5">
-              {[
-                { label: "TOPLAM OLAY", value: `${stats.total} kayitli`, color: "text-red-400" },
-                { label: "ADS-B LIVE", value: "612 havacilik", color: "text-green-400" },
-                { label: "LIVE AIS", value: "48 savas gemisi", color: "text-blue-400" },
-                { label: "OIL FLOW", value: "21M bbl/gun", color: "text-yellow-400" },
-              ].map((s) => (
-                <div key={s.label} className="bg-card/90 backdrop-blur-sm border border-border/50 rounded-lg px-3 py-1.5 w-44">
-                  <p className={`text-[9px] font-bold uppercase tracking-wider ${s.color}`}>{s.label}</p>
-                  <p className="text-[11px] font-bold text-white">{s.value}</p>
-                </div>
-              ))}
-            </div>
-
-            {/* Center CTA */}
-            <div className="absolute inset-0 flex items-center justify-center">
-              <div className="flex items-center gap-2 px-6 py-3 rounded-lg bg-red-600/90 group-hover:bg-red-600 transition-colors shadow-lg">
-                <MapPin size={18} className="text-white" />
-                <span className="text-sm font-bold text-white tracking-wide">Interaktif Haritayi Ac</span>
-              </div>
-            </div>
-          </div>
-        </a>
+        {/* Interactive War Map */}
+        <div className="rounded-lg overflow-hidden border border-border bg-card h-[500px]">
+          <WarMap />
+        </div>
 
         {/* Bottom stats */}
         <div className="flex items-center gap-4 mt-3 text-[10px] text-muted-foreground">
@@ -133,7 +114,7 @@ export function StrategicMap() {
           <span>·</span>
           <span>Leaflet + OpenStreetMap</span>
           <span>·</span>
-          <span>Acik kaynak</span>
+          <span>Açık kaynak</span>
         </div>
       </div>
     </section>

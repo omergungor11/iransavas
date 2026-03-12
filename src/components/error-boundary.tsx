@@ -41,10 +41,10 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundarySt
             </div>
             <div className="flex-1 min-w-0">
               <h3 className="text-sm font-bold text-foreground">
-                {this.props.fallbackTitle || "Bu bolum yuklenemedi"}
+                {this.props.fallbackTitle || "Bu bölüm yüklenemedi"}
               </h3>
               <p className="text-xs text-muted-foreground mt-1">
-                Bir hata olustu. Lutfen tekrar deneyin.
+                Bir hata oluştu. Lütfen tekrar deneyin.
               </p>
               <button
                 onClick={this.handleRetry}

@@ -12,14 +12,14 @@ interface TopicCard {
 }
 
 const topics: TopicCard[] = [
-  { topic: "Iran Hava Sahasi", status: "Spiking", postCount: "4,470", change: "+3360", changePositive: true },
-  { topic: "Petrol Piyasasi", status: "Spiking", postCount: "3,210", change: "+2100", changePositive: true },
+  { topic: "İran Hava Sahası", status: "Spiking", postCount: "4,470", change: "+3360", changePositive: true },
+  { topic: "Petrol Piyasası", status: "Spiking", postCount: "3,210", change: "+2100", changePositive: true },
   { topic: "IRGC Seferberlik", status: "Spiking", postCount: "148", change: "+128", changePositive: true },
-  { topic: "Hurmuz Bogazi", status: "Rising", postCount: "890", change: "+340", changePositive: true },
-  { topic: "ABD Donanmasi", status: "Rising", postCount: "1,420", change: "+560", changePositive: true },
-  { topic: "Israel Operasyonlari", status: "Spiking", postCount: "5,100", change: "+4200", changePositive: true },
-  { topic: "Nukleer Tesisler", status: "Rising", postCount: "670", change: "+210", changePositive: true },
-  { topic: "Sivil Kayiplar", status: "Rising", postCount: "2,340", change: "+890", changePositive: true },
+  { topic: "Hürmüz Boğazı", status: "Rising", postCount: "890", change: "+340", changePositive: true },
+  { topic: "ABD Donanması", status: "Rising", postCount: "1,420", change: "+560", changePositive: true },
+  { topic: "İsrail Operasyonları", status: "Spiking", postCount: "5,100", change: "+4200", changePositive: true },
+  { topic: "Nükleer Tesisler", status: "Rising", postCount: "670", change: "+210", changePositive: true },
+  { topic: "Sivil Kayıplar", status: "Rising", postCount: "2,340", change: "+890", changePositive: true },
 ];
 
 function statusColor(status: string) {
@@ -52,18 +52,18 @@ export function XTopicVolume() {
             </div>
             <div>
               <h2 className="text-lg font-bold text-foreground">X Konu Hacmi</h2>
-              <p className="text-xs text-muted-foreground">Iran/Korfez konularinda 30 dakikalik post hacmi takibi</p>
+              <p className="text-xs text-muted-foreground">İran/Körfez konularında 30 dakikalık post hacmi takibi</p>
             </div>
           </div>
           <div className="flex items-center gap-3">
-            <span className="text-[10px] text-muted-foreground">15dk once guncellendi</span>
+            <span className="text-[10px] text-muted-foreground">15dk önce güncellendi</span>
             <button
               onClick={() => setExpanded(!expanded)}
               aria-expanded={expanded}
-              aria-label={expanded ? "X konu hacmi panelini kapat" : "X konu hacmi panelini ac"}
+              aria-label={expanded ? "X konu hacmi panelini kapat" : "X konu hacmi panelini aç"}
               className="flex items-center gap-1.5 px-3 py-1.5 rounded text-xs font-medium border border-border hover:bg-muted transition-colors text-muted-foreground"
             >
-              {expanded ? "Kapat" : "Ac"}
+              {expanded ? "Kapat" : "Aç"}
               {expanded ? <ChevronUp size={14} aria-hidden="true" /> : <ChevronDown size={14} aria-hidden="true" />}
             </button>
           </div>

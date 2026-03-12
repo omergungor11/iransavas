@@ -18,10 +18,10 @@ interface Report {
 }
 
 const REPORT_TYPES = [
-  { value: "ALL", label: "Tumu" },
-  { value: "HAFTALIK", label: "Haftalik" },
-  { value: "AYLIK", label: "Aylik" },
-  { value: "OZEL", label: "Ozel" },
+  { value: "ALL", label: "Tümü" },
+  { value: "HAFTALIK", label: "Haftalık" },
+  { value: "AYLIK", label: "Aylık" },
+  { value: "OZEL", label: "Özel" },
 ];
 
 const TYPE_COLORS: Record<string, string> = {
@@ -66,7 +66,7 @@ export default function RaporlarPage() {
         </div>
         <div>
           <h1 className="text-3xl font-bold">Raporlar</h1>
-          <p className="text-muted-foreground">Haftalik, aylik ve ozel analiz raporlari</p>
+          <p className="text-muted-foreground">Haftalık, aylık ve özel analiz raporları</p>
         </div>
       </div>
 
@@ -93,8 +93,8 @@ export default function RaporlarPage() {
       ) : error ? (
         <div className="flex flex-col items-center gap-3 py-16">
           <AlertTriangle className="h-8 w-8 text-red-500" />
-          <p className="text-sm font-medium text-foreground">Raporlar yuklenemedi</p>
-          <p className="text-xs text-muted-foreground">Bir hata olustu. Lutfen tekrar deneyin.</p>
+          <p className="text-sm font-medium text-foreground">Raporlar yüklenemedi</p>
+          <p className="text-xs text-muted-foreground">Bir hata oluştu. Lütfen tekrar deneyin.</p>
           <button
             onClick={fetchReports}
             className="mt-2 flex items-center gap-1.5 px-4 py-2 rounded text-sm font-medium border border-border hover:bg-muted transition-colors text-muted-foreground"
@@ -107,7 +107,7 @@ export default function RaporlarPage() {
         <div className="flex flex-col items-center gap-2 py-16">
           <FileText className="h-8 w-8 text-muted-foreground" />
           <p className="text-sm text-muted-foreground">
-            {filter === "ALL" ? "Henuz rapor yok." : "Bu filtre icin rapor bulunamadi."}
+            {filter === "ALL" ? "Henüz rapor yok." : "Bu filtre için rapor bulunamadı."}
           </p>
           {filter !== "ALL" && (
             <button

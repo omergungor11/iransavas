@@ -3,12 +3,12 @@
 import { cn } from "@/lib/utils";
 
 const CATEGORIES = [
-  { value: "TUMU", label: "Tumu" },
+  { value: "TUMU", label: "Tümü" },
   { value: "GENEL", label: "Genel" },
-  { value: "ASKERI", label: "Askeri" },
-  { value: "SIYASI", label: "Siyasi" },
+  { value: "ASKERI", label: "Askerî" },
+  { value: "SIYASI", label: "Siyasî" },
   { value: "EKONOMI", label: "Ekonomi" },
-  { value: "INSANI_YARDIM", label: "Insani Yardim" },
+  { value: "INSANI_YARDIM", label: "İnsanî Yardım" },
   { value: "DIPLOMASI", label: "Diplomasi" },
 ];
 

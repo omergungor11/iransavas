@@ -20,20 +20,20 @@ interface Statement {
 }
 
 const forceAssets: ForceAsset[] = [
-  { name: "USS Gerald R. Ford CSG", type: "Ucak Gemisi Grubu", location: "Basra Korfezi", status: "Konuslandirildi", statusColor: "text-green-400", icon: Anchor },
-  { name: "B-2 Spirit Bombardiman", type: "Stratejik Bombardiman", location: "Diego Garcia", status: "Hazir", statusColor: "text-yellow-400", icon: Plane },
-  { name: "F-22 Raptor Filosu", type: "Hava Ustuluugu", location: "Al Udeid, Katar", status: "Aktif Gorev", statusColor: "text-green-400", icon: Plane },
-  { name: "Patriot PAC-3 Bataryalari", type: "Hava Savunma", location: "Suudi Arabistan / BAE", status: "Operasyonel", statusColor: "text-green-400", icon: Target },
-  { name: "USS Bataan ARG", type: "Amfibi Hazir Grup", location: "Kizildeniz", status: "Konuslandirildi", statusColor: "text-green-400", icon: Anchor },
-  { name: "MQ-9 Reaper IHA", type: "ISR / Saldiri", location: "Irak / Suriye", status: "Aktif", statusColor: "text-orange-400", icon: Plane },
+  { name: "USS Gerald R. Ford CSG", type: "Uçak Gemisi Grubu", location: "Basra Körfezi", status: "Konuşlandırıldı", statusColor: "text-green-400", icon: Anchor },
+  { name: "B-2 Spirit Bombardıman", type: "Stratejik Bombardıman", location: "Diego Garcia", status: "Hazır", statusColor: "text-yellow-400", icon: Plane },
+  { name: "F-22 Raptor Filosu", type: "Hava Üstünlüğü", location: "Al Udeid, Katar", status: "Aktif Görev", statusColor: "text-green-400", icon: Plane },
+  { name: "Patriot PAC-3 Bataryaları", type: "Hava Savunma", location: "Suudi Arabistan / BAE", status: "Operasyonel", statusColor: "text-green-400", icon: Target },
+  { name: "USS Bataan ARG", type: "Amfibi Hazır Grup", location: "Kızıldeniz", status: "Konuşlandırıldı", statusColor: "text-green-400", icon: Anchor },
+  { name: "MQ-9 Reaper İHA", type: "İSR / Saldırı", location: "Irak / Suriye", status: "Aktif", statusColor: "text-orange-400", icon: Plane },
 ];
 
 const statements: Statement[] = [
-  { source: "CENTCOM", sourceColor: "text-blue-400", title: "Ortadogu'daki ABD kuvvetleri yuksek alarm seviyesine gecirildi", time: "2 saat once" },
-  { source: "Hazine Bak.", sourceColor: "text-green-400", title: "Iran Merkez Bankasi'na yeni yaptrimlar uygulandirildi", time: "4 saat once" },
-  { source: "AB", sourceColor: "text-purple-400", title: "Avrupa Birligi Iran'a ek kisitlayici tedbirler acikladi", time: "6 saat once" },
-  { source: "IAEA", sourceColor: "text-yellow-400", title: "IAEA Iran nukleer tesislerinde denetimlerin kisitlandigini bildirdi", time: "8 saat once" },
-  { source: "Pentagon", sourceColor: "text-blue-400", title: "Savunma Bakanligi bolgeye ek kuvvet konuslandirmayi onayladi", time: "10 saat once" },
+  { source: "CENTCOM", sourceColor: "text-blue-400", title: "Ortadoğu'daki ABD kuvvetleri yüksek alarm seviyesine geçirildi", time: "2 saat önce" },
+  { source: "Hazine Bak.", sourceColor: "text-green-400", title: "İran Merkez Bankası'na yeni yaptırımlar uygulandırıldı", time: "4 saat önce" },
+  { source: "AB", sourceColor: "text-purple-400", title: "Avrupa Birliği İran'a ek kısıtlayıcı tedbirler açıkladı", time: "6 saat önce" },
+  { source: "IAEA", sourceColor: "text-yellow-400", title: "IAEA İran nükleer tesislerinde denetimlerin kısıtlandığını bildirdi", time: "8 saat önce" },
+  { source: "Pentagon", sourceColor: "text-blue-400", title: "Savunma Bakanlığı bölgeye ek kuvvet konuşlandırmayı onayladı", time: "10 saat önce" },
 ];
 
 export function OfficialStatements() {
@@ -49,17 +49,17 @@ export function OfficialStatements() {
               <Shield className="h-5 w-5 text-emerald-500" />
             </div>
             <div>
-              <h2 className="text-lg font-bold text-foreground">Resmi Aciklamalar & Kuvvet Konuslanmasi</h2>
-              <p className="text-xs text-muted-foreground">Hukumet aciklamalari, yaptrimlar ve askeri konuslanmalar</p>
+              <h2 className="text-lg font-bold text-foreground">Resmî Açıklamalar & Kuvvet Konuşlanması</h2>
+              <p className="text-xs text-muted-foreground">Hükümet açıklamaları, yaptırımlar ve askerî konuşlanmalar</p>
             </div>
           </div>
           <button
             onClick={() => setExpanded(!expanded)}
             aria-expanded={expanded}
-            aria-label={expanded ? "Resmi aciklamalar panelini kapat" : "Resmi aciklamalar panelini ac"}
+            aria-label={expanded ? "Resmî açıklamalar panelini kapat" : "Resmî açıklamalar panelini aç"}
             className="flex items-center gap-1.5 px-3 py-1.5 rounded text-xs font-medium border border-border hover:bg-muted transition-colors text-muted-foreground"
           >
-            {expanded ? "Kapat" : "Ac"}
+            {expanded ? "Kapat" : "Aç"}
             {expanded ? <ChevronUp size={14} aria-hidden="true" /> : <ChevronDown size={14} aria-hidden="true" />}
           </button>
         </div>
@@ -70,7 +70,7 @@ export function OfficialStatements() {
             <div>
               <h3 className="text-sm font-bold text-foreground mb-3 flex items-center gap-2">
                 <Radio size={12} className="text-green-400 animate-pulse" />
-                ABD/Koalisyon Kuvvet Konuslanmasi
+                ABD/Koalisyon Kuvvet Konuşlanması
               </h3>
               <div className="space-y-2">
                 {forceAssets.map((asset) => {
@@ -101,7 +101,7 @@ export function OfficialStatements() {
             {/* Statements */}
             <div>
               <h3 className="text-sm font-bold text-foreground mb-3">
-                Resmi Aciklamalar
+                Resmî Açıklamalar
               </h3>
               <div className="space-y-2">
                 {statements.map((stmt, i) => (

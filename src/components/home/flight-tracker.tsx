@@ -15,20 +15,20 @@ interface PriorityTrack {
 }
 
 const priorityTracks: PriorityTrack[] = [
-  { callsign: "QTR65C", speed: "280 m/s", alt: "37000 ft", location: "Iran icinde", squawk: "3221", confidence: "65%", tag: "Yuksek hiz", tagColor: "bg-orange-500/20 text-orange-400" },
-  { callsign: "HGO8633", speed: "293 m/s", alt: "37000 ft", location: "Iran icinde", squawk: "1647", confidence: "65%", tag: "Yuksek hiz", tagColor: "bg-orange-500/20 text-orange-400" },
-  { callsign: "UAE856", speed: "257 m/s", alt: "35000 ft", location: "Iran icinde", squawk: "1416", confidence: "65%", tag: "Yuksek hiz", tagColor: "bg-orange-500/20 text-orange-400" },
-  { callsign: "THY6252", speed: "253 m/s", alt: "39000 ft", location: "Iran icinde", squawk: "1060", confidence: "65%", tag: "Yuksek hiz", tagColor: "bg-orange-500/20 text-orange-400" },
+  { callsign: "QTR65C", speed: "280 m/s", alt: "37000 ft", location: "İran içinde", squawk: "3221", confidence: "65%", tag: "Yüksek hız", tagColor: "bg-orange-500/20 text-orange-400" },
+  { callsign: "HGO8633", speed: "293 m/s", alt: "37000 ft", location: "İran içinde", squawk: "1647", confidence: "65%", tag: "Yüksek hız", tagColor: "bg-orange-500/20 text-orange-400" },
+  { callsign: "UAE856", speed: "257 m/s", alt: "35000 ft", location: "İran içinde", squawk: "1416", confidence: "65%", tag: "Yüksek hız", tagColor: "bg-orange-500/20 text-orange-400" },
+  { callsign: "THY6252", speed: "253 m/s", alt: "39000 ft", location: "İran içinde", squawk: "1060", confidence: "65%", tag: "Yüksek hız", tagColor: "bg-orange-500/20 text-orange-400" },
 ];
 
 const stats = [
   { label: "Takip Edilen", value: "120", color: "text-foreground" },
-  { label: "Iran Icinde", value: "113", color: "text-yellow-400" },
-  { label: "Stratejik Yakin", value: "0", color: "text-green-400" },
+  { label: "İran İçinde", value: "113", color: "text-yellow-400" },
+  { label: "Stratejik Yakın", value: "0", color: "text-green-400" },
   { label: "Acil Squawk", value: "0", color: "text-green-400" },
-  { label: "Askeri Callsign", value: "2", color: "text-orange-400" },
-  { label: "MIL Feed Eslesme", value: "2", color: "text-orange-400" },
-  { label: "Anonim Hizli", value: "2", color: "text-red-400" },
+  { label: "Askerî Callsign", value: "2", color: "text-orange-400" },
+  { label: "MIL Feed Eşleşme", value: "2", color: "text-orange-400" },
+  { label: "Anonim Hızlı", value: "2", color: "text-red-400" },
 ];
 
 export function FlightTracker() {
@@ -45,21 +45,21 @@ export function FlightTracker() {
             </div>
             <div>
               <div className="flex items-center gap-2">
-                <h2 className="text-lg font-bold text-foreground">Ucus Takip Sistemi</h2>
+                <h2 className="text-lg font-bold text-foreground">Uçuş Takip Sistemi</h2>
                 <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-yellow-600 text-white uppercase tracking-wider">
                   ADS-B Live
                 </span>
               </div>
-              <p className="text-xs text-muted-foreground">ADS-B Exchange + Flightradar24 canli hava trafigi</p>
+              <p className="text-xs text-muted-foreground">ADS-B Exchange + Flightradar24 canlı hava trafiği</p>
             </div>
           </div>
           <button
             onClick={() => setExpanded(!expanded)}
             aria-expanded={expanded}
-            aria-label={expanded ? "Ucus takip panelini kapat" : "Ucus takip panelini ac"}
+            aria-label={expanded ? "Uçuş takip panelini kapat" : "Uçuş takip panelini aç"}
             className="flex items-center gap-1.5 px-3 py-1.5 rounded text-xs font-medium border border-border hover:bg-muted transition-colors text-muted-foreground"
           >
-            {expanded ? "Kapat" : "Ac"}
+            {expanded ? "Kapat" : "Aç"}
             {expanded ? <ChevronUp size={14} aria-hidden="true" /> : <ChevronDown size={14} aria-hidden="true" />}
           </button>
         </div>
@@ -82,13 +82,13 @@ export function FlightTracker() {
                 src="https://globe.adsbexchange.com/?lat=32.0&lon=47.0&zoom=5"
                 className="w-full h-full border-0"
                 allowFullScreen
-                title="ADS-B Exchange — Canli Ucus Radari"
+                title="ADS-B Exchange — Canlı Uçuş Radarı"
                 loading="lazy"
               />
               {/* Live indicator */}
               <div className="absolute top-3 left-3 flex items-center gap-1.5 bg-black/70 backdrop-blur-sm px-2.5 py-1 rounded-full pointer-events-none">
                 <span className="h-2 w-2 rounded-full bg-green-500 animate-pulse" />
-                <span className="text-[10px] text-green-400 font-medium">ADS-B Canli</span>
+                <span className="text-[10px] text-green-400 font-medium">ADS-B Canlı</span>
               </div>
               <a
                 href="https://globe.adsbexchange.com/?lat=32.0&lon=47.0&zoom=5"
@@ -97,7 +97,7 @@ export function FlightTracker() {
                 className="absolute top-3 right-3 flex items-center gap-1.5 bg-black/70 backdrop-blur-sm px-2.5 py-1 rounded-full text-[10px] text-white hover:text-yellow-400 transition-colors"
               >
                 <ExternalLink size={10} />
-                ADS-B&apos;de Ac
+                ADS-B&apos;de Aç
               </a>
             </div>
 
@@ -112,7 +112,7 @@ export function FlightTracker() {
                 <Radar size={24} className="text-sky-500 shrink-0" />
                 <div className="flex-1">
                   <p className="text-sm font-bold text-foreground">ADS-B Exchange — Filtresiz Radar</p>
-                  <p className="text-xs text-muted-foreground">Askeri ucuslar dahil sansursuz ADS-B verisi</p>
+                  <p className="text-xs text-muted-foreground">Askerî uçuşlar dahil sansürsüz ADS-B verisi</p>
                 </div>
                 <ExternalLink size={14} className="text-muted-foreground group-hover:text-sky-500 shrink-0" />
               </a>
@@ -124,8 +124,8 @@ export function FlightTracker() {
               >
                 <Plane size={24} className="text-orange-500 shrink-0" />
                 <div className="flex-1">
-                  <p className="text-sm font-bold text-foreground">NOTAM Uyarilari</p>
-                  <p className="text-xs text-muted-foreground">Hava sahasi kapanislari ve ucusa yasak bolgeler</p>
+                  <p className="text-sm font-bold text-foreground">NOTAM Uyarıları</p>
+                  <p className="text-xs text-muted-foreground">Hava sahası kapanışları ve uçuşa yasak bölgeler</p>
                 </div>
                 <ExternalLink size={14} className="text-muted-foreground group-hover:text-orange-500 shrink-0" />
               </a>
@@ -134,7 +134,7 @@ export function FlightTracker() {
             {/* Priority Tracks */}
             <h3 className="text-sm font-bold text-foreground mb-3 flex items-center gap-2">
               <AlertTriangle size={14} className="text-yellow-500" />
-              ONCELIKLI IZLEME
+              ÖNCELİKLİ İZLEME
             </h3>
             <div className="space-y-2">
               {priorityTracks.map((track) => (
@@ -145,19 +145,19 @@ export function FlightTracker() {
                   <div>
                     <p className="text-sm font-bold text-red-400 font-mono">{track.callsign}</p>
                     <p className="text-[11px] text-muted-foreground">
-                      Hiz {track.speed} · Irtifa {track.alt} · {track.location} · Squawk {track.squawk}
+                      Hız {track.speed} · İrtifa {track.alt} · {track.location} · Squawk {track.squawk}
                     </p>
                     <span className={`inline-block mt-1 px-1.5 py-0.5 rounded text-[9px] font-bold ${track.tagColor}`}>
                       {track.tag}
                     </span>
                   </div>
-                  <span className="text-xs text-muted-foreground">({track.confidence} guven)</span>
+                  <span className="text-xs text-muted-foreground">({track.confidence} güven)</span>
                 </div>
               ))}
             </div>
 
             <p className="text-[10px] text-zinc-600 mt-3">
-              Ucus verileri ADS-B Exchange ve Flightradar24 tarafindan saglanmaktadir. Askeri ucuslar transponder kapatabilir.
+              Uçuş verileri ADS-B Exchange ve Flightradar24 tarafından sağlanmaktadır. Askerî uçuşlar transponder kapatabilir.
             </p>
           </>
         )}

@@ -15,12 +15,12 @@ interface MarketItem {
 const marketData: MarketItem[] = [
   { name: "West Texas Petrol", symbol: "WTI", price: "128.40", change: "+8.12", changePercent: "+6.74%", positive: true },
   { name: "Brent Ham Petrol", symbol: "BRENT", price: "134.85", change: "+9.45", changePercent: "+7.53%", positive: true },
-  { name: "Altin", symbol: "XAU", price: "2,847", change: "+62.30", changePercent: "+2.24%", positive: true },
+  { name: "Altın", symbol: "XAU", price: "2,847", change: "+62.30", changePercent: "+2.24%", positive: true },
   { name: "S&P 500", symbol: "SPX", price: "4,892", change: "-204.50", changePercent: "-4.01%", positive: false },
   { name: "Bitcoin", symbol: "BTC", price: "67,420", change: "-2,180", changePercent: "-3.13%", positive: false },
   { name: "EUR/USD", symbol: "EUR", price: "1.0634", change: "-0.0087", changePercent: "-0.81%", positive: false },
-  { name: "Dogal Gaz", symbol: "NG", price: "4.82", change: "+0.34", changePercent: "+7.59%", positive: true },
-  { name: "Gumus", symbol: "XAG", price: "33.45", change: "+1.12", changePercent: "+3.47%", positive: true },
+  { name: "Doğal Gaz", symbol: "NG", price: "4.82", change: "+0.34", changePercent: "+7.59%", positive: true },
+  { name: "Gümüş", symbol: "XAG", price: "33.45", change: "+1.12", changePercent: "+3.47%", positive: true },
   { name: "NASDAQ", symbol: "NDX", price: "16,740", change: "-580", changePercent: "-3.35%", positive: false },
 ];
 
@@ -38,21 +38,21 @@ export function MarketSnapshot() {
             </div>
             <div>
               <div className="flex items-center gap-2">
-                <h2 className="text-lg font-bold text-foreground">Piyasa Gorunumu</h2>
+                <h2 className="text-lg font-bold text-foreground">Piyasa Görünümü</h2>
                 <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-green-600 text-white uppercase tracking-wider">
                   Markets
                 </span>
               </div>
-              <p className="text-xs text-muted-foreground">Iran catismasindan etkilenen kuresel piyasalar</p>
+              <p className="text-xs text-muted-foreground">İran çatışmasından etkilenen küresel piyasalar</p>
             </div>
           </div>
           <button
             onClick={() => setExpanded(!expanded)}
             aria-expanded={expanded}
-            aria-label={expanded ? "Piyasa panelini kapat" : "Piyasa panelini ac"}
+            aria-label={expanded ? "Piyasa panelini kapat" : "Piyasa panelini aç"}
             className="flex items-center gap-1.5 px-3 py-1.5 rounded text-xs font-medium border border-border hover:bg-muted transition-colors text-muted-foreground"
           >
-            {expanded ? "Kapat" : "Ac"}
+            {expanded ? "Kapat" : "Aç"}
             {expanded ? <ChevronUp size={14} aria-hidden="true" /> : <ChevronDown size={14} aria-hidden="true" />}
           </button>
         </div>
@@ -108,7 +108,7 @@ export function MarketSnapshot() {
               ))}
             </div>
             <p className="text-[10px] text-zinc-600 mt-3">
-              Piyasa verileri gosterge amaclidir — gercek zamanli fiyatlar icin finansal platformlari kullanin. Kaynak: Glint Trade, Yahoo Finance
+              Piyasa verileri gösterge amaçlıdır — gerçek zamanlı fiyatlar için finansal platformları kullanın. Kaynak: Glint Trade, Yahoo Finance
             </p>
           </>
         )}

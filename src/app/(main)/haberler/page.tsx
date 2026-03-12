@@ -151,7 +151,7 @@ function HaberlerContent() {
         setTotal(json.meta?.total || 0);
       } catch (err) {
         if (err instanceof DOMException && err.name === "AbortError") return;
-        setError("Haberler yuklenirken bir hata olustu. Lutfen tekrar deneyin.");
+        setError("Haberler yüklenirken bir hata oluştu. Lütfen tekrar deneyin.");
         console.error(err);
       } finally {
         setLoading(false);
@@ -183,7 +183,7 @@ function HaberlerContent() {
     <div className="mx-auto max-w-7xl px-4 py-8">
       <div className="mb-8">
         <h1 className="text-3xl font-bold mb-2">Haberler</h1>
-        <p className="text-muted-foreground">Iran savasi ile ilgili son gelismeler ve haberler</p>
+        <p className="text-muted-foreground">İran savaşı ile ilgili son gelişmeler ve haberler</p>
       </div>
 
       <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
@@ -222,7 +222,7 @@ function HaberlerContent() {
                     type="button"
                     onClick={(e) => handleRemoveHistory(e, item)}
                     className="shrink-0 p-0.5 rounded hover:bg-muted text-muted-foreground hover:text-foreground"
-                    aria-label={`"${item}" aramasini gecmisten sil`}
+                    aria-label={`"${item}" aramasını geçmişten sil`}
                   >
                     <X size={12} aria-hidden="true" />
                   </button>
@@ -277,11 +277,11 @@ function HaberlerContent() {
             /* Empty State */
             <div className="flex flex-col items-center justify-center py-20 text-center">
               <Newspaper className="mb-4 h-12 w-12 text-muted-foreground/40" />
-              <h3 className="mb-2 text-lg font-semibold">Haber Bulunamadi</h3>
+              <h3 className="mb-2 text-lg font-semibold">Haber Bulunamadı</h3>
               <p className="mb-4 max-w-md text-sm text-muted-foreground">
                 {debouncedSearch
-                  ? `"${debouncedSearch}" icin sonuc bulunamadi. Farkli anahtar kelimeler deneyin.`
-                  : "Bu kategoride henuz haber bulunmuyor."}
+                  ? `"${debouncedSearch}" için sonuç bulunamadı. Farklı anahtar kelimeler deneyin.`
+                  : "Bu kategoride henüz haber bulunmuyor."}
               </p>
               {(debouncedSearch || category !== "TUMU") && (
                 <Button variant="outline" onClick={() => { setSearch(""); setDebouncedSearch(""); setCategory("TUMU"); setPage(1); }}>
@@ -295,7 +295,7 @@ function HaberlerContent() {
           {totalPages > 1 && (
             <div className="mt-8 flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
               <Button variant="outline" size="sm" disabled={page <= 1} onClick={() => setPage(page - 1)}>
-                Onceki
+                Önceki
               </Button>
               <span className="text-sm text-muted-foreground">
                 Sayfa {page} / {totalPages} ({total} haber)

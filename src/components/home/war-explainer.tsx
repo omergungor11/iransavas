@@ -20,88 +20,88 @@ const cards: ExplainerCard[] = [
   {
     icon: Swords,
     iconColor: "text-red-500",
-    title: "Iran vs Israel",
+    title: "İran vs İsrail",
     stat: "45+",
-    statLabel: "YIL DUSMANLIGI",
+    statLabel: "YIL DÜŞMANLIĞI",
     statColor: "text-red-400",
-    description: "1979 Islam Devrimi'nden bu yana 45 yili askin dusmanlk — suikastlar, vekalet savaslari ve varolussa tehditler.",
+    description: "1979 İslam Devrimi'nden bu yana 45 yılı aşkın düşmanlık — suikastlar, vekâlet savaşları ve varoluşsal tehditler.",
     details: [
-      "Iran, Hizbullah ve Hamas'a askeri destek sagliyor",
-      "Israel, Iran nukleer tesislerine saldiri planliyor",
-      "2024'te karsilikli fuze saldirilari",
+      "İran, Hizbullah ve Hamas'a askerî destek sağlıyor",
+      "İsrail, İran nükleer tesislerine saldırı planlıyor",
+      "2024'te karşılıklı füze saldırıları",
     ],
   },
   {
     icon: Shield,
     iconColor: "text-blue-500",
-    title: "ABD vs Iran",
+    title: "ABD vs İran",
     stat: "~45,000",
-    statLabel: "ABD ASKERI BOLGEDE",
+    statLabel: "ABD ASKERİ BÖLGEDE",
     statColor: "text-blue-400",
-    description: "1979 rehine krizinden yaptirimlara, vekalet savalarindan dogrudan catismaya — 45 yillik sifir guven.",
-    highlight: "1979'dan beri rakipler — yaptriimlar, vekalet savaslari, sifir guven.",
+    description: "1979 rehine krizinden yaptırımlara, vekâlet savaşlarından doğrudan çatışmaya — 45 yıllık sıfır güven.",
+    highlight: "1979'dan beri rakipler — yaptırımlar, vekâlet savaşları, sıfır güven.",
     details: [
-      "1979: Iranli ogrenciler 52 ABD diplomatini 444 gun rehin tuttu",
-      "ABD, dunyanin en agir ekonomik yaptrimlarini Iran'a uyguladi",
-      "Iran destekli milisler Ekim 2023'ten beri Irak ve Suriye'deki ABD uslerine 170+ saldiri duzenledi",
-      "ABD, Israel ve Korfez muttefiklerini destekliyor — Iran bunu bolgesel hakimiyet olarak goruyor",
+      "1979: İranlı öğrenciler 52 ABD diplomatını 444 gün rehin tuttu",
+      "ABD, dünyanın en ağır ekonomik yaptırımlarını İran'a uyguladı",
+      "İran destekli milisler Ekim 2023'ten beri Irak ve Suriye'deki ABD üslerine 170+ saldırı düzenledi",
+      "ABD, İsrail ve Körfez müttefiklerini destekliyor — İran bunu bölgesel hâkimiyet olarak görüyor",
     ],
-    footer: "2020 — ABD, Iran'in en ust komutani General Kasim Suleymani'yi oldurdu",
+    footer: "2020 — ABD, İran'ın en üst komutanı General Kasım Süleymani'yi öldürdü",
   },
   {
     icon: Droplets,
     iconColor: "text-cyan-500",
-    title: "Petrol & Hurmuz Bogazi",
+    title: "Petrol & Hürmüz Boğazı",
     stat: "21M bbl",
-    statLabel: "GUNLUK PETROL AKISI",
+    statLabel: "GÜNLÜK PETROL AKIŞI",
     statColor: "text-cyan-400",
-    description: "Dunya petrolunun %20'si Iran'in kontrol ettigi 33 km genisligindeki bogazdan geciyor. Bir abluka = kuresel kriz.",
+    description: "Dünya petrolünün %20'si İran'ın kontrol ettiği 33 km genişliğindeki boğazdan geçiyor. Bir abluka = küresel kriz.",
     details: [
-      "Hurmuz Bogazi dunya enerji arz zincirinin en kritik noktasi",
-      "Iran defalarca bogazi kapatmakla tehdit etti",
-      "Herhangi bir kapatma petrol fiyatlarini 2-3 katina cikarabilir",
+      "Hürmüz Boğazı dünya enerji arz zincirinin en kritik noktası",
+      "İran defalarca boğazı kapatmakla tehdit etti",
+      "Herhangi bir kapatma petrol fiyatlarını 2-3 katına çıkarabilir",
     ],
   },
   {
     icon: Users,
     iconColor: "text-purple-500",
-    title: "Sunni vs Sia Ayrimi",
-    stat: "1,400 yil",
-    statLabel: "AYRILIK YASI",
+    title: "Sünnî vs Şiî Ayrımı",
+    stat: "1,400 yıl",
+    statLabel: "AYRILIK YAŞI",
     statColor: "text-purple-400",
-    description: "1.400 yillik dini kirilma bugun hala vekalet savaslarini, ittifaklari ve guc mucadelelerini besliyor.",
+    description: "1.400 yıllık dinî kırılma bugün hâlâ vekâlet savaşlarını, ittifakları ve güç mücadelelerini besliyor.",
     details: [
-      "Iran (Sia) vs Suudi Arabistan (Sunni) bolgesel liderlik mucadelesi",
-      "Yemen, Irak, Suriye, Lubnan'da mezhepsel catismalar",
-      "Bolgedeki ittifaklar buyuk olcude mezhep hatlarina gore sekilleniyor",
+      "İran (Şiî) vs Suudi Arabistan (Sünnî) bölgesel liderlik mücadelesi",
+      "Yemen, Irak, Suriye, Lübnan'da mezhepsel çatışmalar",
+      "Bölgedeki ittifaklar büyük ölçüde mezhep hatlarına göre şekilleniyor",
     ],
   },
   {
     icon: Atom,
     iconColor: "text-green-500",
-    title: "Nukleer Silah Yarisi",
+    title: "Nükleer Silah Yarışı",
     stat: "%60",
-    statLabel: "ZENGINLESTIRME SAFLIĞI",
+    statLabel: "ZENGİNLEŞTİRME SAFLIĞI",
     statColor: "text-green-400",
-    description: "Iran uranyumu silah sinifina yakin olcude zenginlestiriyor. Israel ve ABD bunu gerekirse gucle durduracaklarini soyluyor.",
+    description: "İran uranyumu silah sınıfına yakın ölçüde zenginleştiriyor. İsrail ve ABD bunu gerekirse güçle durduracaklarını söylüyor.",
     details: [
-      "Iran %60 safliktaki uranyum zenginlestirmeye ulasti",
-      "Silah sinifi icin %90 gerekiyor — teknik olarak cok yakin",
-      "2015 nukleer anlasmasi (JCPOA) ABD'nin cekilmesiyle cokerdi",
+      "İran %60 saflıktaki uranyum zenginleştirmeye ulaştı",
+      "Silah sınıfı için %90 gerekiyor — teknik olarak çok yakın",
+      "2015 nükleer anlaşması (JCPOA) ABD'nin çekilmesiyle çöktü",
     ],
   },
   {
     icon: Network,
     iconColor: "text-orange-500",
-    title: "Vekalet Savaslari & Guc",
+    title: "Vekâlet Savaşları & Güç",
     stat: "12+",
-    statLabel: "FINANSE EDILEN GRUP",
+    statLabel: "FİNANSE EDİLEN GRUP",
     statColor: "text-orange-400",
-    description: "Iran'in 'Direnis Ekseni' vs ABD-Israel-Suudi ittifaki — Orta Dogu genelinde bir vekalet gruplari agi.",
+    description: "İran'ın 'Direniş Ekseni' vs ABD-İsrail-Suudi ittifakı — Orta Doğu genelinde bir vekâlet grupları ağı.",
     details: [
-      "Hizbullah (Lubnan), Hamas (Gazze), Husiler (Yemen)",
-      "Irak'taki Sia milisleri, Suriye'deki gruplar",
-      "Her iki taraf da dogrudan savas yerine vekiller uzerinden mucadele ediyor",
+      "Hizbullah (Lübnan), Hamas (Gazze), Husiler (Yemen)",
+      "Irak'taki Şiî milisleri, Suriye'deki gruplar",
+      "Her iki taraf da doğrudan savaş yerine vekiller üzerinden mücadele ediyor",
     ],
   },
 ];
@@ -121,21 +121,21 @@ export function WarExplainer() {
             </div>
             <div>
               <div className="flex items-center gap-2">
-                <h2 className="text-lg font-bold text-foreground">Bu savas neden yasaniyor?</h2>
+                <h2 className="text-lg font-bold text-foreground">Bu savaş neden yaşanıyor?</h2>
                 <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-red-600 text-white uppercase tracking-wider">
-                  Aciklayici
+                  Açıklayıcı
                 </span>
               </div>
-              <p className="text-xs text-muted-foreground">Catismanin arkasindaki 6 temel neden — detay icin kartlara tiklayin</p>
+              <p className="text-xs text-muted-foreground">Çatışmanın arkasındaki 6 temel neden — detay için kartlara tıklayın</p>
             </div>
           </div>
           <button
             onClick={() => setExpanded(!expanded)}
             aria-expanded={expanded}
-            aria-label={expanded ? "Aciklayici panelini kapat" : "Aciklayici panelini ac"}
+            aria-label={expanded ? "Açıklayıcı panelini kapat" : "Açıklayıcı panelini aç"}
             className="flex items-center gap-1.5 px-3 py-1.5 rounded text-xs font-medium border border-border hover:bg-muted transition-colors text-muted-foreground"
           >
-            {expanded ? "Kapat" : "Ac"}
+            {expanded ? "Kapat" : "Aç"}
             {expanded ? <ChevronUp size={14} aria-hidden="true" /> : <ChevronDown size={14} aria-hidden="true" />}
           </button>
         </div>
@@ -204,7 +204,7 @@ export function WarExplainer() {
                     {/* Read more hint */}
                     {!isActive && (
                       <p className="text-[11px] text-red-500 font-medium mt-2">
-                        &rsaquo; Devamini oku
+                        &rsaquo; Devamını oku
                       </p>
                     )}
                   </button>
@@ -214,7 +214,7 @@ export function WarExplainer() {
 
             {/* Source attribution */}
             <p className="text-[10px] text-zinc-600 mt-4">
-              Anlasilirlik icin sadelestirmistir — jeopolitik karisik ve cok katmanlidir. Kaynaklar: CFR, BBC, Al Jazeera, Reuters
+              Anlaşılırlık için sadeleştirilmiştir — jeopolitik karışık ve çok katmanlıdır. Kaynaklar: CFR, BBC, Al Jazeera, Reuters
             </p>
           </>
         )}

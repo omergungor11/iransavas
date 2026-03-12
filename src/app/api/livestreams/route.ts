@@ -9,7 +9,7 @@ export async function GET() {
     return NextResponse.json({ data: streams });
   } catch (error) {
     return NextResponse.json(
-      { error: { statusCode: 500, code: "INTERNAL_ERROR", message: "Canli yayin verileri alinamadi" } },
+      { error: { statusCode: 500, code: "INTERNAL_ERROR", message: "Canlı yayın verileri alınamadı" } },
       { status: 500 }
     );
   }

@@ -19,7 +19,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     where: { id: params.id },
     select: { title: true, summary: true, aiSummary: true, imageUrl: true },
   });
-  if (!article) return createMetadata({ title: "Haber Bulunamadi" });
+  if (!article) return createMetadata({ title: "Haber Bulunamadı" });
 
   return createMetadata({
     title: article.title,
@@ -42,7 +42,7 @@ export default async function HaberDetayPage({ params }: Props) {
   return (
     <div className="mx-auto max-w-4xl px-4 py-8">
       <Link href="/haberler" className="mb-6 inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground">
-        <ArrowLeft className="h-4 w-4" /> Haberlere Don
+        <ArrowLeft className="h-4 w-4" /> Haberlere Dön
       </Link>
 
       <article className="mt-4">
@@ -70,7 +70,7 @@ export default async function HaberDetayPage({ params }: Props) {
         {article.aiSummary && (
           <Card className="mb-6 border-red-500/20 bg-red-500/5">
             <CardHeader className="pb-2">
-              <CardTitle className="text-sm text-red-400">AI Ozet</CardTitle>
+              <CardTitle className="text-sm text-red-400">AI Özet</CardTitle>
             </CardHeader>
             <CardContent>
               <p className="text-sm leading-relaxed">{article.aiSummary}</p>
@@ -91,7 +91,7 @@ export default async function HaberDetayPage({ params }: Props) {
 
       {related.length > 0 && (
         <div className="mt-12 border-t pt-8">
-          <h2 className="text-xl font-bold mb-4">Ilgili Haberler</h2>
+          <h2 className="text-xl font-bold mb-4">İlgili Haberler</h2>
           <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
             {related.map((r) => (
               <Link key={r.id} href={`/haberler/${r.id}`}>

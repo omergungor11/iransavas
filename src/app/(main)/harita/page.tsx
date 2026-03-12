@@ -60,8 +60,8 @@ export default function HaritaPage() {
               <MapPin className="h-5 w-5 text-red-500" />
             </div>
             <div>
-              <h1 className="text-lg font-bold">Interaktif Savas Haritasi</h1>
-              <p className="text-xs text-muted-foreground">Canli olay takibi — {eventCount} olay</p>
+              <h1 className="text-lg font-bold">İnteraktif Savaş Haritası</h1>
+              <p className="text-xs text-muted-foreground">Canlı olay takibi — {eventCount} olay</p>
             </div>
           </div>
           <Button

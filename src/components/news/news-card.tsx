@@ -24,10 +24,10 @@ const CATEGORY_ICONS: Record<string, typeof Newspaper> = {
 };
 
 const CATEGORY_LABELS: Record<string, string> = {
-  ASKERI: "Askeri",
-  SIYASI: "Siyasi",
+  ASKERI: "Askerî",
+  SIYASI: "Siyasî",
   EKONOMI: "Ekonomi",
-  INSANI_YARDIM: "Insani Yardim",
+  INSANI_YARDIM: "İnsanî Yardım",
   DIPLOMASI: "Diplomasi",
   GENEL: "Genel",
 };
@@ -89,7 +89,7 @@ export function NewsCard({ id, title, summary, source, category, publishedAt, ai
               {CATEGORY_LABELS[category] || category}
             </Badge>
             {aiSummary && (
-              <Badge variant="warning" className="text-xs">AI Ozet</Badge>
+              <Badge variant="warning" className="text-xs">AI Özet</Badge>
             )}
           </div>
         </div>

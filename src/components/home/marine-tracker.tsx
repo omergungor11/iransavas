@@ -17,21 +17,21 @@ export function MarineTracker() {
             </div>
             <div>
               <div className="flex items-center gap-2">
-                <h2 className="text-lg font-bold text-foreground">Deniz Trafigi & Gemi Takibi</h2>
+                <h2 className="text-lg font-bold text-foreground">Deniz Trafiği & Gemi Takibi</h2>
                 <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-blue-600 text-white uppercase tracking-wider">
                   Live
                 </span>
               </div>
-              <p className="text-xs text-muted-foreground">Basra Korfezi ve Hurmuz Bogazi canli gemi trafigi</p>
+              <p className="text-xs text-muted-foreground">Basra Körfezi ve Hürmüz Boğazı canlı gemi trafiği</p>
             </div>
           </div>
           <button
             onClick={() => setExpanded(!expanded)}
             aria-expanded={expanded}
-            aria-label={expanded ? "Deniz trafigi panelini kapat" : "Deniz trafigi panelini ac"}
+            aria-label={expanded ? "Deniz trafiği panelini kapat" : "Deniz trafiği panelini aç"}
             className="flex items-center gap-1.5 px-3 py-1.5 rounded text-xs font-medium border border-border hover:bg-muted transition-colors text-muted-foreground"
           >
-            {expanded ? "Kapat" : "Ac"}
+            {expanded ? "Kapat" : "Aç"}
             {expanded ? <ChevronUp size={14} aria-hidden="true" /> : <ChevronDown size={14} aria-hidden="true" />}
           </button>
         </div>
@@ -44,13 +44,13 @@ export function MarineTracker() {
                 src="https://www.marinetraffic.com/en/ais/embed/zoom:6/centery:26.5/centerx:53.5/maptype:4/shownames:false/mmsi:0/shipid:0/fleet:/fleet_id:/vtypes:/showmenu:/remember:false"
                 className="w-full h-full border-0"
                 allowFullScreen
-                title="MarineTraffic Canli Gemi Haritasi — Basra Korfezi"
+                title="MarineTraffic Canlı Gemi Haritası — Basra Körfezi"
                 loading="lazy"
               />
               {/* Live indicator */}
               <div className="absolute top-3 left-3 flex items-center gap-1.5 bg-black/70 backdrop-blur-sm px-2.5 py-1 rounded-full">
                 <span className="h-2 w-2 rounded-full bg-blue-500 animate-pulse" />
-                <span className="text-[10px] text-blue-400 font-medium">AIS Canli</span>
+                <span className="text-[10px] text-blue-400 font-medium">AIS Canlı</span>
               </div>
               <a
                 href="https://www.marinetraffic.com/en/ais/home/centerx:53.5/centery:26.5/zoom:6"
@@ -59,7 +59,7 @@ export function MarineTracker() {
                 className="absolute top-3 right-3 flex items-center gap-1.5 bg-black/70 backdrop-blur-sm px-2.5 py-1 rounded-full text-[10px] text-white hover:text-blue-400 transition-colors"
               >
                 <ExternalLink size={10} />
-                MarineTraffic&apos;te Ac
+                MarineTraffic&apos;te Aç
               </a>
             </div>
 
@@ -71,7 +71,7 @@ export function MarineTracker() {
                   <span className="text-[10px] text-blue-400 uppercase tracking-wider font-bold">Live AIS</span>
                 </div>
                 <p className="text-lg font-black text-foreground">48+</p>
-                <p className="text-[10px] text-muted-foreground">Savas gemisi / Korfez</p>
+                <p className="text-[10px] text-muted-foreground">Savaş gemisi / Körfez</p>
               </div>
               <div className="bg-card/80 border border-border rounded-lg px-3 py-2.5">
                 <div className="flex items-center gap-2 mb-1">
@@ -79,28 +79,28 @@ export function MarineTracker() {
                   <span className="text-[10px] text-cyan-400 uppercase tracking-wider font-bold">Petrol Tanker</span>
                 </div>
                 <p className="text-lg font-black text-foreground">120+</p>
-                <p className="text-[10px] text-muted-foreground">Gunluk transit</p>
+                <p className="text-[10px] text-muted-foreground">Günlük transit</p>
               </div>
               <div className="bg-card/80 border border-border rounded-lg px-3 py-2.5">
                 <div className="flex items-center gap-2 mb-1">
                   <Ship size={12} className="text-orange-500" />
-                  <span className="text-[10px] text-orange-400 uppercase tracking-wider font-bold">Hurmuz Bogazi</span>
+                  <span className="text-[10px] text-orange-400 uppercase tracking-wider font-bold">Hürmüz Boğazı</span>
                 </div>
                 <p className="text-lg font-black text-foreground">21M bbl</p>
-                <p className="text-[10px] text-muted-foreground">Gunluk petrol akisi</p>
+                <p className="text-[10px] text-muted-foreground">Günlük petrol akışı</p>
               </div>
               <div className="bg-card/80 border border-border rounded-lg px-3 py-2.5">
                 <div className="flex items-center gap-2 mb-1">
                   <Ship size={12} className="text-yellow-500" />
                   <span className="text-[10px] text-yellow-400 uppercase tracking-wider font-bold">Transit Durumu</span>
                 </div>
-                <p className="text-sm font-bold text-yellow-400">Yuksek Risk</p>
+                <p className="text-sm font-bold text-yellow-400">Yüksek Risk</p>
                 <p className="text-[10px] text-muted-foreground">Abluka tehdidi aktif</p>
               </div>
             </div>
 
             <p className="text-[10px] text-zinc-600 mt-3">
-              Veri kaynagi: MarineTraffic AIS. Askeri gemiler AIS kapatabilir — gercek sayi daha yuksek olabilir.
+              Veri kaynağı: MarineTraffic AIS. Askerî gemiler AIS kapatabilir — gerçek sayı daha yüksek olabilir.
             </p>
           </>
         )}

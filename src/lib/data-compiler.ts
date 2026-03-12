@@ -42,12 +42,12 @@ function detectImportance(text: string): "CRITICAL" | "HIGH" | "MEDIUM" | "LOW" 
 
 function detectCategory(text: string): string {
   const lower = text.toLowerCase();
-  if (/bomba|roket|fuze|hava saldiri|airstrike|missile|drone|dron/.test(lower)) return "ASKERI";
-  if (/sivil|yarali|oldu|kayip|killed|casualt/.test(lower)) return "SIVIL";
-  if (/protesto|gosterici|protest|rally/.test(lower)) return "PROTESTO";
-  if (/nukleer|nuclear|zenginlestir/.test(lower)) return "NUKLEER";
-  if (/diplomasi|gorusme|diplomat|anlasma|summit|treaty/.test(lower)) return "DIPLOMASI";
-  if (/yaptir|ambargo|sanction|embargo/.test(lower)) return "EKONOMI";
+  if (/bomba|roket|füze|hava saldırı|airstrike|missile|drone|dron/.test(lower)) return "ASKERI";
+  if (/sivil|yaralı|öldü|kayıp|killed|casualt/.test(lower)) return "SIVIL";
+  if (/protesto|gösterici|protest|rally/.test(lower)) return "PROTESTO";
+  if (/nükleer|nuclear|zenginleştir/.test(lower)) return "NUKLEER";
+  if (/diplomasi|görüşme|diplomat|anlaşma|summit|treaty/.test(lower)) return "DIPLOMASI";
+  if (/yaptır|ambargo|sanction|embargo/.test(lower)) return "EKONOMI";
   return "GENEL";
 }
 
@@ -249,29 +249,29 @@ async function generateWeeklyReport(): Promise<number> {
   const totalCasualties = (sums.civilianCasualties || 0) + (sums.militaryCasualties || 0);
 
   const content = [
-    `# Haftalik Rapor: ${periodStr}`,
+    `# Haftalık Rapor: ${periodStr}`,
     "",
-    "## Ozet",
-    `Bu hafta **${newsCount}** haber makalesi, **${eventCount}** savas olayi ve **${timelineCount}** zaman cizelgesi girdisi kaydedildi.`,
+    "## Özet",
+    `Bu hafta **${newsCount}** haber makalesi, **${eventCount}** savaş olayı ve **${timelineCount}** zaman çizelgesi girdisi kaydedildi.`,
     "",
-    "## Kayiplar",
-    `- Sivil kayip: ${sums.civilianCasualties || 0}`,
-    `- Askeri kayip: ${sums.militaryCasualties || 0}`,
-    `- Yarali: ${sums.injured || 0}`,
+    "## Kayıplar",
+    `- Sivil kayıp: ${sums.civilianCasualties || 0}`,
+    `- Askerî kayıp: ${sums.militaryCasualties || 0}`,
+    `- Yaralı: ${sums.injured || 0}`,
     `- Yerinden edilen: ${sums.displaced || 0}`,
     "",
-    "## Istatistikler",
+    "## İstatistikler",
     `- Toplam haber: ${newsCount}`,
     `- Toplam olay: ${eventCount}`,
-    `- Toplam zaman cizelgesi: ${timelineCount}`,
-    `- Toplam kayip: ${totalCasualties}`,
+    `- Toplam zaman çizelgesi: ${timelineCount}`,
+    `- Toplam kayıp: ${totalCasualties}`,
   ].join("\n");
 
-  const summary = `${periodStr} donemi: ${newsCount} haber, ${eventCount} olay, ${totalCasualties} kayip raporlandi.`;
+  const summary = `${periodStr} dönemi: ${newsCount} haber, ${eventCount} olay, ${totalCasualties} kayıp raporlandı.`;
 
   await prisma.report.create({
     data: {
-      title: `Haftalik Rapor - ${periodStr}`,
+      title: `Haftalık Rapor - ${periodStr}`,
       type: "HAFTALIK",
       content,
       summary,

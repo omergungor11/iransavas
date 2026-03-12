@@ -11,9 +11,9 @@ const SEVERITY_COLORS: Record<string, string> = {
 };
 
 const SEVERITY_LABELS: Record<string, string> = {
-  DUSUK: "Dusuk",
+  DUSUK: "Düşük",
   ORTA: "Orta",
-  YUKSEK: "Yuksek",
+  YUKSEK: "Yüksek",
   KRITIK: "Kritik",
 };
 

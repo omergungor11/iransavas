@@ -1,8 +1,8 @@
 import { createMetadata } from "@/lib/seo";
 
 export const metadata = createMetadata({
-  title: "Interaktif Harita",
-  description: "Iran savasi olaylarini interaktif harita uzerinde takip edin. Catismalar, hava saldirilari ve askeri operasyonlar.",
+  title: "İnteraktif Harita",
+  description: "İran savaşı olaylarını interaktif harita üzerinde takip edin. Çatışmalar, hava saldırıları ve askerî operasyonlar.",
   path: "/harita",
 });
 

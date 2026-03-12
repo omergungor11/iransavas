@@ -1,18 +1,18 @@
 import { cn } from "@/lib/utils";
 
 const severities = [
-  { label: "Dusuk", color: "#3b82f6" },
+  { label: "Düşük", color: "#3b82f6" },
   { label: "Orta", color: "#eab308" },
-  { label: "Yuksek", color: "#f97316" },
+  { label: "Yüksek", color: "#f97316" },
   { label: "Kritik", color: "#ef4444" },
 ];
 
 const eventTypes = [
-  { label: "Catisma", icon: "⚔" },
-  { label: "Hava Saldirisi", icon: "✈" },
+  { label: "Çatışma", icon: "⚔" },
+  { label: "Hava Saldırısı", icon: "✈" },
   { label: "Deniz Op.", icon: "⚓" },
   { label: "Diplomasi", icon: "🤝" },
-  { label: "Insani Kriz", icon: "🏥" },
+  { label: "İnsanî Kriz", icon: "🏥" },
 ];
 
 interface MapLegendProps {
@@ -28,7 +28,7 @@ export function MapLegend({ inline = false }: MapLegendProps) {
   return (
     <div className={wrapper}>
       <div className={cn("rounded-lg border border-white/10 p-3 backdrop-blur-sm", inline ? "bg-white/5" : "bg-gray-900/90")}>
-        <p className="mb-2 text-xs font-semibold uppercase tracking-wider text-gray-400">Siddet</p>
+        <p className="mb-2 text-xs font-semibold uppercase tracking-wider text-gray-400">Şiddet</p>
         <ul className="space-y-1">
           {severities.map((s) => (
             <li key={s.label} className="flex items-center gap-2">
@@ -39,7 +39,7 @@ export function MapLegend({ inline = false }: MapLegendProps) {
         </ul>
       </div>
       <div className={cn("rounded-lg border border-white/10 p-3 backdrop-blur-sm", inline ? "bg-white/5" : "bg-gray-900/90")}>
-        <p className="mb-2 text-xs font-semibold uppercase tracking-wider text-gray-400">Tur</p>
+        <p className="mb-2 text-xs font-semibold uppercase tracking-wider text-gray-400">Tür</p>
         <ul className="space-y-1">
           {eventTypes.map((e) => (
             <li key={e.label} className="flex items-center gap-2">

@@ -25,8 +25,8 @@ export function MiniMapPreview() {
             <MapPin className="h-5 w-5 text-red-500" />
           </div>
           <div>
-            <h2 className="text-xl font-bold">Savas Haritasi</h2>
-            <p className="text-sm text-muted-foreground">Canli olay takibi — Iran bolgesi</p>
+            <h2 className="text-xl font-bold">Savaş Haritası</h2>
+            <p className="text-sm text-muted-foreground">Canlı olay takibi — İran bölgesi</p>
           </div>
         </div>
         <Link

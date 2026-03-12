@@ -1,8 +1,8 @@
 import { createMetadata } from "@/lib/seo";
 
 export const metadata = createMetadata({
-  title: "Canli Yayin",
-  description: "Iran savasi canli yayin akislari. Sahadaki gelismeleri aninda takip edin.",
+  title: "Canlı Yayın",
+  description: "İran savaşı canlı yayın akışları. Sahadaki gelişmeleri anında takip edin.",
   path: "/canli-yayin",
 });
 

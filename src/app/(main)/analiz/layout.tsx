@@ -1,8 +1,8 @@
 import { createMetadata } from "@/lib/seo";
 
 export const metadata = createMetadata({
-  title: "Analiz & Istatistikler",
-  description: "Iran savasi istatistikleri, olay dagilimi, kayip verileri ve trend analizleri.",
+  title: "Analiz & İstatistikler",
+  description: "İran savaşı istatistikleri, olay dağılımı, kayıp verileri ve trend analizleri.",
   path: "/analiz",
 });
 

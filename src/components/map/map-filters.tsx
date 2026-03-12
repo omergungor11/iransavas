@@ -17,24 +17,24 @@ interface MapFiltersProps {
 }
 
 const EVENT_TYPES = [
-  { value: "ALL", label: "Tumu" },
-  { value: "CATISMA", label: "Catisma" },
-  { value: "HAVA_SALDIRISI", label: "Hava Saldirisi" },
+  { value: "ALL", label: "Tümü" },
+  { value: "CATISMA", label: "Çatışma" },
+  { value: "HAVA_SALDIRISI", label: "Hava Saldırısı" },
   { value: "DENIZ_OPERASYONU", label: "Deniz Op." },
   { value: "DIPLOMASI", label: "Diplomasi" },
-  { value: "INSANI_KRIZ", label: "Insani Kriz" },
+  { value: "INSANI_KRIZ", label: "İnsanî Kriz" },
 ];
 
 const SEVERITIES = [
-  { value: "ALL", label: "Tumu" },
-  { value: "DUSUK", label: "Dusuk", color: "bg-blue-500" },
+  { value: "ALL", label: "Tümü" },
+  { value: "DUSUK", label: "Düşük", color: "bg-blue-500" },
   { value: "ORTA", label: "Orta", color: "bg-yellow-500" },
-  { value: "YUKSEK", label: "Yuksek", color: "bg-orange-500" },
+  { value: "YUKSEK", label: "Yüksek", color: "bg-orange-500" },
   { value: "KRITIK", label: "Kritik", color: "bg-red-500" },
 ];
 
 const DATE_RANGES = [
-  { value: "all", label: "Tum Zamanlar" },
+  { value: "all", label: "Tüm Zamanlar" },
   { value: "last_week", label: "Son Hafta" },
   { value: "last_month", label: "Son Ay" },
 ];

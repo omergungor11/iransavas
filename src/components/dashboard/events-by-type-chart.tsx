@@ -4,12 +4,12 @@ import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContaine
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 const TYPE_LABELS: Record<string, string> = {
-  CATISMA: "Catisma",
-  HAVA_SALDIRISI: "Hava Saldirisi",
+  CATISMA: "Çatışma",
+  HAVA_SALDIRISI: "Hava Saldırısı",
   DENIZ_OPERASYONU: "Deniz Op.",
   DIPLOMASI: "Diplomasi",
-  INSANI_KRIZ: "Insani Kriz",
-  DIGER: "Diger",
+  INSANI_KRIZ: "İnsanî Kriz",
+  DIGER: "Diğer",
 };
 
 interface EventsByTypeChartProps {

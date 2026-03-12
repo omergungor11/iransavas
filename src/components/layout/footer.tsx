@@ -5,7 +5,7 @@ const quickLinks = [
   { label: "Ana Sayfa", href: "/" },
   { label: "Haberler", href: "/haberler" },
   { label: "Harita", href: "/harita" },
-  { label: "Zaman Cizelgesi", href: "/zaman-cizelgesi" },
+  { label: "Zaman Çizelgesi", href: "/zaman-cizelgesi" },
   { label: "Analiz", href: "/analiz" },
   { label: "Raporlar", href: "/raporlar" },
 ] as const;
@@ -36,14 +36,14 @@ export function Footer() {
               aria-hidden="true"
             />
             <p className="text-xs text-yellow-200/70 leading-relaxed">
-              <span className="font-semibold text-yellow-400">Uyari: </span>
-              Bu platform yalnizca{" "}
+              <span className="font-semibold text-yellow-400">Uyarı: </span>
+              Bu platform yalnızca{" "}
               <span className="font-medium text-yellow-300/80">
-                bilgi amaclıdır
+                bilgi amaçlıdır
               </span>{" "}
-              ve resmi bir haber kaynagi degildir. Paylasilan icerikler cesitli
-              medya kuruluslari ve acik kaynaklardan derlenmektedir. Kesin bilgi
-              icin resmi kaynaklara basvurunuz.
+              ve resmî bir haber kaynağı değildir. Paylaşılan içerikler çeşitli
+              medya kuruluşları ve açık kaynaklardan derlenmektedir. Kesin bilgi
+              için resmî kaynaklara başvurunuz.
             </p>
           </div>
         </div>
@@ -57,7 +57,7 @@ export function Footer() {
             <Link
               href="/"
               className="inline-flex items-center gap-2.5 mb-4 group"
-              aria-label="Iran Savas Ana Sayfa"
+              aria-label="İran Savaş Ana Sayfa"
             >
               <div className="flex items-center justify-center w-8 h-8 rounded bg-red-700 group-hover:bg-red-600 transition-colors duration-200">
                 <Target
@@ -68,13 +68,13 @@ export function Footer() {
                 />
               </div>
               <span className="text-lg font-black tracking-wider text-foreground uppercase">
-                Iran <span className="text-red-500">Savas</span>
+                İran <span className="text-red-500">Savaş</span>
               </span>
             </Link>
             <p className="text-sm leading-relaxed text-muted-foreground max-w-xs">
-              Iran savasi hakkinda kapsamli haber, analiz ve raporlama
-              platformu. Canli harita, zaman cizelgesi ve AI destekli
-              ozetlerle sahadan anlık bilgi.
+              İran savaşı hakkında kapsamlı haber, analiz ve raporlama
+              platformu. Canlı harita, zaman çizelgesi ve AI destekli
+              özetlerle sahadan anlık bilgi.
             </p>
             <div className="mt-5 flex items-center gap-2">
               <span className="relative flex h-2 w-2">
@@ -82,7 +82,7 @@ export function Footer() {
                 <span className="relative inline-flex rounded-full h-2 w-2 bg-red-500" />
               </span>
               <span className="text-xs font-semibold tracking-widest text-red-400 uppercase">
-                Canli Takip Aktif
+                Canlı Takip Aktif
               </span>
             </div>
           </div>
@@ -90,7 +90,7 @@ export function Footer() {
           {/* Quick links */}
           <div>
             <h3 className="text-xs font-bold tracking-widest text-foreground/80 uppercase mb-4">
-              Hızlı Erisim
+              Hızlı Erişim
             </h3>
             <ul className="space-y-2.5" role="list">
               {quickLinks.map(({ label, href }) => (
@@ -126,7 +126,7 @@ export function Footer() {
                       className="shrink-0 opacity-60"
                       aria-hidden="true"
                     />
-                    <span className="sr-only">(yeni sekmede acilir)</span>
+                    <span className="sr-only">(yeni sekmede açılır)</span>
                   </a>
                 </li>
               ))}
@@ -140,10 +140,10 @@ export function Footer() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
           <div className="flex flex-col sm:flex-row items-center justify-between gap-3">
             <p className="text-xs text-zinc-600">
-              &copy; {currentYear} Iran Savas. Tum haklar saklidir.
+              &copy; {currentYear} İran Savaş. Tüm hakları saklıdır.
             </p>
             <p className="text-xs text-zinc-700 text-center sm:text-right">
-              Bilgi amaclidir — resmi kaynak degildir. Haberler acik
+              Bilgi amaçlıdır — resmî kaynak değildir. Haberler açık
               kaynaklardan derlenmektedir.
             </p>
           </div>

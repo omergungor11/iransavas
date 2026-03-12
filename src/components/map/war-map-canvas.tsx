@@ -36,13 +36,13 @@ const SEVERITY_PRIORITY: Record<string, number> = {
 };
 
 const EVENT_TYPE_LABELS: Record<string, string> = {
-  CATISMA: "Catisma",
-  HAVA_SALDIRISI: "Hava Saldirisi",
+  CATISMA: "Çatışma",
+  HAVA_SALDIRISI: "Hava Saldırısı",
   DENIZ_OPERASYONU: "Deniz Operasyonu",
   DIPLOMASI: "Diplomasi",
-  INSANI_KRIZ: "Insani Kriz",
+  INSANI_KRIZ: "İnsanî Kriz",
   PATLAMA: "Patlama",
-  DIGER: "Diger",
+  DIGER: "Diğer",
 };
 
 const IRAN_CENTER: [number, number] = [32.4279, 53.688];

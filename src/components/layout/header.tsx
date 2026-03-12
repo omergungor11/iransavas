@@ -3,18 +3,25 @@
 import { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Menu, X, Target, Radio } from "lucide-react";
-import { ThemeToggle } from "./theme-toggle";
+import {
+  Menu,
+  X,
+  Target,
+  Newspaper,
+  Map,
+  Video,
+  BarChart3,
+  FileText,
+  Clock,
+} from "lucide-react";
 
 const navLinks = [
-  { label: "Durum", href: "/#situation" },
-  { label: "Piyasalar", href: "/#markets" },
-  { label: "Askeri", href: "/#military" },
-  { label: "OSINT", href: "/#osint" },
-  { label: "Haberler", href: "/haberler" },
-  { label: "Harita", href: "/harita" },
-  { label: "Canli Yayin", href: "/canli-yayin" },
-  { label: "Analiz", href: "/analiz" },
+  { label: "Haberler", href: "/haberler", icon: Newspaper },
+  { label: "Harita", href: "/harita", icon: Map },
+  { label: "Canlı Yayın", href: "/canli-yayin", icon: Video },
+  { label: "Zaman Çizelgesi", href: "/zaman-cizelgesi", icon: Clock },
+  { label: "Analiz", href: "/analiz", icon: BarChart3 },
+  { label: "Raporlar", href: "/raporlar", icon: FileText },
 ] as const;
 
 export function Header() {
@@ -25,69 +32,46 @@ export function Header() {
     href === "/" ? pathname === "/" : pathname.startsWith(href);
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/80">
-      {/* Top alert bar */}
-      <div className="bg-red-700/20 border-b border-red-800/40">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between py-1.5">
-            <div className="flex items-center gap-2">
-              <span className="relative flex h-2 w-2">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-500 opacity-75" />
-                <span className="relative inline-flex rounded-full h-2 w-2 bg-red-500" />
-              </span>
-              <span className="text-xs font-semibold tracking-widest text-red-400 uppercase">
-                Canli Yayin
-              </span>
-            </div>
-            <p className="text-xs text-muted-foreground hidden sm:block">
-              Son dakika haberleri ve sahadaki gelismeler icin takipte kalin
-            </p>
-          </div>
-        </div>
-      </div>
-
-      {/* Main header */}
+    <header className="sticky top-0 z-50 w-full bg-zinc-950/95 backdrop-blur-md border-b border-white/[0.06]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex h-16 items-center justify-between">
+        <div className="flex h-14 items-center justify-between">
           {/* Logo */}
           <Link
             href="/"
-            className="flex items-center gap-3 group"
-            aria-label="Iran Savas Ana Sayfa"
+            className="flex items-center gap-2.5 group shrink-0"
+            aria-label="İran Savaş Ana Sayfa"
           >
-            <div className="relative flex items-center justify-center w-9 h-9 rounded bg-red-700 group-hover:bg-red-600 transition-colors duration-200">
-              <Target
-                size={20}
-                className="text-white"
-                strokeWidth={2.5}
-                aria-hidden="true"
-              />
+            <div className="flex items-center justify-center w-8 h-8 rounded-md bg-red-600 group-hover:bg-red-500 transition-colors">
+              <Target size={16} className="text-white" strokeWidth={2.5} />
             </div>
-            <div className="flex flex-col leading-none">
-              <span className="text-xl font-black tracking-wider text-foreground uppercase">
-                Iran{" "}
-                <span className="text-red-500">Savas</span>
+            <div className="flex items-center gap-1.5">
+              <span className="text-base font-black tracking-wide text-white uppercase">
+                İran<span className="text-red-500">Savaş</span>
               </span>
-              <span className="text-[10px] font-medium tracking-[0.2em] text-muted-foreground uppercase">
-                Haber & Analiz
+              <span className="hidden sm:inline-flex items-center gap-1 px-1.5 py-0.5 rounded bg-red-600/20 border border-red-500/30">
+                <span className="h-1.5 w-1.5 rounded-full bg-red-500 animate-pulse" />
+                <span className="text-[9px] font-bold tracking-widest text-red-400 uppercase">
+                  Canlı
+                </span>
               </span>
             </div>
           </Link>
 
           {/* Desktop nav */}
-          <nav className="hidden md:flex items-center gap-1" aria-label="Ana navigasyon">
+          <nav
+            className="hidden md:flex items-center gap-0.5"
+            aria-label="Ana navigasyon"
+          >
             {navLinks.map(({ label, href }) => (
               <Link
                 key={href}
                 href={href}
                 className={[
-                  "relative px-3 py-2 text-sm font-medium rounded transition-colors duration-150",
-                  "hover:text-foreground hover:bg-muted",
+                  "px-3 py-1.5 text-[13px] font-medium rounded-md transition-all duration-150",
                   isActive(href)
-                    ? "text-foreground after:absolute after:bottom-0 after:left-3 after:right-3 after:h-[2px] after:rounded-full after:bg-red-600"
-                    : "text-muted-foreground",
+                    ? "text-white bg-white/10"
+                    : "text-zinc-400 hover:text-white hover:bg-white/[0.06]",
                 ]
-                  .filter(Boolean)
                   .join(" ")}
                 aria-current={isActive(href) ? "page" : undefined}
               >
@@ -96,36 +80,17 @@ export function Header() {
             ))}
           </nav>
 
-          {/* Right side: LIVE badge + mobile toggle */}
-          <div className="flex items-center gap-3">
-            <ThemeToggle />
-            <div
-              className="hidden sm:flex items-center gap-1.5 px-2.5 py-1 rounded border border-red-800/60 bg-red-900/30"
-              aria-label="Canli yayin aktif"
-            >
-              <Radio
-                size={12}
-                className="text-red-400 animate-pulse"
-                aria-hidden="true"
-              />
-              <span className="text-[11px] font-bold tracking-widest text-red-400 uppercase">
-                Canli
-              </span>
-            </div>
-
+          {/* Right side */}
+          <div className="flex items-center gap-2">
             <button
               type="button"
               onClick={() => setMobileOpen((prev) => !prev)}
-              className="md:hidden flex items-center justify-center w-9 h-9 rounded text-muted-foreground hover:text-foreground hover:bg-muted transition-colors duration-150"
-              aria-label={mobileOpen ? "Menuyu kapat" : "Menuyu ac"}
+              className="md:hidden flex items-center justify-center w-9 h-9 rounded-md text-zinc-400 hover:text-white hover:bg-white/[0.06] transition-colors"
+              aria-label={mobileOpen ? "Menüyü kapat" : "Menüyü aç"}
               aria-expanded={mobileOpen}
               aria-controls="mobile-menu"
             >
-              {mobileOpen ? (
-                <X size={20} aria-hidden="true" />
-              ) : (
-                <Menu size={20} aria-hidden="true" />
-              )}
+              {mobileOpen ? <X size={20} /> : <Menu size={20} />}
             </button>
           </div>
         </div>
@@ -135,39 +100,29 @@ export function Header() {
       {mobileOpen && (
         <div
           id="mobile-menu"
-          className="md:hidden border-t border-border bg-background"
+          className="md:hidden border-t border-white/[0.06] bg-zinc-950"
           role="navigation"
           aria-label="Mobil navigasyon"
         >
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 py-3 flex flex-col gap-1">
-            {navLinks.map(({ label, href }) => (
+          <div className="max-w-7xl mx-auto px-4 py-3 grid grid-cols-2 gap-1">
+            {navLinks.map(({ label, href, icon: Icon }) => (
               <Link
                 key={href}
                 href={href}
                 onClick={() => setMobileOpen(false)}
                 className={[
-                  "flex items-center gap-3 px-3 py-2.5 rounded text-sm font-medium transition-colors duration-150",
+                  "flex items-center gap-2.5 px-3 py-3 rounded-lg text-sm font-medium transition-colors",
                   isActive(href)
-                    ? "text-foreground bg-muted border-l-2 border-red-600 pl-[10px]"
-                    : "text-muted-foreground hover:text-foreground hover:bg-muted/60",
+                    ? "text-white bg-white/10"
+                    : "text-zinc-400 hover:text-white hover:bg-white/[0.06]",
                 ]
-                  .filter(Boolean)
                   .join(" ")}
                 aria-current={isActive(href) ? "page" : undefined}
               >
+                <Icon size={16} className="shrink-0" />
                 {label}
               </Link>
             ))}
-
-            <div className="flex items-center gap-1.5 mt-2 px-3 py-2">
-              <span className="relative flex h-2 w-2">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-500 opacity-75" />
-                <span className="relative inline-flex rounded-full h-2 w-2 bg-red-500" />
-              </span>
-              <span className="text-xs font-bold tracking-widest text-red-400 uppercase">
-                Canli Yayin Aktif
-              </span>
-            </div>
           </div>
         </div>
       )}
