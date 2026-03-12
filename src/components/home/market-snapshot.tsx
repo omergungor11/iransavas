@@ -28,7 +28,7 @@ export function MarketSnapshot() {
   const [expanded, setExpanded] = useState(true);
 
   return (
-    <section id="markets" className="border-y border-zinc-800 bg-zinc-950">
+    <section id="markets" className="border-y border-border bg-background">
       <div className="mx-auto max-w-7xl px-4 py-6">
         {/* Header */}
         <div className="flex items-center justify-between mb-4">
@@ -38,19 +38,19 @@ export function MarketSnapshot() {
             </div>
             <div>
               <div className="flex items-center gap-2">
-                <h2 className="text-lg font-bold text-white">Piyasa Gorunumu</h2>
+                <h2 className="text-lg font-bold text-foreground">Piyasa Gorunumu</h2>
                 <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-green-600 text-white uppercase tracking-wider">
                   Markets
                 </span>
               </div>
-              <p className="text-xs text-zinc-400">Iran catismasindan etkilenen kuresel piyasalar</p>
+              <p className="text-xs text-muted-foreground">Iran catismasindan etkilenen kuresel piyasalar</p>
             </div>
           </div>
           <button
             onClick={() => setExpanded(!expanded)}
             aria-expanded={expanded}
             aria-label={expanded ? "Piyasa panelini kapat" : "Piyasa panelini ac"}
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded text-xs font-medium border border-zinc-700 hover:bg-zinc-800 transition-colors text-zinc-400"
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded text-xs font-medium border border-border hover:bg-muted transition-colors text-muted-foreground"
           >
             {expanded ? "Kapat" : "Ac"}
             {expanded ? <ChevronUp size={14} aria-hidden="true" /> : <ChevronDown size={14} aria-hidden="true" />}
@@ -71,8 +71,8 @@ export function MarketSnapshot() {
                 >
                   <div className="flex items-center justify-between mb-1">
                     <div>
-                      <p className="text-[10px] text-zinc-500 uppercase tracking-wider font-medium">{m.symbol}</p>
-                      <p className="text-xs text-zinc-400">{m.name}</p>
+                      <p className="text-[10px] text-muted-foreground uppercase tracking-wider font-medium">{m.symbol}</p>
+                      <p className="text-xs text-muted-foreground">{m.name}</p>
                     </div>
                     {m.positive ? (
                       <TrendingUp size={16} className="text-green-500" />
@@ -80,7 +80,7 @@ export function MarketSnapshot() {
                       <TrendingDown size={16} className="text-red-500" />
                     )}
                   </div>
-                  <p className="text-xl font-black text-white">${m.price}</p>
+                  <p className="text-xl font-black text-foreground">${m.price}</p>
                   <div className="flex items-center gap-2 mt-1">
                     <span className={`text-xs font-bold ${m.positive ? "text-green-400" : "text-red-400"}`}>
                       {m.change}

@@ -64,7 +64,7 @@ export function HeroSection() {
                 <p className="text-sm font-semibold text-white leading-snug">
                   {breaking.title}
                 </p>
-                <p className="text-[10px] text-zinc-500 mt-0.5">
+                <p className="text-[10px] text-muted-foreground mt-0.5">
                   Kaynak: {breaking.source}
                 </p>
               </div>
@@ -78,7 +78,7 @@ export function HeroSection() {
             Panosu
           </h1>
 
-          <p className="mt-4 text-base md:text-lg text-zinc-300 max-w-2xl leading-relaxed">
+          <p className="mt-4 text-base md:text-lg text-foreground/80 max-w-2xl leading-relaxed">
             Askeri operasyonlar, piyasa etkileri, OSINT istihbarati ve resmi aciklamalar —
             gercek zamanli catisma izleme platformu.
           </p>
@@ -89,7 +89,7 @@ export function HeroSection() {
               (src) => (
                 <span
                   key={src}
-                  className="px-2 py-0.5 rounded text-[10px] font-medium bg-zinc-800/80 border border-zinc-700/50 text-zinc-400"
+                  className="px-2 py-0.5 rounded text-[10px] font-medium bg-muted/80 border border-border/50 text-muted-foreground"
                 >
                   {src}
                 </span>
@@ -115,7 +115,7 @@ export function HeroSection() {
                 }
               }}
               aria-label="Sayfayi paylas"
-              className="flex items-center gap-1.5 px-3 py-1.5 rounded text-xs font-medium border border-zinc-700 hover:bg-zinc-800 transition-colors text-zinc-400"
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded text-xs font-medium border border-border hover:bg-muted transition-colors text-muted-foreground"
             >
               <Share2 size={12} />
               Paylas

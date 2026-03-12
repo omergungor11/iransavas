@@ -22,8 +22,8 @@ export default function MainError({
             <AlertTriangle className="h-7 w-7 text-red-500" />
           </div>
         </div>
-        <h2 className="text-2xl font-bold text-white mb-2">Bir hata olustu</h2>
-        <p className="text-sm text-zinc-400 mb-6">
+        <h2 className="text-2xl font-bold text-foreground mb-2">Bir hata olustu</h2>
+        <p className="text-sm text-muted-foreground mb-6">
           Sayfa yuklenirken beklenmeyen bir hata meydana geldi. Lutfen tekrar deneyin.
         </p>
         <button

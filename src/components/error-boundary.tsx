@@ -34,21 +34,21 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundarySt
   render() {
     if (this.state.hasError) {
       return (
-        <div className="border border-zinc-800 bg-zinc-900/50 rounded-lg p-6 mx-4 my-4">
+        <div className="border border-border bg-card/50 rounded-lg p-6 mx-4 my-4">
           <div className="flex items-start gap-3">
             <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-red-500/10">
               <AlertTriangle className="h-5 w-5 text-red-500" />
             </div>
             <div className="flex-1 min-w-0">
-              <h3 className="text-sm font-bold text-white">
+              <h3 className="text-sm font-bold text-foreground">
                 {this.props.fallbackTitle || "Bu bolum yuklenemedi"}
               </h3>
-              <p className="text-xs text-zinc-500 mt-1">
+              <p className="text-xs text-muted-foreground mt-1">
                 Bir hata olustu. Lutfen tekrar deneyin.
               </p>
               <button
                 onClick={this.handleRetry}
-                className="mt-3 flex items-center gap-1.5 px-3 py-1.5 rounded text-xs font-medium border border-zinc-700 hover:bg-zinc-800 transition-colors text-zinc-400"
+                className="mt-3 flex items-center gap-1.5 px-3 py-1.5 rounded text-xs font-medium border border-border hover:bg-muted transition-colors text-muted-foreground"
               >
                 <RefreshCw size={12} />
                 Tekrar Dene

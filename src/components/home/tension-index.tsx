@@ -68,7 +68,7 @@ export function TensionIndex() {
   }, []);
 
   return (
-    <section className="border-y border-zinc-800 bg-zinc-950">
+    <section className="border-y border-border bg-background">
       <div className="mx-auto max-w-7xl px-4 py-5">
         {/* Header row */}
         <div className="flex items-center justify-between mb-3">
@@ -77,10 +77,10 @@ export function TensionIndex() {
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-500 opacity-75" />
               <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-red-500" />
             </span>
-            <h2 className="text-sm font-bold text-white tracking-wide">
+            <h2 className="text-sm font-bold text-foreground tracking-wide">
               Global Gerilim Endeksi
             </h2>
-            <span className="text-[10px] text-zinc-500">{updated}</span>
+            <span className="text-[10px] text-muted-foreground">{updated}</span>
           </div>
           <div className="flex items-center gap-2">
             <Wifi size={12} className="text-zinc-600" />
@@ -94,7 +94,7 @@ export function TensionIndex() {
         </div>
 
         {/* Progress bar */}
-        <div className="relative h-2 rounded-full bg-zinc-800 overflow-hidden mb-4">
+        <div className="relative h-2 rounded-full bg-muted overflow-hidden mb-4">
           <div
             className={`absolute inset-y-0 left-0 rounded-full bg-gradient-to-r ${getBarGradient(data.score)} transition-all duration-1000`}
             style={{ width: `${data.score}%` }}
@@ -108,11 +108,11 @@ export function TensionIndex() {
             return (
               <div
                 key={ind.label}
-                className="bg-zinc-900/80 border border-zinc-800 rounded-lg px-3 py-2.5"
+                className="bg-card/80 border border-border rounded-lg px-3 py-2.5"
               >
                 <div className="flex items-center gap-2 mb-1">
-                  <Icon size={12} className="text-zinc-500" />
-                  <span className="text-[10px] text-zinc-500 uppercase tracking-wider font-medium">
+                  <Icon size={12} className="text-muted-foreground" />
+                  <span className="text-[10px] text-muted-foreground uppercase tracking-wider font-medium">
                     {ind.label}
                   </span>
                 </div>

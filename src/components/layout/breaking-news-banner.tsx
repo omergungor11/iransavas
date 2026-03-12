@@ -89,7 +89,7 @@ export function BreakingNewsBanner() {
         <button
           type="button"
           onClick={dismiss}
-          className="shrink-0 flex items-center justify-center w-7 h-7 rounded text-zinc-400 hover:text-white hover:bg-red-900/50 transition-colors"
+          className="shrink-0 flex items-center justify-center w-7 h-7 rounded text-muted-foreground hover:text-foreground hover:bg-red-900/50 transition-colors"
           aria-label="Son dakika bannerini kapat"
         >
           <X size={16} aria-hidden="true" />

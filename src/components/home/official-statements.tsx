@@ -40,7 +40,7 @@ export function OfficialStatements() {
   const [expanded, setExpanded] = useState(true);
 
   return (
-    <section className="border-y border-zinc-800 bg-zinc-950">
+    <section className="border-y border-border bg-background">
       <div className="mx-auto max-w-7xl px-4 py-6">
         {/* Header */}
         <div className="flex items-center justify-between mb-5">
@@ -49,15 +49,15 @@ export function OfficialStatements() {
               <Shield className="h-5 w-5 text-emerald-500" />
             </div>
             <div>
-              <h2 className="text-lg font-bold text-white">Resmi Aciklamalar & Kuvvet Konuslanmasi</h2>
-              <p className="text-xs text-zinc-400">Hukumet aciklamalari, yaptrimlar ve askeri konuslanmalar</p>
+              <h2 className="text-lg font-bold text-foreground">Resmi Aciklamalar & Kuvvet Konuslanmasi</h2>
+              <p className="text-xs text-muted-foreground">Hukumet aciklamalari, yaptrimlar ve askeri konuslanmalar</p>
             </div>
           </div>
           <button
             onClick={() => setExpanded(!expanded)}
             aria-expanded={expanded}
             aria-label={expanded ? "Resmi aciklamalar panelini kapat" : "Resmi aciklamalar panelini ac"}
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded text-xs font-medium border border-zinc-700 hover:bg-zinc-800 transition-colors text-zinc-400"
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded text-xs font-medium border border-border hover:bg-muted transition-colors text-muted-foreground"
           >
             {expanded ? "Kapat" : "Ac"}
             {expanded ? <ChevronUp size={14} aria-hidden="true" /> : <ChevronDown size={14} aria-hidden="true" />}
@@ -68,7 +68,7 @@ export function OfficialStatements() {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             {/* Force Posture */}
             <div>
-              <h3 className="text-sm font-bold text-white mb-3 flex items-center gap-2">
+              <h3 className="text-sm font-bold text-foreground mb-3 flex items-center gap-2">
                 <Radio size={12} className="text-green-400 animate-pulse" />
                 ABD/Koalisyon Kuvvet Konuslanmasi
               </h3>
@@ -78,17 +78,17 @@ export function OfficialStatements() {
                   return (
                     <div
                       key={asset.name}
-                      className="bg-zinc-900/80 border border-zinc-800 rounded-lg px-3 py-2.5 flex items-start gap-3"
+                      className="bg-card/80 border border-border rounded-lg px-3 py-2.5 flex items-start gap-3"
                     >
-                      <Icon size={16} className="text-zinc-500 mt-0.5 shrink-0" />
+                      <Icon size={16} className="text-muted-foreground mt-0.5 shrink-0" />
                       <div className="flex-1 min-w-0">
                         <div className="flex items-center justify-between gap-2">
-                          <p className="text-xs font-bold text-white truncate">{asset.name}</p>
+                          <p className="text-xs font-bold text-foreground truncate">{asset.name}</p>
                           <span className={`text-[10px] font-bold shrink-0 ${asset.statusColor}`}>
                             {asset.status}
                           </span>
                         </div>
-                        <p className="text-[10px] text-zinc-500">
+                        <p className="text-[10px] text-muted-foreground">
                           {asset.type} — {asset.location}
                         </p>
                       </div>
@@ -100,14 +100,14 @@ export function OfficialStatements() {
 
             {/* Statements */}
             <div>
-              <h3 className="text-sm font-bold text-white mb-3">
+              <h3 className="text-sm font-bold text-foreground mb-3">
                 Resmi Aciklamalar
               </h3>
               <div className="space-y-2">
                 {statements.map((stmt, i) => (
                   <div
                     key={i}
-                    className="bg-zinc-900/80 border border-zinc-800 rounded-lg px-3 py-2.5"
+                    className="bg-card/80 border border-border rounded-lg px-3 py-2.5"
                   >
                     <div className="flex items-center gap-2 mb-1">
                       <span className={`text-[10px] font-bold uppercase tracking-wider ${stmt.sourceColor}`}>
@@ -115,7 +115,7 @@ export function OfficialStatements() {
                       </span>
                       <span className="text-[10px] text-zinc-600">{stmt.time}</span>
                     </div>
-                    <p className="text-xs text-zinc-300">{stmt.title}</p>
+                    <p className="text-xs text-foreground/80">{stmt.title}</p>
                   </div>
                 ))}
               </div>

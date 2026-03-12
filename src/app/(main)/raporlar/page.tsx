@@ -93,11 +93,11 @@ export default function RaporlarPage() {
       ) : error ? (
         <div className="flex flex-col items-center gap-3 py-16">
           <AlertTriangle className="h-8 w-8 text-red-500" />
-          <p className="text-sm font-medium text-white">Raporlar yuklenemedi</p>
-          <p className="text-xs text-zinc-500">Bir hata olustu. Lutfen tekrar deneyin.</p>
+          <p className="text-sm font-medium text-foreground">Raporlar yuklenemedi</p>
+          <p className="text-xs text-muted-foreground">Bir hata olustu. Lutfen tekrar deneyin.</p>
           <button
             onClick={fetchReports}
-            className="mt-2 flex items-center gap-1.5 px-4 py-2 rounded text-sm font-medium border border-zinc-700 hover:bg-zinc-800 transition-colors text-zinc-400"
+            className="mt-2 flex items-center gap-1.5 px-4 py-2 rounded text-sm font-medium border border-border hover:bg-muted transition-colors text-muted-foreground"
           >
             <RefreshCw size={14} />
             Tekrar Dene
@@ -105,8 +105,8 @@ export default function RaporlarPage() {
         </div>
       ) : reports.length === 0 ? (
         <div className="flex flex-col items-center gap-2 py-16">
-          <FileText className="h-8 w-8 text-zinc-600" />
-          <p className="text-sm text-zinc-500">
+          <FileText className="h-8 w-8 text-muted-foreground" />
+          <p className="text-sm text-muted-foreground">
             {filter === "ALL" ? "Henuz rapor yok." : "Bu filtre icin rapor bulunamadi."}
           </p>
           {filter !== "ALL" && (

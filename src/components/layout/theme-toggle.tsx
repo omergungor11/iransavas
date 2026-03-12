@@ -33,7 +33,7 @@ export function ThemeToggle() {
     <button
       onClick={toggle}
       aria-label={theme === "dark" ? "Aydinlik temaya gec" : "Karanlik temaya gec"}
-      className="flex items-center justify-center w-9 h-9 rounded text-zinc-400 hover:text-white hover:bg-zinc-800 transition-colors duration-150"
+      className="flex items-center justify-center w-9 h-9 rounded text-muted-foreground hover:text-foreground hover:bg-muted transition-colors duration-150"
     >
       {theme === "dark" ? (
         <Sun size={18} aria-hidden="true" />

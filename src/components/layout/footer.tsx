@@ -23,7 +23,7 @@ export function Footer() {
 
   return (
     <footer
-      className="border-t border-zinc-800 bg-zinc-950 text-zinc-400"
+      className="border-t border-border bg-background text-muted-foreground"
       role="contentinfo"
     >
       {/* Disclaimer banner */}
@@ -67,11 +67,11 @@ export function Footer() {
                   aria-hidden="true"
                 />
               </div>
-              <span className="text-lg font-black tracking-wider text-white uppercase">
+              <span className="text-lg font-black tracking-wider text-foreground uppercase">
                 Iran <span className="text-red-500">Savas</span>
               </span>
             </Link>
-            <p className="text-sm leading-relaxed text-zinc-500 max-w-xs">
+            <p className="text-sm leading-relaxed text-muted-foreground max-w-xs">
               Iran savasi hakkinda kapsamli haber, analiz ve raporlama
               platformu. Canli harita, zaman cizelgesi ve AI destekli
               ozetlerle sahadan anlık bilgi.
@@ -89,7 +89,7 @@ export function Footer() {
 
           {/* Quick links */}
           <div>
-            <h3 className="text-xs font-bold tracking-widest text-zinc-300 uppercase mb-4">
+            <h3 className="text-xs font-bold tracking-widest text-foreground/80 uppercase mb-4">
               Hızlı Erisim
             </h3>
             <ul className="space-y-2.5" role="list">
@@ -97,7 +97,7 @@ export function Footer() {
                 <li key={href}>
                   <Link
                     href={href}
-                    className="text-sm text-zinc-500 hover:text-white transition-colors duration-150 hover:underline underline-offset-2"
+                    className="text-sm text-muted-foreground hover:text-foreground transition-colors duration-150 hover:underline underline-offset-2"
                   >
                     {label}
                   </Link>
@@ -108,7 +108,7 @@ export function Footer() {
 
           {/* External sources */}
           <div>
-            <h3 className="text-xs font-bold tracking-widest text-zinc-300 uppercase mb-4">
+            <h3 className="text-xs font-bold tracking-widest text-foreground/80 uppercase mb-4">
               Kaynak Medya
             </h3>
             <ul className="space-y-2.5" role="list">
@@ -118,7 +118,7 @@ export function Footer() {
                     href={href}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center gap-1.5 text-sm text-zinc-500 hover:text-white transition-colors duration-150"
+                    className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors duration-150"
                   >
                     {label}
                     <ExternalLink
@@ -136,7 +136,7 @@ export function Footer() {
       </div>
 
       {/* Bottom bar */}
-      <div className="border-t border-zinc-800/60">
+      <div className="border-t border-border/60">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
           <div className="flex flex-col sm:flex-row items-center justify-between gap-3">
             <p className="text-xs text-zinc-600">

@@ -25,7 +25,7 @@ export function Header() {
     href === "/" ? pathname === "/" : pathname.startsWith(href);
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-zinc-800 bg-zinc-950/95 backdrop-blur supports-[backdrop-filter]:bg-zinc-950/80">
+    <header className="sticky top-0 z-50 w-full border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/80">
       {/* Top alert bar */}
       <div className="bg-red-700/20 border-b border-red-800/40">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -39,7 +39,7 @@ export function Header() {
                 Canli Yayin
               </span>
             </div>
-            <p className="text-xs text-zinc-400 hidden sm:block">
+            <p className="text-xs text-muted-foreground hidden sm:block">
               Son dakika haberleri ve sahadaki gelismeler icin takipte kalin
             </p>
           </div>
@@ -64,11 +64,11 @@ export function Header() {
               />
             </div>
             <div className="flex flex-col leading-none">
-              <span className="text-xl font-black tracking-wider text-white uppercase">
+              <span className="text-xl font-black tracking-wider text-foreground uppercase">
                 Iran{" "}
                 <span className="text-red-500">Savas</span>
               </span>
-              <span className="text-[10px] font-medium tracking-[0.2em] text-zinc-500 uppercase">
+              <span className="text-[10px] font-medium tracking-[0.2em] text-muted-foreground uppercase">
                 Haber & Analiz
               </span>
             </div>
@@ -82,10 +82,10 @@ export function Header() {
                 href={href}
                 className={[
                   "relative px-3 py-2 text-sm font-medium rounded transition-colors duration-150",
-                  "hover:text-white hover:bg-zinc-800",
+                  "hover:text-foreground hover:bg-muted",
                   isActive(href)
-                    ? "text-white after:absolute after:bottom-0 after:left-3 after:right-3 after:h-[2px] after:rounded-full after:bg-red-600"
-                    : "text-zinc-400",
+                    ? "text-foreground after:absolute after:bottom-0 after:left-3 after:right-3 after:h-[2px] after:rounded-full after:bg-red-600"
+                    : "text-muted-foreground",
                 ]
                   .filter(Boolean)
                   .join(" ")}
@@ -116,7 +116,7 @@ export function Header() {
             <button
               type="button"
               onClick={() => setMobileOpen((prev) => !prev)}
-              className="md:hidden flex items-center justify-center w-9 h-9 rounded text-zinc-400 hover:text-white hover:bg-zinc-800 transition-colors duration-150"
+              className="md:hidden flex items-center justify-center w-9 h-9 rounded text-muted-foreground hover:text-foreground hover:bg-muted transition-colors duration-150"
               aria-label={mobileOpen ? "Menuyu kapat" : "Menuyu ac"}
               aria-expanded={mobileOpen}
               aria-controls="mobile-menu"
@@ -135,7 +135,7 @@ export function Header() {
       {mobileOpen && (
         <div
           id="mobile-menu"
-          className="md:hidden border-t border-zinc-800 bg-zinc-950"
+          className="md:hidden border-t border-border bg-background"
           role="navigation"
           aria-label="Mobil navigasyon"
         >
@@ -148,8 +148,8 @@ export function Header() {
                 className={[
                   "flex items-center gap-3 px-3 py-2.5 rounded text-sm font-medium transition-colors duration-150",
                   isActive(href)
-                    ? "text-white bg-zinc-800 border-l-2 border-red-600 pl-[10px]"
-                    : "text-zinc-400 hover:text-white hover:bg-zinc-800/60",
+                    ? "text-foreground bg-muted border-l-2 border-red-600 pl-[10px]"
+                    : "text-muted-foreground hover:text-foreground hover:bg-muted/60",
                 ]
                   .filter(Boolean)
                   .join(" ")}

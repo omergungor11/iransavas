@@ -49,7 +49,7 @@ export function StrategicMap() {
   };
 
   return (
-    <section className="border-y border-zinc-800 bg-zinc-950">
+    <section className="border-y border-border bg-background">
       <div className="mx-auto max-w-7xl px-4 py-6">
         {/* Header */}
         <div className="flex items-center justify-between mb-4">
@@ -59,17 +59,17 @@ export function StrategicMap() {
             </div>
             <div>
               <div className="flex items-center gap-2">
-                <h2 className="text-sm font-bold text-white tracking-wide uppercase font-mono">
+                <h2 className="text-sm font-bold text-foreground tracking-wide uppercase font-mono">
                   Canli Stratejik Istihbarat Haritasi
                 </h2>
-                <span className="text-[10px] text-zinc-500">{stats.total} olay</span>
+                <span className="text-[10px] text-muted-foreground">{stats.total} olay</span>
               </div>
-              <p className="text-xs text-zinc-400">Askeri varliklar, catisma bolgeleri ve stratejik altyapi</p>
+              <p className="text-xs text-muted-foreground">Askeri varliklar, catisma bolgeleri ve stratejik altyapi</p>
             </div>
           </div>
           <a
             href="/harita"
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded text-xs font-medium border border-zinc-700 hover:bg-zinc-800 transition-colors text-zinc-400"
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded text-xs font-medium border border-border hover:bg-muted transition-colors text-muted-foreground"
           >
             <ExternalLink size={14} />
             Tam Harita
@@ -81,7 +81,7 @@ export function StrategicMap() {
           {stats.byType.map((t) => (
             <span
               key={t.eventType}
-              className="flex items-center gap-1 px-2 py-0.5 rounded text-[9px] font-bold uppercase tracking-wider bg-zinc-800 text-zinc-400"
+              className="flex items-center gap-1 px-2 py-0.5 rounded text-[9px] font-bold uppercase tracking-wider bg-muted text-muted-foreground"
             >
               <span className={`h-1.5 w-1.5 rounded-full ${TYPE_COLORS[t.eventType] || "bg-zinc-500"}`} />
               {TYPE_LABELS[t.eventType] || t.eventType} ({t.count})
@@ -91,7 +91,7 @@ export function StrategicMap() {
 
         {/* Map preview — CARTO dark tiles static image + click to go */}
         <a href="/harita" className="block">
-          <div className="relative rounded-lg overflow-hidden border border-zinc-800 bg-zinc-900 h-[500px] group cursor-pointer">
+          <div className="relative rounded-lg overflow-hidden border border-border bg-card h-[500px] group cursor-pointer">
             {/* Static tile background */}
             <div
               className="absolute inset-0 bg-cover bg-center opacity-80 group-hover:opacity-100 transition-opacity"
@@ -110,7 +110,7 @@ export function StrategicMap() {
                 { label: "LIVE AIS", value: "48 savas gemisi", color: "text-blue-400" },
                 { label: "OIL FLOW", value: "21M bbl/gun", color: "text-yellow-400" },
               ].map((s) => (
-                <div key={s.label} className="bg-zinc-900/90 backdrop-blur-sm border border-zinc-700/50 rounded-lg px-3 py-1.5 w-44">
+                <div key={s.label} className="bg-card/90 backdrop-blur-sm border border-border/50 rounded-lg px-3 py-1.5 w-44">
                   <p className={`text-[9px] font-bold uppercase tracking-wider ${s.color}`}>{s.label}</p>
                   <p className="text-[11px] font-bold text-white">{s.value}</p>
                 </div>
@@ -128,7 +128,7 @@ export function StrategicMap() {
         </a>
 
         {/* Bottom stats */}
-        <div className="flex items-center gap-4 mt-3 text-[10px] text-zinc-500">
+        <div className="flex items-center gap-4 mt-3 text-[10px] text-muted-foreground">
           <span>{stats.total} olay</span>
           <span>·</span>
           <span>Leaflet + OpenStreetMap</span>

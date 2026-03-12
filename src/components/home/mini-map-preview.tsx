@@ -9,7 +9,7 @@ const WarMap = nextDynamic(
   {
     ssr: false,
     loading: () => (
-      <div className="flex h-full items-center justify-center bg-zinc-900">
+      <div className="flex h-full items-center justify-center bg-card">
         <div className="h-8 w-8 animate-spin rounded-full border-2 border-red-500 border-t-transparent" />
       </div>
     ),
@@ -37,7 +37,7 @@ export function MiniMapPreview() {
           <ArrowRight size={16} />
         </Link>
       </div>
-      <div className="overflow-hidden rounded-xl border border-zinc-800 bg-zinc-900" style={{ height: "500px" }}>
+      <div className="overflow-hidden rounded-xl border border-border bg-card" style={{ height: "500px" }}>
         <WarMap />
       </div>
     </section>

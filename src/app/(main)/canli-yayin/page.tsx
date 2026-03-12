@@ -87,17 +87,17 @@ export default function CanliYayinPage() {
   };
 
   return (
-    <div className="min-h-screen bg-zinc-950">
+    <div className="min-h-screen bg-background">
       {/* Header */}
-      <div className="sticky top-[4.5rem] z-30 border-b border-zinc-800 bg-zinc-950/95 backdrop-blur-sm px-4 py-3">
+      <div className="sticky top-[4.5rem] z-30 border-b border-border bg-background/95 backdrop-blur-sm px-4 py-3">
         <div className="mx-auto max-w-screen-2xl flex items-center justify-between">
           <div className="flex items-center gap-3">
             <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-red-500/10">
               <Camera className="h-5 w-5 text-red-500" />
             </div>
             <div>
-              <h1 className="text-lg font-bold text-white">Webcams</h1>
-              <p className="text-xs text-zinc-400">
+              <h1 className="text-lg font-bold text-foreground">Webcams</h1>
+              <p className="text-xs text-muted-foreground">
                 Canli kamera goruntusu — Iran, Israel & Orta Dogu
               </p>
             </div>
@@ -113,7 +113,7 @@ export default function CanliYayinPage() {
               onClick={fetchStreams}
               disabled={loading}
               aria-label="Webcam listesini yenile"
-              className="flex items-center gap-1.5 px-3 py-1.5 rounded text-xs font-medium border border-zinc-700 hover:bg-zinc-800 transition-colors disabled:opacity-50 text-zinc-300"
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded text-xs font-medium border border-border hover:bg-muted transition-colors disabled:opacity-50 text-foreground/80"
             >
               <RefreshCw size={12} className={loading ? "animate-spin" : ""} aria-hidden="true" />
               Yenile
@@ -131,19 +131,19 @@ export default function CanliYayinPage() {
           aria-label={activeStream.title}
           onClick={(e) => { if (e.target === e.currentTarget) setActiveStream(null); }}
         >
-          <div className="w-full max-w-5xl bg-zinc-900 rounded-xl border border-zinc-700 overflow-hidden shadow-2xl">
+          <div className="w-full max-w-5xl bg-card rounded-xl border border-border overflow-hidden shadow-2xl">
             {/* Viewer header */}
-            <div className="flex items-center justify-between px-4 py-3 border-b border-zinc-800">
+            <div className="flex items-center justify-between px-4 py-3 border-b border-border">
               <div className="flex items-center gap-2 min-w-0">
                 <span className="h-2 w-2 rounded-full bg-red-500 animate-pulse flex-shrink-0" />
-                <h2 className="text-sm font-semibold text-white truncate">{activeStream.title}</h2>
+                <h2 className="text-sm font-semibold text-foreground truncate">{activeStream.title}</h2>
               </div>
               <div className="flex items-center gap-2 flex-shrink-0">
                 <a
                   href={activeStream.url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center gap-1.5 px-3 py-1.5 rounded text-xs font-medium border border-zinc-700 hover:bg-zinc-800 transition-colors text-zinc-300"
+                  className="flex items-center gap-1.5 px-3 py-1.5 rounded text-xs font-medium border border-border hover:bg-muted transition-colors text-foreground/80"
                 >
                   <ExternalLink size={12} />
                   Kaynakta Ac
@@ -151,7 +151,7 @@ export default function CanliYayinPage() {
                 <button
                   onClick={() => setActiveStream(null)}
                   aria-label="Yayin goruntuleyiciyi kapat"
-                  className="flex items-center justify-center w-8 h-8 rounded hover:bg-zinc-800 transition-colors text-zinc-400 hover:text-white"
+                  className="flex items-center justify-center w-8 h-8 rounded hover:bg-muted transition-colors text-muted-foreground hover:text-foreground"
                 >
                   <X size={18} aria-hidden="true" />
                 </button>
@@ -173,8 +173,8 @@ export default function CanliYayinPage() {
               </div>
             ) : (
               <div className="flex flex-col items-center justify-center py-16 bg-black">
-                <Tv size={48} className="text-zinc-600 mb-3" />
-                <p className="text-zinc-400 mb-4">Bu yayin dogrudan goruntulenemiyor</p>
+                <Tv size={48} className="text-muted-foreground mb-3" />
+                <p className="text-muted-foreground mb-4">Bu yayin dogrudan goruntulenemiyor</p>
                 <a
                   href={activeStream.url}
                   target="_blank"
@@ -187,7 +187,7 @@ export default function CanliYayinPage() {
               </div>
             )}
             {/* Viewer footer */}
-            <div className="px-4 py-2.5 border-t border-zinc-800 flex items-center justify-between text-xs text-zinc-500">
+            <div className="px-4 py-2.5 border-t border-border flex items-center justify-between text-xs text-muted-foreground">
               <span>{activeStream.source} — {activeStream.region}</span>
               <span
                 className={`px-1.5 py-0.5 rounded font-bold text-white text-[10px] uppercase ${
@@ -206,11 +206,11 @@ export default function CanliYayinPage() {
         {error ? (
           <div className="flex flex-col items-center gap-3 py-16">
             <AlertTriangle className="h-8 w-8 text-red-500" />
-            <p className="text-sm font-medium text-white">Webcamlar yuklenemedi</p>
-            <p className="text-xs text-zinc-500">Bir hata olustu. Lutfen tekrar deneyin.</p>
+            <p className="text-sm font-medium text-foreground">Webcamlar yuklenemedi</p>
+            <p className="text-xs text-muted-foreground">Bir hata olustu. Lutfen tekrar deneyin.</p>
             <button
               onClick={fetchStreams}
-              className="mt-2 flex items-center gap-1.5 px-4 py-2 rounded text-sm font-medium border border-zinc-700 hover:bg-zinc-800 transition-colors text-zinc-400"
+              className="mt-2 flex items-center gap-1.5 px-4 py-2 rounded text-sm font-medium border border-border hover:bg-muted transition-colors text-muted-foreground"
             >
               <RefreshCw size={14} />
               Tekrar Dene
@@ -222,20 +222,20 @@ export default function CanliYayinPage() {
           </div>
         ) : streams.length === 0 ? (
           <div className="flex flex-col items-center gap-2 py-16">
-            <Camera className="h-8 w-8 text-zinc-600" />
-            <p className="text-sm text-zinc-500">Aktif webcam bulunamadi.</p>
+            <Camera className="h-8 w-8 text-muted-foreground" />
+            <p className="text-sm text-muted-foreground">Aktif webcam bulunamadi.</p>
           </div>
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-4">
             {streams.map((stream) => (
               <article
                 key={stream.id}
-                className="group rounded-lg overflow-hidden border border-zinc-800 bg-zinc-900 hover:border-zinc-600 transition-all"
+                className="group rounded-lg overflow-hidden border border-border bg-card hover:border-zinc-600 transition-all"
               >
                 {/* Thumbnail */}
                 <button
                   onClick={() => setActiveStream(stream)}
-                  className="relative block w-full aspect-video bg-zinc-800 overflow-hidden cursor-pointer"
+                  className="relative block w-full aspect-video bg-muted overflow-hidden cursor-pointer"
                 >
                   {stream.thumbnail ? (
                     <Image
@@ -247,7 +247,7 @@ export default function CanliYayinPage() {
                     />
                   ) : (
                     <div className="w-full h-full flex items-center justify-center">
-                      <Tv size={32} className="text-zinc-700" />
+                      <Tv size={32} className="text-border" />
                     </div>
                   )}
                   {/* Play overlay on hover */}
@@ -265,10 +265,10 @@ export default function CanliYayinPage() {
 
                 {/* Card body */}
                 <div className="p-3">
-                  <h3 className="text-sm font-semibold text-zinc-200 leading-snug line-clamp-2">
+                  <h3 className="text-sm font-semibold text-foreground/90 leading-snug line-clamp-2">
                     {stream.title}
                   </h3>
-                  <p className="text-xs text-zinc-500 mt-1">
+                  <p className="text-xs text-muted-foreground mt-1">
                     {stream.source} · {stream.region}
                   </p>
 
@@ -276,16 +276,16 @@ export default function CanliYayinPage() {
                   <div className="flex items-center gap-2 mt-2.5">
                     <button
                       onClick={() => setActiveStream(stream)}
-                      className="text-xs font-medium text-zinc-400 hover:text-white transition-colors"
+                      className="text-xs font-medium text-muted-foreground hover:text-foreground transition-colors"
                     >
                       Izle
                     </button>
-                    <span className="text-zinc-700">·</span>
+                    <span className="text-border">·</span>
                     <a
                       href={stream.url}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="text-xs font-medium text-zinc-400 hover:text-white transition-colors"
+                      className="text-xs font-medium text-muted-foreground hover:text-foreground transition-colors"
                     >
                       Kaynak
                     </a>

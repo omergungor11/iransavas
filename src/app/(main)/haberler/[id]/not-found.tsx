@@ -6,12 +6,12 @@ export default function HaberNotFound() {
     <div className="flex min-h-[60vh] items-center justify-center px-4">
       <div className="text-center max-w-md">
         <div className="flex justify-center mb-6">
-          <div className="flex h-14 w-14 items-center justify-center rounded-full bg-zinc-800">
-            <FileX className="h-7 w-7 text-zinc-400" />
+          <div className="flex h-14 w-14 items-center justify-center rounded-full bg-muted">
+            <FileX className="h-7 w-7 text-muted-foreground" />
           </div>
         </div>
-        <h2 className="text-2xl font-bold text-white mb-2">Haber Bulunamadi</h2>
-        <p className="text-sm text-zinc-400 mb-6">
+        <h2 className="text-2xl font-bold text-foreground mb-2">Haber Bulunamadi</h2>
+        <p className="text-sm text-muted-foreground mb-6">
           Aradiginiz haber silinmis veya tasinmis olabilir.
         </p>
         <Link

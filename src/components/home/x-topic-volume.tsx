@@ -42,7 +42,7 @@ export function XTopicVolume() {
   const [expanded, setExpanded] = useState(true);
 
   return (
-    <section className="border-y border-zinc-800 bg-zinc-950">
+    <section className="border-y border-border bg-background">
       <div className="mx-auto max-w-7xl px-4 py-6">
         {/* Header */}
         <div className="flex items-center justify-between mb-4">
@@ -51,17 +51,17 @@ export function XTopicVolume() {
               <TrendingUp className="h-5 w-5 text-sky-500" />
             </div>
             <div>
-              <h2 className="text-lg font-bold text-white">X Konu Hacmi</h2>
-              <p className="text-xs text-zinc-400">Iran/Korfez konularinda 30 dakikalik post hacmi takibi</p>
+              <h2 className="text-lg font-bold text-foreground">X Konu Hacmi</h2>
+              <p className="text-xs text-muted-foreground">Iran/Korfez konularinda 30 dakikalik post hacmi takibi</p>
             </div>
           </div>
           <div className="flex items-center gap-3">
-            <span className="text-[10px] text-zinc-500">15dk once guncellendi</span>
+            <span className="text-[10px] text-muted-foreground">15dk once guncellendi</span>
             <button
               onClick={() => setExpanded(!expanded)}
               aria-expanded={expanded}
               aria-label={expanded ? "X konu hacmi panelini kapat" : "X konu hacmi panelini ac"}
-              className="flex items-center gap-1.5 px-3 py-1.5 rounded text-xs font-medium border border-zinc-700 hover:bg-zinc-800 transition-colors text-zinc-400"
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded text-xs font-medium border border-border hover:bg-muted transition-colors text-muted-foreground"
             >
               {expanded ? "Kapat" : "Ac"}
               {expanded ? <ChevronUp size={14} aria-hidden="true" /> : <ChevronDown size={14} aria-hidden="true" />}
@@ -77,7 +77,7 @@ export function XTopicVolume() {
                 className={`rounded-lg border p-3 ${statusBg(t.status)}`}
               >
                 <div className="flex items-center justify-between mb-2">
-                  <p className="text-xs font-medium text-zinc-300">{t.topic}</p>
+                  <p className="text-xs font-medium text-foreground/80">{t.topic}</p>
                   <span className={`text-xs font-bold ${t.changePositive ? "text-green-400" : "text-red-400"}`}>
                     {t.change}
                   </span>
@@ -85,7 +85,7 @@ export function XTopicVolume() {
                 <p className={`text-lg font-black ${statusColor(t.status)}`}>
                   {t.status}
                 </p>
-                <p className="text-[10px] text-zinc-500 mt-0.5">
+                <p className="text-[10px] text-muted-foreground mt-0.5">
                   {t.postCount} post / 30dk
                 </p>
                 {/* Mini bar chart simulation */}
