@@ -9,7 +9,7 @@ import { LiveGlobe } from "@/components/home/live-globe";
 import { FlightTracker } from "@/components/home/flight-tracker";
 import { MarineTracker } from "@/components/home/marine-tracker";
 import { LiveStreamsSection } from "@/components/home/live-streams-section";
-import { MarketSnapshot } from "@/components/home/market-snapshot";
+
 import { XTopicVolume } from "@/components/home/x-topic-volume";
 import { WarExplainer } from "@/components/home/war-explainer";
 import { MilitarySituation } from "@/components/home/military-situation";
@@ -61,12 +61,6 @@ export function BottomSections() {
       <ErrorBoundary fallbackTitle="Canlı Globe yüklenemedi">
         <section id="osint">
           <LiveGlobe />
-        </section>
-      </ErrorBoundary>
-
-      <ErrorBoundary fallbackTitle="Piyasa Görünümü yüklenemedi">
-        <section id="markets">
-          <MarketSnapshot />
         </section>
       </ErrorBoundary>
 
