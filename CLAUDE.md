@@ -20,6 +20,8 @@ iransavas.com - Iran savasi hakkinda kapsamli haber, analiz ve raporlama platfor
 ## Mevcut Durum
 
 **Progress**: 40/40 task (%100) — Tum phase'ler tamamlandi.
+**Deploy**: Vercel production — https://iransavas.vercel.app
+**Son session**: 2026-03-16 — iranwar.info karsilastirma, 7+ yeni sayfa/section, fallback veriler, deploy
 
 > Her yeni session'da `iransavas-tasks/task-index.md` oku veya `/cold-start` calistir.
 
