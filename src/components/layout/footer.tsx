@@ -13,8 +13,11 @@ const quickLinks = [
 const policyLinks = [
   { label: "Hakkımızda", href: "/hakkimizda" },
   { label: "İletişim", href: "/iletisim" },
+  { label: "SSS", href: "/sss" },
   { label: "Editöryal Politika", href: "/editoryal-politika" },
   { label: "Düzeltme Politikası", href: "/duzeltme-politikasi" },
+  { label: "Gizlilik Politikası", href: "/gizlilik-politikasi" },
+  { label: "Kullanım Şartları", href: "/kullanim-sartlari" },
 ] as const;
 
 const sources = [

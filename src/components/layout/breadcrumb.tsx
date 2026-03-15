@@ -15,6 +15,9 @@ const pathLabels: Record<string, string> = {
   iletisim: "İletişim",
   "editoryal-politika": "Editöryal Politika",
   "duzeltme-politikasi": "Düzeltme Politikası",
+  sss: "Sıkça Sorulan Sorular",
+  "gizlilik-politikasi": "Gizlilik Politikası",
+  "kullanim-sartlari": "Kullanım Şartları",
 };
 
 interface Crumb {
