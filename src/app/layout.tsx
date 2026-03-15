@@ -40,6 +40,54 @@ export const metadata: Metadata = {
   manifest: "/manifest.json",
 };
 
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "NewsMediaOrganization",
+      "@id": `${SITE_URL}/#organization`,
+      name: "İran Savaş",
+      url: SITE_URL,
+      logo: {
+        "@type": "ImageObject",
+        url: `${SITE_URL}/og-default.png`,
+      },
+      description:
+        "İran savaşı hakkında kapsamlı haber, analiz ve raporlama platformu.",
+      foundingDate: "2026-02-28",
+      actionableFeedbackPolicy: `${SITE_URL}/editoryal-politika`,
+      correctionsPolicy: `${SITE_URL}/duzeltme-politikasi`,
+      diversityStaffingReport: `${SITE_URL}/hakkimizda`,
+      publishingPrinciples: `${SITE_URL}/editoryal-politika`,
+    },
+    {
+      "@type": "LiveBlogPosting",
+      "@id": `${SITE_URL}/#liveblog`,
+      headline: "İran Savaşı: Canlı Güncellemeler",
+      description:
+        "İran savaşı hakkında anlık güncellemeler, askeri operasyonlar ve piyasa etkileri.",
+      url: SITE_URL,
+      coverageStartTime: "2026-02-28T00:00:00+00:00",
+      isLiveBlogging: true,
+      publisher: { "@id": `${SITE_URL}/#organization` },
+      image: `${SITE_URL}/og-default.png`,
+      inLanguage: "tr",
+    },
+    {
+      "@type": "WebSite",
+      "@id": `${SITE_URL}/#website`,
+      url: SITE_URL,
+      name: "İran Savaş",
+      publisher: { "@id": `${SITE_URL}/#organization` },
+      potentialAction: {
+        "@type": "SearchAction",
+        target: `${SITE_URL}/haberler?q={search_term_string}`,
+        "query-input": "required name=search_term_string",
+      },
+    },
+  ],
+};
+
 export default function RootLayout({
   children,
 }: {
@@ -49,6 +97,10 @@ export default function RootLayout({
     <html lang="tr" className="dark">
       <head>
         <meta name="theme-color" content="#dc2626" />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        />
       </head>
       <body className={inter.className}>
         <a

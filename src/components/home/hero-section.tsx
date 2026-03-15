@@ -2,7 +2,15 @@
 
 import { useEffect, useState } from "react";
 import Image from "next/image";
-import { Radio, AlertTriangle, Share2 } from "lucide-react";
+import { Radio, AlertTriangle, Share2, Calendar } from "lucide-react";
+
+const CONFLICT_START = new Date("2026-02-28T00:00:00Z");
+
+function getConflictDay(): number {
+  const now = new Date();
+  const diff = now.getTime() - CONFLICT_START.getTime();
+  return Math.max(1, Math.ceil(diff / (1000 * 60 * 60 * 24)));
+}
 
 interface BreakingNews {
   title: string;
@@ -98,11 +106,17 @@ export function HeroSection() {
           </div>
 
           {/* Action row */}
-          <div className="mt-8 flex items-center gap-4">
+          <div className="mt-8 flex flex-wrap items-center gap-3">
             <div className="flex items-center gap-2 px-3 py-1.5 rounded-full border border-red-800/60 bg-red-900/30">
               <Radio size={12} className="text-red-400 animate-pulse" />
               <span className="text-[11px] font-bold tracking-widest text-red-400 uppercase">
                 7/24 Canlı
+              </span>
+            </div>
+            <div className="flex items-center gap-2 px-3 py-1.5 rounded-full border border-orange-800/60 bg-orange-900/20">
+              <Calendar size={12} className="text-orange-400" />
+              <span className="text-[11px] font-bold tracking-widest text-orange-300 uppercase">
+                Çatışmanın {getConflictDay()}. Günü
               </span>
             </div>
             <button

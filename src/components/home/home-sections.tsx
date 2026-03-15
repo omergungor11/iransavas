@@ -12,6 +12,8 @@ import { LiveStreamsSection } from "@/components/home/live-streams-section";
 import { MarketSnapshot } from "@/components/home/market-snapshot";
 import { XTopicVolume } from "@/components/home/x-topic-volume";
 import { WarExplainer } from "@/components/home/war-explainer";
+import { MilitarySituation } from "@/components/home/military-situation";
+import { OsintSources } from "@/components/home/osint-sources";
 
 export function InteractiveSections() {
   return (
@@ -30,6 +32,12 @@ export function InteractiveSections() {
 export function BottomSections() {
   return (
     <>
+      <ErrorBoundary fallbackTitle="Askeri Durum yüklenemedi">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+          <MilitarySituation />
+        </div>
+      </ErrorBoundary>
+
       <ErrorBoundary fallbackTitle="Stratejik Harita yüklenemedi">
         <section id="situation">
           <StrategicMap />
@@ -68,6 +76,12 @@ export function BottomSections() {
 
       <ErrorBoundary fallbackTitle="X Konu Hacmi yüklenemedi">
         <XTopicVolume />
+      </ErrorBoundary>
+
+      <ErrorBoundary fallbackTitle="OSINT Kaynakları yüklenemedi">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+          <OsintSources />
+        </div>
       </ErrorBoundary>
 
       <ErrorBoundary fallbackTitle="Savaş Açıklayıcı yüklenemedi">

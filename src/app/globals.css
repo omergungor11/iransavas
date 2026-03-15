@@ -66,6 +66,18 @@
   animation: slide-up 0.5s ease-out forwards;
 }
 
+/* News ticker crawl animation */
+@keyframes ticker-scroll {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+.ticker-track {
+  animation: ticker-scroll 30s linear infinite;
+}
+.ticker-track:hover {
+  animation-play-state: paused;
+}
+
 .leaflet-container {
   width: 100%;
   height: 100%;

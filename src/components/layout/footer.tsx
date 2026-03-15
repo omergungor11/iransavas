@@ -10,6 +10,13 @@ const quickLinks = [
   { label: "Raporlar", href: "/raporlar" },
 ] as const;
 
+const policyLinks = [
+  { label: "Hakkımızda", href: "/hakkimizda" },
+  { label: "İletişim", href: "/iletisim" },
+  { label: "Editöryal Politika", href: "/editoryal-politika" },
+  { label: "Düzeltme Politikası", href: "/duzeltme-politikasi" },
+] as const;
+
 const sources = [
   { label: "Reuters", href: "https://www.reuters.com" },
   { label: "Al Jazeera", href: "https://www.aljazeera.com" },
@@ -51,7 +58,7 @@ export function Footer() {
 
       {/* Main footer content */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-8">
           {/* Brand column */}
           <div className="lg:col-span-2">
             <Link
@@ -94,6 +101,25 @@ export function Footer() {
             </h3>
             <ul className="space-y-2.5" role="list">
               {quickLinks.map(({ label, href }) => (
+                <li key={href}>
+                  <Link
+                    href={href}
+                    className="text-sm text-muted-foreground hover:text-foreground transition-colors duration-150 hover:underline underline-offset-2"
+                  >
+                    {label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Policy links */}
+          <div>
+            <h3 className="text-xs font-bold tracking-widest text-foreground/80 uppercase mb-4">
+              Kurumsal
+            </h3>
+            <ul className="space-y-2.5" role="list">
+              {policyLinks.map(({ label, href }) => (
                 <li key={href}>
                   <Link
                     href={href}
