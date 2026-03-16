@@ -1,3 +1,5 @@
+export type Perspective = "Türk Medyası" | "Batı Medyası" | "İran Resmî" | "İsrail Medyası" | "Bağımsız";
+
 export interface NewsSource {
   id: string;
   name: string;
@@ -6,6 +8,7 @@ export interface NewsSource {
   language: string;
   category: string;
   enabled: boolean;
+  perspective: Perspective;
   /** CSS selectors for scraping */
   selectors?: {
     articleList: string;
@@ -29,6 +32,7 @@ export const NEWS_SOURCES: NewsSource[] = [
     language: "en",
     category: "GENEL",
     enabled: true,
+    perspective: "Batı Medyası",
   },
   {
     id: "bbc-world",
@@ -38,6 +42,7 @@ export const NEWS_SOURCES: NewsSource[] = [
     language: "en",
     category: "GENEL",
     enabled: true,
+    perspective: "Batı Medyası",
   },
   {
     id: "aljazeera",
@@ -47,15 +52,17 @@ export const NEWS_SOURCES: NewsSource[] = [
     language: "en",
     category: "GENEL",
     enabled: true,
+    perspective: "Bağımsız",
   },
   {
     id: "anadolu-ajans",
-    name: "Anadolu Ajansi",
+    name: "Anadolu Ajansı",
     type: "rss",
     url: "https://www.aa.com.tr/tr/rss/default?cat=guncel",
     language: "tr",
     category: "GENEL",
     enabled: true,
+    perspective: "Türk Medyası",
   },
   {
     id: "trt-haber",
@@ -65,15 +72,17 @@ export const NEWS_SOURCES: NewsSource[] = [
     language: "tr",
     category: "GENEL",
     enabled: true,
+    perspective: "Türk Medyası",
   },
   {
     id: "hurriyet",
-    name: "Hurriyet",
+    name: "Hürriyet",
     type: "rss",
     url: "https://www.hurriyet.com.tr/rss/dunya",
     language: "tr",
     category: "GENEL",
     enabled: true,
+    perspective: "Türk Medyası",
   },
   {
     id: "iran-intl",
@@ -83,6 +92,59 @@ export const NEWS_SOURCES: NewsSource[] = [
     language: "en",
     category: "SIYASI",
     enabled: true,
+    perspective: "Bağımsız",
+  },
+
+  // ============ NEW RSS FEEDS ============
+  {
+    id: "bbc-turkce",
+    name: "BBC Türkçe",
+    type: "rss",
+    url: "https://feeds.bbci.co.uk/turkce/rss.xml",
+    language: "tr",
+    category: "GENEL",
+    enabled: true,
+    perspective: "Batı Medyası",
+  },
+  {
+    id: "middle-east-eye",
+    name: "Middle East Eye",
+    type: "rss",
+    url: "https://www.middleeasteye.net/rss",
+    language: "en",
+    category: "GENEL",
+    enabled: true,
+    perspective: "Bağımsız",
+  },
+  {
+    id: "irna",
+    name: "IRNA",
+    type: "rss",
+    url: "https://en.irna.ir/rss",
+    language: "en",
+    category: "SIYASI",
+    enabled: true,
+    perspective: "İran Resmî",
+  },
+  {
+    id: "times-of-israel",
+    name: "Times of Israel",
+    type: "rss",
+    url: "https://www.timesofisrael.com/feed/",
+    language: "en",
+    category: "GENEL",
+    enabled: true,
+    perspective: "İsrail Medyası",
+  },
+  {
+    id: "dw-turkce",
+    name: "DW Türkçe",
+    type: "rss",
+    url: "https://rss.dw.com/xml/rss-tur-all",
+    language: "tr",
+    category: "GENEL",
+    enabled: true,
+    perspective: "Batı Medyası",
   },
 
   // ============ NEWSAPI ============
@@ -94,6 +156,7 @@ export const NEWS_SOURCES: NewsSource[] = [
     language: "en",
     category: "ASKERI",
     enabled: true,
+    perspective: "Batı Medyası",
     newsApiQuery: "Iran war OR Iran military OR Iran conflict OR Iran strike",
   },
   {
@@ -104,6 +167,7 @@ export const NEWS_SOURCES: NewsSource[] = [
     language: "tr",
     category: "GENEL",
     enabled: true,
+    perspective: "Türk Medyası",
     newsApiQuery: "İran savaş OR İran çatışma OR İran askeri",
   },
   {
@@ -114,6 +178,7 @@ export const NEWS_SOURCES: NewsSource[] = [
     language: "en",
     category: "DIPLOMASI",
     enabled: true,
+    perspective: "Batı Medyası",
     newsApiQuery: "Middle East Iran diplomacy OR Iran sanctions OR Iran nuclear",
   },
 
@@ -126,6 +191,7 @@ export const NEWS_SOURCES: NewsSource[] = [
     language: "en",
     category: "ASKERI",
     enabled: true,
+    perspective: "Batı Medyası",
   },
   {
     id: "crisis-group",
@@ -135,6 +201,7 @@ export const NEWS_SOURCES: NewsSource[] = [
     language: "en",
     category: "DIPLOMASI",
     enabled: false, // 403 blocked, disabled until alternative found
+    perspective: "Bağımsız",
     selectors: {
       articleList: ".field--name-field-icg-eck-ct-card",
       title: "h3 a, .title a",
@@ -151,4 +218,20 @@ export function getEnabledSources(): NewsSource[] {
 
 export function getSourcesByType(type: NewsSource["type"]): NewsSource[] {
   return NEWS_SOURCES.filter((s) => s.enabled && s.type === type);
+}
+
+/** Get perspective for a source name (used for fallback/DB articles) */
+export function getPerspectiveBySourceName(sourceName: string): Perspective {
+  const source = NEWS_SOURCES.find(
+    (s) => s.name.toLowerCase() === sourceName.toLowerCase()
+  );
+  if (source) return source.perspective;
+
+  // Heuristic fallback based on common source names
+  const name = sourceName.toLowerCase();
+  if (name.includes("trt") || name.includes("anadolu") || name.includes("hürriyet") || name.includes("hurriyet") || name.includes("sabah")) return "Türk Medyası";
+  if (name.includes("irna") || name.includes("press tv") || name.includes("fars")) return "İran Resmî";
+  if (name.includes("times of israel") || name.includes("jerusalem post") || name.includes("haaretz")) return "İsrail Medyası";
+  if (name.includes("reuters") || name.includes("bbc") || name.includes("cnn") || name.includes("guardian") || name.includes("ap") || name.includes("dw") || name.includes("financial times")) return "Batı Medyası";
+  return "Bağımsız";
 }

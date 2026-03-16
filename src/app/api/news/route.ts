@@ -1,7 +1,22 @@
 export const dynamic = "force-dynamic";
 import { NextRequest, NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
-import { newsQuerySchema, parseQuery } from "@/lib/api-validation";
+import { z } from "zod";
+import { getPerspectiveBySourceName } from "@/lib/fetchers/sources";
+
+function sanitizeSearch(val: string): string {
+  return val.replace(/[<>"';\\]/g, "").trim().slice(0, 200);
+}
+
+const newsQuerySchema = z.object({
+  category: z.string().max(50).optional(),
+  page: z.coerce.number().int().positive().default(1),
+  pageSize: z.coerce.number().int().positive().max(100).default(12),
+  search: z.string().max(200).transform(sanitizeSearch).optional(),
+  source: z.string().max(100).optional(),
+  dateRange: z.enum(["today", "3days", "week", "all"]).optional(),
+  sort: z.enum(["newest", "oldest"]).default("newest"),
+});
 
 const FALLBACK_ARTICLES = [
   {
@@ -12,6 +27,7 @@ const FALLBACK_ARTICLES = [
     aiSummary: null,
     source: "Reuters",
     category: "ASKERI",
+    perspective: "Batı Medyası",
     imageUrl: null,
     publishedAt: new Date().toISOString(),
   },
@@ -23,6 +39,7 @@ const FALLBACK_ARTICLES = [
     aiSummary: null,
     source: "Al Jazeera",
     category: "DENIZ",
+    perspective: "Bağımsız",
     imageUrl: null,
     publishedAt: new Date(Date.now() - 3600000).toISOString(),
   },
@@ -34,6 +51,7 @@ const FALLBACK_ARTICLES = [
     aiSummary: null,
     source: "BBC",
     category: "EKONOMI",
+    perspective: "Batı Medyası",
     imageUrl: null,
     publishedAt: new Date(Date.now() - 7200000).toISOString(),
   },
@@ -45,6 +63,7 @@ const FALLBACK_ARTICLES = [
     aiSummary: null,
     source: "AP",
     category: "DIPLOMASI",
+    perspective: "Batı Medyası",
     imageUrl: null,
     publishedAt: new Date(Date.now() - 10800000).toISOString(),
   },
@@ -56,6 +75,7 @@ const FALLBACK_ARTICLES = [
     aiSummary: null,
     source: "Middle East Eye",
     category: "INSANI",
+    perspective: "Bağımsız",
     imageUrl: null,
     publishedAt: new Date(Date.now() - 14400000).toISOString(),
   },
@@ -67,6 +87,7 @@ const FALLBACK_ARTICLES = [
     aiSummary: null,
     source: "CNN",
     category: "ASKERI",
+    perspective: "Batı Medyası",
     imageUrl: null,
     publishedAt: new Date(Date.now() - 18000000).toISOString(),
   },
@@ -78,6 +99,7 @@ const FALLBACK_ARTICLES = [
     aiSummary: null,
     source: "The Guardian",
     category: "SIBER",
+    perspective: "Batı Medyası",
     imageUrl: null,
     publishedAt: new Date(Date.now() - 21600000).toISOString(),
   },
@@ -89,6 +111,7 @@ const FALLBACK_ARTICLES = [
     aiSummary: null,
     source: "TRT Haber",
     category: "BOLGESEL",
+    perspective: "Türk Medyası",
     imageUrl: null,
     publishedAt: new Date(Date.now() - 25200000).toISOString(),
   },
@@ -100,13 +123,76 @@ const FALLBACK_ARTICLES = [
     aiSummary: null,
     source: "Financial Times",
     category: "EKONOMI",
+    perspective: "Batı Medyası",
     imageUrl: null,
     publishedAt: new Date(Date.now() - 28800000).toISOString(),
   },
+  {
+    id: "fallback-10",
+    title: "IRNA: İran Hava Savunması Düşman Hedeflerini İmha Etti",
+    slug: "irna-iran-hava-savunma-imha",
+    summary: "İran resmi haber ajansı, hava savunma sistemlerinin başarıyla müdahale ettiğini duyurdu.",
+    aiSummary: null,
+    source: "IRNA",
+    category: "ASKERI",
+    perspective: "İran Resmî",
+    imageUrl: null,
+    publishedAt: new Date(Date.now() - 32400000).toISOString(),
+  },
+  {
+    id: "fallback-11",
+    title: "İsrail: Nükleer Tehdit Ortadan Kaldırıldı",
+    slug: "israil-nukleer-tehdit-ortadan-kaldirildi",
+    summary: "İsrail Savunma Bakanlığı, İran nükleer tesislerine yönelik operasyonun başarılı olduğunu açıkladı.",
+    aiSummary: null,
+    source: "Times of Israel",
+    category: "ASKERI",
+    perspective: "İsrail Medyası",
+    imageUrl: null,
+    publishedAt: new Date(Date.now() - 36000000).toISOString(),
+  },
+  {
+    id: "fallback-12",
+    title: "Türkiye Dışişleri: Ateşkes İçin Diplomasi Yoğunlaştı",
+    slug: "turkiye-disisleri-ateskes-diplomasi",
+    summary: "Ankara, bölgesel barış için arabuluculuk teklifini yineledi, tüm taraflarla görüşmeler sürüyor.",
+    aiSummary: null,
+    source: "Anadolu Ajansı",
+    category: "DIPLOMASI",
+    perspective: "Türk Medyası",
+    imageUrl: null,
+    publishedAt: new Date(Date.now() - 39600000).toISOString(),
+  },
 ];
 
-function getFallbackResponse(category: string, search: string, page: number, pageSize: number) {
-  let filtered = FALLBACK_ARTICLES;
+function getDateRangeFilter(dateRange: string): Date | null {
+  const now = new Date();
+  switch (dateRange) {
+    case "today":
+      return new Date(now.getFullYear(), now.getMonth(), now.getDate());
+    case "3days":
+      return new Date(now.getTime() - 3 * 24 * 60 * 60 * 1000);
+    case "week":
+      return new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
+    default:
+      return null;
+  }
+}
+
+function getFallbackResponse(
+  category: string,
+  search: string,
+  page: number,
+  pageSize: number,
+  source?: string,
+  dateRange?: string,
+  sort?: string
+) {
+  let filtered = FALLBACK_ARTICLES.map((a) => ({
+    ...a,
+    perspective: a.perspective || getPerspectiveBySourceName(a.source),
+  }));
+
   if (category && category !== "TUMU") {
     filtered = filtered.filter((a) => a.category === category);
   }
@@ -116,6 +202,22 @@ function getFallbackResponse(category: string, search: string, page: number, pag
       (a) => a.title.toLowerCase().includes(q) || a.summary?.toLowerCase().includes(q)
     );
   }
+  if (source) {
+    const sources = source.split(",").map((s) => s.trim().toLowerCase());
+    filtered = filtered.filter((a) => sources.includes(a.source.toLowerCase()));
+  }
+  if (dateRange && dateRange !== "all") {
+    const from = getDateRangeFilter(dateRange);
+    if (from) {
+      filtered = filtered.filter((a) => new Date(a.publishedAt) >= from);
+    }
+  }
+  if (sort === "oldest") {
+    filtered.sort((a, b) => new Date(a.publishedAt).getTime() - new Date(b.publishedAt).getTime());
+  } else {
+    filtered.sort((a, b) => new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime());
+  }
+
   const total = filtered.length;
   const paginated = filtered.slice((page - 1) * pageSize, page * pageSize);
   return { data: paginated, meta: { total, page, pageSize } };
@@ -124,10 +226,20 @@ function getFallbackResponse(category: string, search: string, page: number, pag
 export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url);
-    const parsed = parseQuery(searchParams, newsQuerySchema);
-    if (!parsed.success) return parsed.response;
+    const raw: Record<string, string> = {};
+    searchParams.forEach((value, key) => {
+      raw[key] = value;
+    });
 
-    const { category, page, pageSize, search } = parsed.data;
+    const result = newsQuerySchema.safeParse(raw);
+    if (!result.success) {
+      return NextResponse.json(
+        { error: { code: "VALIDATION_ERROR", message: "Geçersiz parametreler" } },
+        { status: 400 }
+      );
+    }
+
+    const { category, page, pageSize, search, source, dateRange, sort } = result.data;
 
     const where: Record<string, unknown> = {};
     if (category && category !== "TUMU") {
@@ -139,19 +251,37 @@ export async function GET(request: NextRequest) {
         { content: { contains: search, mode: "insensitive" } },
       ];
     }
+    if (source) {
+      const sources = source.split(",").map((s) => s.trim());
+      where.source = { in: sources };
+    }
+    if (dateRange && dateRange !== "all") {
+      const from = getDateRangeFilter(dateRange);
+      if (from) {
+        where.publishedAt = { gte: from };
+      }
+    }
+
+    const orderBy = { publishedAt: sort === "oldest" ? ("asc" as const) : ("desc" as const) };
 
     const [articles, total] = await Promise.all([
       prisma.newsArticle.findMany({
         where,
-        orderBy: { publishedAt: "desc" },
+        orderBy,
         skip: (page - 1) * pageSize,
         take: pageSize,
       }),
       prisma.newsArticle.count({ where }),
     ]);
 
+    // Add perspective from source name if not in DB
+    const enriched = articles.map((a) => ({
+      ...a,
+      perspective: a.perspective || getPerspectiveBySourceName(a.source),
+    }));
+
     return NextResponse.json({
-      data: articles,
+      data: enriched,
       meta: { total, page, pageSize },
     });
   } catch (error) {
@@ -161,6 +291,9 @@ export async function GET(request: NextRequest) {
     const page = Number(searchParams.get("page")) || 1;
     const pageSize = Number(searchParams.get("pageSize")) || 12;
     const search = searchParams.get("search") || "";
-    return NextResponse.json(getFallbackResponse(category, search, page, pageSize));
+    const source = searchParams.get("source") || undefined;
+    const dateRange = searchParams.get("dateRange") || undefined;
+    const sort = searchParams.get("sort") || "newest";
+    return NextResponse.json(getFallbackResponse(category, search, page, pageSize, source, dateRange, sort));
   }
 }

@@ -73,6 +73,7 @@ export async function fetchFromScraping(source: NewsSource): Promise<FetchedArti
         sourceName: source.name,
         sourceUrl: link || source.url,
         category: source.category,
+        perspective: source.perspective,
         publishedAt: isNaN(publishedAt.getTime()) ? new Date() : publishedAt,
         imageUrl,
         language: source.language,

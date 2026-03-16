@@ -4,6 +4,7 @@ import { Swords, Landmark, TrendingUp, HeartHandshake, Scale, Newspaper } from "
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import { formatDate, truncate, highlightText } from "@/lib/utils";
+import { PerspectiveBadge } from "@/components/news/perspective-badge";
 
 const CATEGORY_COLORS: Record<string, string> = {
   ASKERI: "from-red-900 to-red-700",
@@ -38,6 +39,7 @@ interface NewsCardProps {
   summary: string | null;
   source: string;
   category: string;
+  perspective?: string | null;
   publishedAt: string;
   aiSummary: string | null;
   imageUrl?: string | null;
@@ -60,9 +62,10 @@ function HighlightedText({ text, query }: { text: string; query?: string }) {
   );
 }
 
-export function NewsCard({ id, title, summary, source, category, publishedAt, aiSummary, imageUrl, searchQuery }: NewsCardProps) {
+export function NewsCard({ id, title, summary, source, category, perspective, publishedAt, aiSummary, imageUrl, searchQuery }: NewsCardProps) {
   const gradient = CATEGORY_COLORS[category] || CATEGORY_COLORS.GENEL;
   const CategoryIcon = CATEGORY_ICONS[category] || Newspaper;
+  const isBreaking = new Date(publishedAt).getTime() > Date.now() - 3600000;
 
   return (
     <Link href={`/haberler/${id}`}>
@@ -84,10 +87,21 @@ export function NewsCard({ id, title, summary, source, category, publishedAt, ai
               <CategoryIcon size={48} className="text-white/15" />
             </div>
           )}
-          <div className="relative flex gap-2">
+
+          {/* Breaking news badge - top right */}
+          {isBreaking && (
+            <div className="absolute top-3 right-3 z-10">
+              <Badge variant="destructive" className="text-[10px] px-2 py-0.5 animate-pulse font-bold">
+                SON DAKİKA
+              </Badge>
+            </div>
+          )}
+
+          <div className="relative flex gap-2 flex-wrap">
             <Badge variant="secondary" className="bg-black/40 text-white text-xs">
               {CATEGORY_LABELS[category] || category}
             </Badge>
+            {perspective && <PerspectiveBadge perspective={perspective} className="bg-black/30 border-white/20" />}
             {aiSummary && (
               <Badge variant="warning" className="text-xs">AI Özet</Badge>
             )}

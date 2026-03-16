@@ -66,6 +66,7 @@ export async function fetchFromNewsApi(source: NewsSource): Promise<FetchedArtic
         sourceName: item.source.name || source.name,
         sourceUrl: item.url,
         category: source.category,
+        perspective: source.perspective,
         publishedAt: isNaN(new Date(item.publishedAt).getTime()) ? new Date() : new Date(item.publishedAt),
         imageUrl: item.urlToImage || null,
         language: source.language,

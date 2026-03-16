@@ -80,6 +80,7 @@ async function saveArticles(articles: FetchedArticle[]): Promise<{ saved: number
           sourceUrl: article.sourceUrl,
           imageUrl: article.imageUrl,
           category: article.category,
+          perspective: article.perspective || null,
           publishedAt: article.publishedAt,
         },
       });

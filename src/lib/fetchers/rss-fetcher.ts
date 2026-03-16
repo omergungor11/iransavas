@@ -30,6 +30,7 @@ export interface FetchedArticle {
   sourceName: string;
   sourceUrl: string;
   category: string;
+  perspective: string | null;
   publishedAt: Date;
   imageUrl: string | null;
   language: string;
@@ -112,6 +113,7 @@ export async function fetchFromRss(source: NewsSource): Promise<FetchedArticle[]
         sourceName: source.name,
         sourceUrl: item.link || source.url,
         category: source.category,
+        perspective: source.perspective,
         publishedAt,
         imageUrl,
         language: source.language,

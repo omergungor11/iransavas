@@ -19,12 +19,15 @@ model NewsArticle {
   sourceUrl   String?
   imageUrl    String?
   category    String   @default("GENEL")
+  perspective String?
+  viewCount   Int      @default(0)
   publishedAt DateTime @default(now())
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 
   @@index([publishedAt])
   @@index([category])
+  @@index([source])
   @@map("news_articles")
 }
 
