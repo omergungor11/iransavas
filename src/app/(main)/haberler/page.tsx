@@ -13,6 +13,8 @@ import { getBookmarks } from "@/components/news/bookmark-button";
 import { Button } from "@/components/ui/button";
 import { SourceDiversity } from "@/components/news/source-diversity";
 import { PushNotificationPrompt } from "@/components/news/push-notification-prompt";
+import { TopicSubscribe } from "@/components/news/topic-subscribe";
+import { TopicAlertIndicator } from "@/components/news/topic-alert-indicator";
 
 interface Article {
   id: string;
@@ -413,6 +415,7 @@ function HaberlerContent() {
               )}
             </div>
             <ViewToggle value={viewMode} onChange={handleViewChange} />
+            <TopicSubscribe />
           </div>
         </div>
 
@@ -452,6 +455,11 @@ function HaberlerContent() {
           )}
         </div>
       </div>
+
+      {/* Topic Alert Indicator */}
+      {!loading && !error && articles.length > 0 && (
+        <TopicAlertIndicator articles={articles} />
+      )}
 
       {/* Source Diversity Indicator */}
       {!loading && !error && articles.length > 0 && (

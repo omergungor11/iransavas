@@ -3,6 +3,7 @@ import { getSourcesByType } from "./sources";
 import { fetchFromRss, slugify, type FetchedArticle } from "./rss-fetcher";
 import { fetchFromNewsApi } from "./newsapi-fetcher";
 import { fetchFromScraping } from "./scraper";
+import { fetchFromGdelt } from "./gdelt-fetcher";
 import { fetchFromBamqam } from "./bamqam-fetcher";
 import { fetchNasaFirms } from "./nasa-firms-fetcher";
 import { backfillOgImages } from "./og-image-fetcher";
@@ -149,6 +150,19 @@ export async function runFetchAll(): Promise<FetchSummary> {
         }
       }),
     ];
+
+    // GDELT parallel fetch
+    fetchPromises.push(
+      (async () => {
+        try {
+          const articles = await fetchFromGdelt();
+          const { saved, duplicates } = await saveArticles(articles);
+          return { source: "GDELT", type: "gdelt", fetched: articles.length, saved, duplicates, errors: [] as string[] };
+        } catch (error) {
+          return { source: "GDELT", type: "gdelt", fetched: 0, saved: 0, duplicates: 0, errors: [error instanceof Error ? error.message : "Unknown error"] };
+        }
+      })()
+    );
 
     const newsResults = await Promise.allSettled(fetchPromises);
     for (const result of newsResults) {

@@ -8,6 +8,7 @@ import "leaflet/dist/leaflet.css";
 import { formatDate } from "@/lib/utils";
 import type { MapFiltersState } from "./map-filters";
 import { MissileRangeOverlay } from "./missile-range-overlay";
+import { ChoroplethOverlay } from "./choropleth-overlay";
 
 interface WarEventData {
   id: string;
@@ -101,6 +102,7 @@ export function WarMapCanvas({ filters, onEventCountChange }: WarMapCanvasProps)
   const [events, setEvents] = useState<WarEventData[]>([]);
   const [loading, setLoading] = useState(true);
   const [showMissileRanges, setShowMissileRanges] = useState(false);
+  const [showChoropleth, setShowChoropleth] = useState(false);
 
   const fetchEvents = useCallback(async (f: MapFiltersState) => {
     setLoading(true);
@@ -142,64 +144,83 @@ export function WarMapCanvas({ filters, onEventCountChange }: WarMapCanvasProps)
           <div className="h-8 w-8 animate-spin rounded-full border-2 border-red-500 border-t-transparent" />
         </div>
       )}
-      {/* Missile range toggle */}
-      <button
-        type="button"
-        onClick={() => setShowMissileRanges((prev) => !prev)}
-        className={[
-          "absolute top-3 right-3 z-[1000] flex items-center gap-1.5 rounded-md px-3 py-1.5 text-xs font-medium shadow-lg transition-colors",
-          showMissileRanges
-            ? "bg-red-600 text-white"
-            : "bg-zinc-800/90 text-zinc-300 hover:bg-zinc-700/90",
-        ].join(" ")}
-      >
-        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
-        Fuze Menzilleri
-      </button>
+      {/* Map overlay toggles */}
+      <div className="absolute top-3 right-3 z-[1000] flex flex-col gap-1.5">
+        <button
+          type="button"
+          onClick={() => setShowMissileRanges((prev) => !prev)}
+          className={[
+            "flex items-center gap-1.5 rounded-md px-3 py-1.5 text-xs font-medium shadow-lg transition-colors",
+            showMissileRanges
+              ? "bg-red-600 text-white"
+              : "bg-zinc-800/90 text-zinc-300 hover:bg-zinc-700/90",
+          ].join(" ")}
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
+          Fuze Menzilleri
+        </button>
+        <button
+          type="button"
+          onClick={() => setShowChoropleth((prev) => !prev)}
+          className={[
+            "flex items-center gap-1.5 rounded-md px-3 py-1.5 text-xs font-medium shadow-lg transition-colors",
+            showChoropleth
+              ? "bg-orange-600 text-white"
+              : "bg-zinc-800/90 text-zinc-300 hover:bg-zinc-700/90",
+          ].join(" ")}
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18"/><path d="M3 15h18"/><path d="M9 3v18"/><path d="M15 3v18"/></svg>
+          {showChoropleth ? "Olay Gorunumu" : "Bolge Yogunlugu"}
+        </button>
+      </div>
       <MapContainer center={IRAN_CENTER} zoom={6} className="h-full w-full" style={{ background: "#0f1117" }}>
         <TileLayer
           attribution='&copy; CARTO'
           url="https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png"
           subdomains="abcd"
         />
-        <MarkerClusterGroup
-          chunkedLoading
-          maxClusterRadius={50}
-          spiderfyOnMaxZoom
-          showCoverageOnHover={false}
-          iconCreateFunction={createClusterIcon}
-        >
-          {events.map((event) => (
-            <CircleMarker
-              key={event.id}
-              center={[event.latitude, event.longitude]}
-              radius={getRadius(event.casualties)}
-              pathOptions={{
-                color: SEVERITY_COLORS[event.severity] || "#eab308",
-                fillColor: SEVERITY_COLORS[event.severity] || "#eab308",
-                fillOpacity: 0.7,
-                weight: 1.5,
-              }}
-              // Pass severity to marker options for cluster coloring
-              {...({ severity: event.severity } as Record<string, string>)}
-            >
-              <Popup>
-                <div className="min-w-[220px] space-y-2">
-                  <h3 className="font-semibold text-gray-100 leading-tight">{event.title}</h3>
-                  <p className="text-xs text-gray-400 leading-relaxed">{event.description}</p>
-                  <div className="grid grid-cols-2 gap-1 text-xs text-gray-500">
-                    <div>Tarih: {formatDate(event.date)}</div>
-                    <div>Tur: {EVENT_TYPE_LABELS[event.eventType] || event.eventType}</div>
-                    {event.casualties != null && event.casualties > 0 && (
-                      <div>Kayip: <span className="text-red-400 font-medium">{event.casualties}</span></div>
-                    )}
-                    {event.source && <div>Kaynak: {event.source}</div>}
+        {showChoropleth ? (
+          <ChoroplethOverlay events={events} />
+        ) : (
+          <MarkerClusterGroup
+            chunkedLoading
+            maxClusterRadius={50}
+            spiderfyOnMaxZoom
+            showCoverageOnHover={false}
+            iconCreateFunction={createClusterIcon}
+          >
+            {events.map((event) => (
+              <CircleMarker
+                key={event.id}
+                center={[event.latitude, event.longitude]}
+                radius={getRadius(event.casualties)}
+                pathOptions={{
+                  color: SEVERITY_COLORS[event.severity] || "#eab308",
+                  fillColor: SEVERITY_COLORS[event.severity] || "#eab308",
+                  fillOpacity: 0.7,
+                  weight: 1.5,
+                }}
+                // Pass severity to marker options for cluster coloring
+                {...({ severity: event.severity } as Record<string, string>)}
+              >
+                <Popup>
+                  <div className="min-w-[220px] space-y-2">
+                    <h3 className="font-semibold text-gray-100 leading-tight">{event.title}</h3>
+                    <p className="text-xs text-gray-400 leading-relaxed">{event.description}</p>
+                    <div className="grid grid-cols-2 gap-1 text-xs text-gray-500">
+                      <div>Tarih: {formatDate(event.date)}</div>
+                      <div>Tur: {EVENT_TYPE_LABELS[event.eventType] || event.eventType}</div>
+                      {event.casualties != null && event.casualties > 0 && (
+                        <div>Kayip: <span className="text-red-400 font-medium">{event.casualties}</span></div>
+                      )}
+                      {event.source && <div>Kaynak: {event.source}</div>}
+                    </div>
                   </div>
-                </div>
-              </Popup>
-            </CircleMarker>
-          ))}
-        </MarkerClusterGroup>
+                </Popup>
+              </CircleMarker>
+            ))}
+          </MarkerClusterGroup>
+        )}
         {showMissileRanges && <MissileRangeOverlay />}
       </MapContainer>
     </div>

@@ -8,6 +8,8 @@ import { CasualtyChart } from "@/components/dashboard/casualty-chart";
 import { EventsByTypeChart } from "@/components/dashboard/events-by-type-chart";
 import { SeverityChart } from "@/components/dashboard/severity-chart";
 import { RecentEventsTable } from "@/components/dashboard/recent-events-table";
+import { PredictionWidget } from "@/components/dashboard/prediction-widget";
+import { SpikeAlerts } from "@/components/dashboard/spike-alerts";
 
 interface DashboardData {
   totalEvents: number;
@@ -104,6 +106,12 @@ export default function AnalizPage() {
           currentScore={data.tensionScore ?? 50}
           currentLevel={data.tensionLevel ?? "ELEVATED"}
         />
+
+        {/* Prediction Market + Spike Alerts */}
+        <div className="grid gap-6 md:grid-cols-2">
+          <PredictionWidget />
+          <SpikeAlerts />
+        </div>
 
         <div className="grid gap-6 md:grid-cols-2">
           <CasualtyChart data={data.casualtyTrend} />
