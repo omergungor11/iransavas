@@ -24,6 +24,19 @@ export function truncate(str: string, length: number): string {
   return str.slice(0, length) + "...";
 }
 
+export function relativeTime(date: Date | string): string {
+  const d = new Date(date);
+  const seconds = Math.floor((Date.now() - d.getTime()) / 1000);
+  if (seconds < 60) return "az önce";
+  const minutes = Math.floor(seconds / 60);
+  if (minutes < 60) return `${minutes} dk önce`;
+  const hours = Math.floor(minutes / 60);
+  if (hours < 24) return `${hours} saat önce`;
+  const days = Math.floor(hours / 24);
+  if (days < 7) return `${days} gün önce`;
+  return formatDate(d);
+}
+
 export function highlightText(text: string, query: string): { parts: { text: string; highlight: boolean }[] } {
   if (!query.trim()) return { parts: [{ text, highlight: false }] };
   const escaped = query.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");

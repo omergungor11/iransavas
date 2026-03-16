@@ -3,8 +3,9 @@ import Image from "next/image";
 import { Swords, Landmark, TrendingUp, HeartHandshake, Scale, Newspaper } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
-import { formatDate, truncate, highlightText } from "@/lib/utils";
+import { formatDate, relativeTime, truncate, highlightText } from "@/lib/utils";
 import { PerspectiveBadge } from "@/components/news/perspective-badge";
+import { BookmarkButton } from "@/components/news/bookmark-button";
 
 const CATEGORY_COLORS: Record<string, string> = {
   ASKERI: "from-red-900 to-red-700",
@@ -118,7 +119,10 @@ export function NewsCard({ id, title, summary, source, category, perspective, pu
           )}
           <div className="flex items-center justify-between text-xs text-muted-foreground">
             <span>{source}</span>
-            <span>{formatDate(publishedAt)}</span>
+            <div className="flex items-center gap-1.5">
+              <span title={formatDate(publishedAt)}>{relativeTime(publishedAt)}</span>
+              <BookmarkButton articleId={id} size={14} />
+            </div>
           </div>
         </CardContent>
       </Card>

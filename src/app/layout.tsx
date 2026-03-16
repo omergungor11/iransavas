@@ -66,8 +66,9 @@ const jsonLd = {
       headline: "İran Savaşı: Canlı Güncellemeler",
       description:
         "İran savaşı hakkında anlık güncellemeler, askeri operasyonlar ve piyasa etkileri.",
-      url: SITE_URL,
+      url: `${SITE_URL}/canli-yayin`,
       coverageStartTime: "2026-02-28T00:00:00+00:00",
+      dateModified: new Date().toISOString(),
       isLiveBlogging: true,
       publisher: { "@id": `${SITE_URL}/#organization` },
       image: `${SITE_URL}/og-default.png`,
@@ -97,6 +98,7 @@ export default function RootLayout({
     <html lang="tr" className="dark">
       <head>
         <meta name="theme-color" content="#dc2626" />
+        <link rel="alternate" type="application/rss+xml" title="İran Savaş - RSS" href="/api/rss" />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}

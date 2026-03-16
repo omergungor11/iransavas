@@ -21,6 +21,7 @@ model NewsArticle {
   category    String   @default("GENEL")
   perspective String?
   viewCount   Int      @default(0)
+  entities    String?  // JSON: { people: string[], locations: string[], organizations: string[] }
   publishedAt DateTime @default(now())
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt

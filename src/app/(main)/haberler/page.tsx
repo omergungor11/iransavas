@@ -2,13 +2,14 @@
 
 import { Suspense, useEffect, useState, useCallback, useRef } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { Search, AlertTriangle, Newspaper, RefreshCw, Clock, X, ArrowUpDown, Bell } from "lucide-react";
+import { Search, AlertTriangle, Newspaper, RefreshCw, Clock, X, ArrowUpDown, Bell, Bookmark } from "lucide-react";
 import { NewsCard } from "@/components/news/news-card";
 import { NewsListItem } from "@/components/news/news-list-item";
 import { CategoryFilter } from "@/components/news/category-filter";
 import { ViewToggle, type ViewMode } from "@/components/news/view-toggle";
 import { DateFilter, type DateRange } from "@/components/news/date-filter";
 import { SourceFilter } from "@/components/news/source-filter";
+import { getBookmarks } from "@/components/news/bookmark-button";
 import { Button } from "@/components/ui/button";
 
 interface Article {
@@ -116,6 +117,8 @@ function HaberlerContent() {
   const [sort, setSort] = useState<"newest" | "oldest">("newest");
   const [lastUpdated, setLastUpdated] = useState<Date>(new Date());
   const [hasNewArticles, setHasNewArticles] = useState(false);
+  const [showBookmarksOnly, setShowBookmarksOnly] = useState(false);
+  const [bookmarkIds, setBookmarkIds] = useState<string[]>([]);
   const latestArticleRef = useRef<string | null>(null);
 
   // Infinite scroll sentinel
@@ -125,6 +128,11 @@ function HaberlerContent() {
   useEffect(() => {
     setSearchHistory(getSearchHistory());
     setViewMode(getSavedViewMode());
+    setBookmarkIds(getBookmarks());
+
+    const handleBookmarksChanged = () => setBookmarkIds(getBookmarks());
+    window.addEventListener("bookmarks-changed", handleBookmarksChanged);
+    return () => window.removeEventListener("bookmarks-changed", handleBookmarksChanged);
   }, []);
 
   // Save view mode preference
@@ -416,10 +424,22 @@ function HaberlerContent() {
             <ArrowUpDown size={12} />
             {sort === "newest" ? "En Yeni" : "En Eski"}
           </button>
+          <div className="w-px h-5 bg-border mx-1 hidden sm:block" />
+          <button
+            onClick={() => setShowBookmarksOnly(!showBookmarksOnly)}
+            className={`flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-medium transition-colors ${
+              showBookmarksOnly
+                ? "bg-red-600/20 text-red-400 border border-red-500/30"
+                : "bg-secondary text-muted-foreground hover:bg-secondary/80"
+            }`}
+          >
+            <Bookmark size={12} fill={showBookmarksOnly ? "currentColor" : "none"} />
+            Yer İmleri {bookmarkIds.length > 0 && `(${bookmarkIds.length})`}
+          </button>
           {/* Active filter count */}
-          {(dateRange !== "all" || selectedSources.length > 0 || sort !== "newest") && (
+          {(dateRange !== "all" || selectedSources.length > 0 || sort !== "newest" || showBookmarksOnly) && (
             <button
-              onClick={() => { setDateRange("all"); setSelectedSources([]); setSort("newest"); }}
+              onClick={() => { setDateRange("all"); setSelectedSources([]); setSort("newest"); setShowBookmarksOnly(false); }}
               className="text-xs text-red-400 hover:text-red-300 transition-colors"
             >
               Filtreleri temizle
@@ -431,7 +451,9 @@ function HaberlerContent() {
       {/* Results count */}
       {!loading && !error && total > 0 && (
         <div className="mb-4 text-xs text-muted-foreground">
-          {total} haber bulundu
+          {showBookmarksOnly
+            ? `${articles.filter((a) => bookmarkIds.includes(a.id)).length} yer imi`
+            : `${total} haber bulundu`}
         </div>
       )}
 
@@ -482,9 +504,13 @@ function HaberlerContent() {
       )}
 
       {/* Content */}
-      {!loading && !error && (
+      {!loading && !error && (() => {
+        const displayedArticles = showBookmarksOnly
+          ? articles.filter((a) => bookmarkIds.includes(a.id))
+          : articles;
+        return (
         <>
-          {articles.length > 0 ? (
+          {displayedArticles.length > 0 ? (
             <>
               {/* Magazine View */}
               {viewMode === "magazine" && (
@@ -492,14 +518,14 @@ function HaberlerContent() {
                   {/* Hero card */}
                   <div className="lg:col-span-2">
                     <NewsCard
-                      key={articles[0].id}
-                      {...articles[0]}
+                      key={displayedArticles[0].id}
+                      {...displayedArticles[0]}
                       searchQuery={debouncedSearch || undefined}
                     />
                   </div>
                   {/* Side cards */}
                   <div className="flex flex-col gap-4">
-                    {articles.slice(1, 4).map((article) => (
+                    {displayedArticles.slice(1, 4).map((article) => (
                       <NewsListItem
                         key={article.id}
                         {...article}
@@ -508,9 +534,9 @@ function HaberlerContent() {
                     ))}
                   </div>
                   {/* Rest in grid */}
-                  {articles.length > 4 && (
+                  {displayedArticles.length > 4 && (
                     <div className="lg:col-span-3 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-                      {articles.slice(4).map((article) => (
+                      {displayedArticles.slice(4).map((article) => (
                         <NewsCard
                           key={article.id}
                           {...article}
@@ -525,7 +551,7 @@ function HaberlerContent() {
               {/* Grid View */}
               {viewMode === "grid" && (
                 <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-                  {articles.map((article) => (
+                  {displayedArticles.map((article) => (
                     <NewsCard
                       key={article.id}
                       {...article}
@@ -538,7 +564,7 @@ function HaberlerContent() {
               {/* List View */}
               {viewMode === "list" && (
                 <div className="flex flex-col gap-3">
-                  {articles.map((article) => (
+                  {displayedArticles.map((article) => (
                     <NewsListItem
                       key={article.id}
                       {...article}
@@ -549,7 +575,7 @@ function HaberlerContent() {
               )}
 
               {/* Infinite Scroll Sentinel */}
-              <div ref={sentinelRef} className="h-px" />
+              {!showBookmarksOnly && <div ref={sentinelRef} className="h-px" />}
 
               {/* Loading more indicator */}
               {loadingMore && (
@@ -562,7 +588,7 @@ function HaberlerContent() {
               )}
 
               {/* End of results */}
-              {!hasMore && articles.length > PAGE_SIZE && (
+              {!hasMore && articles.length > PAGE_SIZE && !showBookmarksOnly && (
                 <div className="text-center py-8 text-sm text-muted-foreground">
                   Tüm haberler yüklendi ({total} haber)
                 </div>
@@ -572,16 +598,20 @@ function HaberlerContent() {
             /* Empty State */
             <div className="flex flex-col items-center justify-center py-20 text-center">
               <Newspaper className="mb-4 h-12 w-12 text-muted-foreground/40" />
-              <h3 className="mb-2 text-lg font-semibold">Haber Bulunamadı</h3>
+              <h3 className="mb-2 text-lg font-semibold">
+                {showBookmarksOnly ? "Yer İmi Bulunamadı" : "Haber Bulunamadı"}
+              </h3>
               <p className="mb-4 max-w-md text-sm text-muted-foreground">
-                {debouncedSearch
-                  ? `"${debouncedSearch}" için sonuç bulunamadı. Farklı anahtar kelimeler deneyin.`
-                  : "Bu kategoride henüz haber bulunmuyor."}
+                {showBookmarksOnly
+                  ? "Henüz yer imine eklenen haber yok. Haberlerdeki yer imi simgesine tıklayarak kaydedin."
+                  : debouncedSearch
+                    ? `"${debouncedSearch}" için sonuç bulunamadı. Farklı anahtar kelimeler deneyin.`
+                    : "Bu kategoride henüz haber bulunmuyor."}
               </p>
-              {(debouncedSearch || category !== "TUMU" || dateRange !== "all" || selectedSources.length > 0) && (
+              {(debouncedSearch || category !== "TUMU" || dateRange !== "all" || selectedSources.length > 0 || showBookmarksOnly) && (
                 <Button variant="outline" onClick={() => {
                   setSearch(""); setDebouncedSearch(""); setCategory("TUMU");
-                  setDateRange("all"); setSelectedSources([]); setSort("newest");
+                  setDateRange("all"); setSelectedSources([]); setSort("newest"); setShowBookmarksOnly(false);
                 }}>
                   Filtreleri Temizle
                 </Button>
@@ -589,7 +619,8 @@ function HaberlerContent() {
             </div>
           )}
         </>
-      )}
+        );
+      })()}
     </div>
   );
 }

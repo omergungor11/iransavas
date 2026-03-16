@@ -3,8 +3,9 @@
 import Link from "next/link";
 import Image from "next/image";
 import { Badge } from "@/components/ui/badge";
-import { formatDate, truncate, highlightText } from "@/lib/utils";
+import { formatDate, relativeTime, truncate, highlightText } from "@/lib/utils";
 import { PerspectiveBadge } from "@/components/news/perspective-badge";
+import { BookmarkButton } from "@/components/news/bookmark-button";
 
 interface NewsListItemProps {
   id: string;
@@ -74,7 +75,8 @@ export function NewsListItem({ id, title, summary, source, category, perspective
           <div className="flex items-center gap-2 mt-1 text-[11px] text-muted-foreground">
             <span>{source}</span>
             <span>·</span>
-            <span>{formatDate(publishedAt)}</span>
+            <span title={formatDate(publishedAt)}>{relativeTime(publishedAt)}</span>
+            <BookmarkButton articleId={id} size={13} className="ml-auto" />
           </div>
         </div>
       </div>

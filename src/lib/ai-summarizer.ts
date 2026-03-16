@@ -1,16 +1,37 @@
 import prisma from "@/lib/prisma";
 
-const SUMMARIZE_PROMPT = `Sen deneyimli bir savaş muhabirisin. Verilen haber metnini Türkçe olarak özetle.
+const SUMMARIZE_PROMPT = `Sen deneyimli bir savaş muhabirisin. Verilen haber metnini analiz et.
+
+Görevin:
+1. Haberi Türkçe olarak özetle (2-3 cümle, maks 200 karakter)
+2. Metindeki önemli varlıkları çıkar
+
+JSON formatında yanıt ver:
+{
+  "summary": "özet metni",
+  "entities": {
+    "people": ["kişi adları"],
+    "locations": ["yer adları"],
+    "organizations": ["örgüt/kurum adları"]
+  }
+}
 
 Kurallar:
-- Tam olarak 2-3 cümle yaz
-- Maksimum 200 karakter
 - Sadece en önemli bilgiyi ver (ne oldu, nerede, sonucu)
 - Tarafsız ve net bir dil kullan
-- Spekülatif ifadelerden kaçın`;
+- Spekülatif ifadelerden kaçın
+- Varlıklar orijinal dillerinde (Türkçe veya İngilizce) olabilir
+- Her kategoride en fazla 5 varlık`;
+
+export interface ArticleEntities {
+  people: string[];
+  locations: string[];
+  organizations: string[];
+}
 
 interface SummarizeResult {
   summary: string;
+  entities?: ArticleEntities;
   source: "openai" | "fallback";
   tokensUsed?: number;
 }
@@ -51,18 +72,32 @@ export async function summarizeArticle(
         { role: "system", content: SUMMARIZE_PROMPT },
         { role: "user", content: content.slice(0, 3000) },
       ],
-      max_tokens: 150,
+      max_tokens: 300,
       temperature: 0.3,
+      response_format: { type: "json_object" },
     });
 
-    const summary = completion.choices[0]?.message?.content?.trim();
+    const raw = completion.choices[0]?.message?.content?.trim();
     const tokensUsed = completion.usage?.total_tokens ?? 0;
 
-    if (!summary) {
+    if (!raw) {
       return { summary: generateFallbackSummary(title, category), source: "fallback" };
     }
 
-    return { summary, source: "openai", tokensUsed };
+    try {
+      const parsed = JSON.parse(raw);
+      const summary = parsed.summary || generateFallbackSummary(title, category);
+      const entities: ArticleEntities | undefined = parsed.entities ? {
+        people: Array.isArray(parsed.entities.people) ? parsed.entities.people.slice(0, 5) : [],
+        locations: Array.isArray(parsed.entities.locations) ? parsed.entities.locations.slice(0, 5) : [],
+        organizations: Array.isArray(parsed.entities.organizations) ? parsed.entities.organizations.slice(0, 5) : [],
+      } : undefined;
+
+      return { summary, entities, source: "openai", tokensUsed };
+    } catch {
+      // If JSON parse fails, use raw as summary
+      return { summary: raw.slice(0, 200), source: "openai", tokensUsed };
+    }
   } catch (error) {
     console.error("[AI] Summarize error:", error instanceof Error ? error.message : error);
     return { summary: generateFallbackSummary(title, category), source: "fallback" };
@@ -159,7 +194,7 @@ export async function batchSummarize(limit: number = 20): Promise<BatchResult> {
     }
 
     try {
-      const { summary, source, tokensUsed } = await summarizeArticle(
+      const { summary, entities, source, tokensUsed } = await summarizeArticle(
         article.content,
         article.title,
         article.category,
@@ -167,7 +202,10 @@ export async function batchSummarize(limit: number = 20): Promise<BatchResult> {
 
       await prisma.newsArticle.update({
         where: { id: article.id },
-        data: { aiSummary: summary },
+        data: {
+          aiSummary: summary,
+          ...(entities ? { entities: JSON.stringify(entities) } : {}),
+        },
       });
 
       if (source === "openai") {
