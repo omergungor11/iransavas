@@ -5,6 +5,8 @@ const SUMMARIZE_PROMPT = `Sen deneyimli bir savaş muhabirisin. Verilen haber me
 Görevin:
 1. Haberi Türkçe olarak özetle (2-3 cümle, maks 200 karakter)
 2. Metindeki önemli varlıkları çıkar
+3. Haberin duygusal tonunu belirle (negative, neutral, positive)
+4. Haberin gerilim seviyesine katkısını 0-100 arasında puanla
 
 JSON formatında yanıt ver:
 {
@@ -13,7 +15,9 @@ JSON formatında yanıt ver:
     "people": ["kişi adları"],
     "locations": ["yer adları"],
     "organizations": ["örgüt/kurum adları"]
-  }
+  },
+  "sentiment": "negative" | "neutral" | "positive",
+  "tension_contribution": 0-100
 }
 
 Kurallar:
@@ -21,7 +25,9 @@ Kurallar:
 - Tarafsız ve net bir dil kullan
 - Spekülatif ifadelerden kaçın
 - Varlıklar orijinal dillerinde (Türkçe veya İngilizce) olabilir
-- Her kategoride en fazla 5 varlık`;
+- Her kategoride en fazla 5 varlık
+- sentiment: saldırı/kayıp/tehdit haberleri "negative", barış/müzakere "positive", bilgilendirme "neutral"
+- tension_contribution: savaş/saldırı=70-100, gerilim=40-70, diplomasi=10-40, bilgilendirme=0-20`;
 
 export interface ArticleEntities {
   people: string[];
@@ -29,9 +35,13 @@ export interface ArticleEntities {
   organizations: string[];
 }
 
-interface SummarizeResult {
+export type Sentiment = "negative" | "neutral" | "positive";
+
+export interface SummarizeResult {
   summary: string;
   entities?: ArticleEntities;
+  sentiment?: Sentiment;
+  tensionContribution?: number;
   source: "openai" | "fallback";
   tokensUsed?: number;
 }
@@ -93,7 +103,17 @@ export async function summarizeArticle(
         organizations: Array.isArray(parsed.entities.organizations) ? parsed.entities.organizations.slice(0, 5) : [],
       } : undefined;
 
-      return { summary, entities, source: "openai", tokensUsed };
+      const sentiment: Sentiment | undefined =
+        parsed.sentiment && ["negative", "neutral", "positive"].includes(parsed.sentiment)
+          ? (parsed.sentiment as Sentiment)
+          : undefined;
+
+      const tensionContribution: number | undefined =
+        typeof parsed.tension_contribution === "number"
+          ? Math.min(100, Math.max(0, Math.round(parsed.tension_contribution)))
+          : undefined;
+
+      return { summary, entities, sentiment, tensionContribution, source: "openai", tokensUsed };
     } catch {
       // If JSON parse fails, use raw as summary
       return { summary: raw.slice(0, 200), source: "openai", tokensUsed };
@@ -194,7 +214,7 @@ export async function batchSummarize(limit: number = 20): Promise<BatchResult> {
     }
 
     try {
-      const { summary, entities, source, tokensUsed } = await summarizeArticle(
+      const { summary, entities, sentiment, source, tokensUsed } = await summarizeArticle(
         article.content,
         article.title,
         article.category,
@@ -205,6 +225,7 @@ export async function batchSummarize(limit: number = 20): Promise<BatchResult> {
         data: {
           aiSummary: summary,
           ...(entities ? { entities: JSON.stringify(entities) } : {}),
+          ...(sentiment ? { sentiment } : {}),
         },
       });
 

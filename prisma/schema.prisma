@@ -22,6 +22,7 @@ model NewsArticle {
   perspective String?
   viewCount   Int      @default(0)
   entities    String?  // JSON: { people: string[], locations: string[], organizations: string[] }
+  sentiment   String?  // "negative" | "neutral" | "positive"
   publishedAt DateTime @default(now())
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
@@ -95,4 +96,22 @@ model Report {
 
   @@index([publishedAt])
   @@map("reports")
+}
+
+model WeeklyReport {
+  id              String   @id @default(cuid())
+  weekStart       DateTime
+  weekEnd         DateTime
+  summary         String   // Main Turkish summary
+  keyEvents       String   // JSON array of key event titles
+  tensionTrend    String   // "rising" | "stable" | "declining"
+  tensionScore    Int
+  totalIncidents  Int
+  totalCasualties Int
+  outlook         String   // "Ne izleyelim" section
+  publishedAt     DateTime @default(now())
+  createdAt       DateTime @default(now())
+
+  @@index([weekStart])
+  @@map("weekly_reports")
 }

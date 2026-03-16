@@ -11,6 +11,8 @@ import { DateFilter, type DateRange } from "@/components/news/date-filter";
 import { SourceFilter } from "@/components/news/source-filter";
 import { getBookmarks } from "@/components/news/bookmark-button";
 import { Button } from "@/components/ui/button";
+import { SourceDiversity } from "@/components/news/source-diversity";
+import { PushNotificationPrompt } from "@/components/news/push-notification-prompt";
 
 interface Article {
   id: string;
@@ -319,6 +321,9 @@ function HaberlerContent() {
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-8">
+      {/* Push Notification Prompt */}
+      <PushNotificationPrompt />
+
       {/* Breaking News Ticker */}
       {breakingArticles.length > 0 && (
         <div className="mb-6 rounded-lg border border-red-500/30 bg-red-500/5 p-3 overflow-hidden">
@@ -447,6 +452,11 @@ function HaberlerContent() {
           )}
         </div>
       </div>
+
+      {/* Source Diversity Indicator */}
+      {!loading && !error && articles.length > 0 && (
+        <SourceDiversity articles={articles} />
+      )}
 
       {/* Results count */}
       {!loading && !error && total > 0 && (

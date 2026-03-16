@@ -13,6 +13,7 @@ import {
   BarChart3,
   FileText,
   Clock,
+  BookOpen,
 } from "lucide-react";
 
 const navLinks = [
@@ -22,6 +23,7 @@ const navLinks = [
   { label: "Zaman Çizelgesi", href: "/zaman-cizelgesi", icon: Clock },
   { label: "Analiz", href: "/analiz", icon: BarChart3 },
   { label: "Raporlar", href: "/raporlar", icon: FileText },
+  { label: "Aciklamalar", href: "/aciklamalar", icon: BookOpen },
 ] as const;
 
 export function Header() {

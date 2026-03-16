@@ -7,6 +7,7 @@ import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 import { formatDate } from "@/lib/utils";
 import type { MapFiltersState } from "./map-filters";
+import { MissileRangeOverlay } from "./missile-range-overlay";
 
 interface WarEventData {
   id: string;
@@ -99,6 +100,7 @@ interface WarMapCanvasProps {
 export function WarMapCanvas({ filters, onEventCountChange }: WarMapCanvasProps) {
   const [events, setEvents] = useState<WarEventData[]>([]);
   const [loading, setLoading] = useState(true);
+  const [showMissileRanges, setShowMissileRanges] = useState(false);
 
   const fetchEvents = useCallback(async (f: MapFiltersState) => {
     setLoading(true);
@@ -140,6 +142,20 @@ export function WarMapCanvas({ filters, onEventCountChange }: WarMapCanvasProps)
           <div className="h-8 w-8 animate-spin rounded-full border-2 border-red-500 border-t-transparent" />
         </div>
       )}
+      {/* Missile range toggle */}
+      <button
+        type="button"
+        onClick={() => setShowMissileRanges((prev) => !prev)}
+        className={[
+          "absolute top-3 right-3 z-[1000] flex items-center gap-1.5 rounded-md px-3 py-1.5 text-xs font-medium shadow-lg transition-colors",
+          showMissileRanges
+            ? "bg-red-600 text-white"
+            : "bg-zinc-800/90 text-zinc-300 hover:bg-zinc-700/90",
+        ].join(" ")}
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
+        Fuze Menzilleri
+      </button>
       <MapContainer center={IRAN_CENTER} zoom={6} className="h-full w-full" style={{ background: "#0f1117" }}>
         <TileLayer
           attribution='&copy; CARTO'
@@ -184,6 +200,7 @@ export function WarMapCanvas({ filters, onEventCountChange }: WarMapCanvasProps)
             </CircleMarker>
           ))}
         </MarkerClusterGroup>
+        {showMissileRanges && <MissileRangeOverlay />}
       </MapContainer>
     </div>
   );
